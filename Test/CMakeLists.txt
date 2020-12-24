@@ -18,5 +18,5 @@ else()
       TARGET  Test
       POST_BUILD
       COMMAND rsync -azv --chmod=ugo=rwx Test rsync://debian@devtgt/prime/bin
-      WORKING_DIRECTORY C:/Users/$ENV{username}/CMakeBuilds/Dev_ACM/Test)
+      WORKING_DIRECTORY C:/Users/$ENV{username}/CMakeBuilds/Dev_NP_TTA_NewCProc/Test)
 endif()

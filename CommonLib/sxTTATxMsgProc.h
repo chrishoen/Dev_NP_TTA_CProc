@@ -1,72 +1,65 @@
 #pragma once
 
 /*==============================================================================
-Program command line executive.
+Provides a class definition for the active alarm list record
 ==============================================================================*/
 
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
 
-#include "risCmdLineExec.h"
+#include <string>
+
+namespace SX
+{
 
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
-// This class is the program command line executive. It processes user
-// command line inputs and executes them. It inherits from the command line
-// command executive base class, which provides an interface for executing
-// command line commands. It provides an override execute function that is
-// called by a console executive when it receives a console command line input.
-// The execute function then executes the command.
+// This is a class that implments functions that can be used to generate
+// transmit message strings. The strings contain the header, data, and 
+// crc footer.
 
-class CmdLineExec : public Ris::BaseCmdLineExec
+class TTATxMsgProc
 {
 public:
 
    //***************************************************************************
    //***************************************************************************
    //***************************************************************************
+   // Constants.
+
+   static const int cMaxStringSize = 1000;
+
+   //***************************************************************************
+   //***************************************************************************
+   //***************************************************************************
    // Members.
 
-   //***************************************************************************
-   //***************************************************************************
-   //***************************************************************************
-   // Methods.
-
-   CmdLineExec();
-   void reset();
+   // Full message string to be transmitted.
+   char mTxBuffer[cMaxStringSize];
 
    //***************************************************************************
    //***************************************************************************
    //***************************************************************************
    // Methods.
 
-   // Base class override. Execute a command line command. It calls one of
-   // the following specific command execution functions. This is called by
-   // the owner of this object to pass command line commands to it. 
-   void execute(Ris::CmdLineCmd* aCmd) override;
+   // Constructor.
+   TTATxMsgProc();
 
    //***************************************************************************
    //***************************************************************************
    //***************************************************************************
    // Methods.
 
-   // Execute specific commands.
-   void executeTest    (Ris::CmdLineCmd* aCmd);
-   void executeAbort   (Ris::CmdLineCmd* aCmd);
-
-   void executeTx (Ris::CmdLineCmd* aCmd);
-
-   void executeGo1(Ris::CmdLineCmd* aCmd);
-   void executeGo2     (Ris::CmdLineCmd* aCmd);
-   void executeGo3     (Ris::CmdLineCmd* aCmd);
-   void executeGo4     (Ris::CmdLineCmd* aCmd);
-   void executeGo5     (Ris::CmdLineCmd* aCmd);
-   void executeParms   (Ris::CmdLineCmd* aCmd);
+   // Fill the transmit buffer with the full string for the given message
+   // ident. This can then be transmitted. Return a pointer to the buffer.
+   const char* getMsg(int aMsgId, const char* aPayload = 0);
 };
 
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
+}//namespace
+
 

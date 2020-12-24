@@ -1,5 +1,8 @@
 #include "stdafx.h"
 
+#include "sxTTATxMsgProc.h"
+#include "sxMsgDefs.h"
+
 #include "acomCommParms.h"
 #include "acomTestSeqThread.h"
 #include "acomExperiment.h"
@@ -33,7 +36,7 @@ void CmdLineExec::execute(Ris::CmdLineCmd* aCmd)
    if(aCmd->isCmd("RESET"))     reset();
    if (aCmd->isCmd("TEST"))     executeTest(aCmd);
    if (aCmd->isCmd("A"))        executeAbort(aCmd);
-
+   if (aCmd->isCmd("TX"))       executeTx(aCmd);
 
    if (aCmd->isCmd("GO1"))      executeGo1(aCmd);
    if (aCmd->isCmd("GO2"))      executeGo2(aCmd);
@@ -54,6 +57,17 @@ void CmdLineExec::executeTest(Ris::CmdLineCmd* aCmd)
 
    aCmd->setArgDefault(1, 1);
    ACom::gTestSeqThread->mRunTest1QCall(aCmd->argInt(1));
+}
+
+//******************************************************************************
+//******************************************************************************
+//******************************************************************************
+
+void CmdLineExec::executeTx(Ris::CmdLineCmd* aCmd)
+{
+   SX::TTATxMsgProc tTxProc;
+   tTxProc.getMsg(SX::cMsgId_gsx, "abcdefg");
+   Prn::print(0, "%s", tTxProc.mTxBuffer);
 }
 
 //******************************************************************************
