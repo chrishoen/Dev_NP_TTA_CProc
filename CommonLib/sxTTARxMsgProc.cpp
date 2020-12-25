@@ -47,7 +47,8 @@ void TTARxMsgProc::resetVars()
 
 bool TTARxMsgProc::processMsg(const char* aRxString)
 {
-   return false;
+   // Do this first.
+   resetVars();
 }
 
 //******************************************************************************

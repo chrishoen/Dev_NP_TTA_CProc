@@ -69,6 +69,7 @@ void main_initialize(int argc,char** argv)
    // Initialize print.
    Prn::resetPrint(ACom::gCommParms.mPrintViewIPAddress);
    Prn::useConsole(1);
+   Prn::useConsole(2);
    Prn::initializePrint();
 
    // Initialize print filters.
@@ -78,7 +79,7 @@ void main_initialize(int argc,char** argv)
    Prn::setFilter(Prn::View14, false, 1);
 
    Prn::setFilter(Prn::Show1, true, 1);
-   Prn::setFilter(Prn::Show2, true, 1);
+   Prn::setFilter(Prn::Show2, true, 2);
    Prn::setFilter(Prn::Show3, false, 1);
    Prn::setFilter(Prn::Show4, false, 1);
 

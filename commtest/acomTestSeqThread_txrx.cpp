@@ -9,6 +9,7 @@ Detestion:
 #include "stdafx.h"
 
 #include "cmnShare.h"
+#include "sxMsgDefs.h"
 
 #include "acomTestSeqThread.h"
 
@@ -85,7 +86,14 @@ void TestSeqThread::executeRxString(std::string* aString)
 
    // Signal the notification that an acknowledgement was received.
    mNotify.notify(cCmdAckNotifyCode);
-     
+
+   // Process the receive message.
+   mRxMsgProc.processMsg(aString->c_str());
+
+   // Show.
+   Prn::print(Prn::Show1, "Rx Valid  %s", my_string_from_bool(mRxMsgProc.mRxValid));
+   Prn::print(Prn::Show1, "Rx MsgId  %s", SX::get_MsgId_asString(mRxMsgProc.mRxMsgId));
+
    // Delete the string.
    delete aString;
 }

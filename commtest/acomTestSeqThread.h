@@ -11,6 +11,9 @@
 #include "risThreadsSynch.h"
 #include "risSerialStringThread.h"
 
+#include "sxTTATxMsgProc.h"
+#include "sxTTARxMsgProc.h"
+
 namespace ACom
 {
 //******************************************************************************
@@ -69,6 +72,9 @@ public:
 
    // Run test exit code.
    int mLoopExitCode;
+
+   SX::TTATxMsgProc mTxMsgProc;
+   SX::TTARxMsgProc mRxMsgProc;
 
    //***************************************************************************
    //***************************************************************************
