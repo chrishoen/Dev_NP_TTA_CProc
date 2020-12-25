@@ -45,6 +45,9 @@ public:
    // The receive message identifier.
    int mRxMsgId;
 
+   // If true then marker is val else data.
+   bool mRxValMarker;
+
    // The receive message payload.
    char* mRxPayload;
 

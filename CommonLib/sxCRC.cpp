@@ -54,7 +54,7 @@ unsigned doCalcCRC(char* aString, int aSize)
 // Concatenate a string with four ascii chars that are a hex unsigned int
 // that is the crc checksum of the string.
 
-char* doAddCRC(char* aString)
+char* doConcatenateCRC(char* aString)
 {
    char tCRCString[5];
    unsigned tCRCValue = doCalcCRC(aString, strlen(aString));
@@ -73,9 +73,11 @@ bool doValidateCRC(char* aString)
 {
    char tCRCString[5];
    int  tCRCStart = strlen(aString) - 4;
+   Prn::print(Prn::Show2, "doValidateCRC1 %d %s", tCRCStart, aString);
    unsigned tCRCValue1 = doCalcCRC(aString, tCRCStart);
    unsigned tCRCValue2 = 0;
-   sscanf(&aString[tCRCStart], "%04X", tCRCValue2);
+   sscanf(&aString[tCRCStart], "%x", &tCRCValue2);
+   Prn::print(Prn::Show2, "doValidateCRC2 %X", tCRCValue2);
    return tCRCValue1 == tCRCValue2;
 }
 

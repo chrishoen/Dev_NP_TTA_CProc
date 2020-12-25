@@ -18,7 +18,7 @@ namespace SX
 
 // Concatenate a string with four ascii chars that are a hex unsigned int
 // that is the crc checksum of the string.
-char* doAddCRC(char* aString);
+char* doConcatenateCRC(char* aString);
 
 // Validate a string that has the last four ascii chars that are a hex
 // unsigned int that is the crc checksum of the string.
