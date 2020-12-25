@@ -58,6 +58,7 @@ char* doConcatenateCRC(char* aString)
 {
    char tCRCString[5];
    unsigned tCRCValue = doCalcCRC(aString, strlen(aString));
+   Prn::print(Prn::Show2, "doConcatenateCRC %X", tCRCValue);
    sprintf(tCRCString, "%04X", tCRCValue);
    strcat(aString, tCRCString);
    return aString;

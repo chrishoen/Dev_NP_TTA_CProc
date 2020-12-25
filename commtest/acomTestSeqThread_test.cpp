@@ -8,6 +8,9 @@ Detestion:
 
 #include "stdafx.h"
 
+#include "smShare.h"
+#include "sxMsgDefs.h"
+
 #include "cmnShare.h"
 #include "acomCommParms.h"
 
@@ -50,19 +53,17 @@ void TestSeqThread::executeRunTest1(int aNumTx)
 
          // Set the thread notification mask.
          mNotify.setMaskOne("CmdAck", cCmdAckNotifyCode);
+     
+         // Build a message.
+         SM::gShare->mSuperWantsTTA.mCount++;
+         char tPayload[200];
+         SuperWantsTTA_copyTo(&SM::gShare->mSuperWantsTTA, tPayload);
+         SuperWantsTTA_clearFlags(&SM::gShare->mSuperWantsTTA);
+         mTxMsgProc.buildMsg(SX::cMsgId_gsx, tPayload);
 
-         char tString[100];
-         if (Ris::portableIsWindows())
-         {
-            sprintf(tString, "hello from windows              %d", i);
-         }
-         else
-         {
-            sprintf(tString, "hello from beagle   %d", i);
-         }
-      
-         // Send a command.
-         sendString(gCommParms.mTxCommand);
+         // Send a message.
+         //sendString(gCommParms.mTxCommand);
+         sendString(mTxMsgProc.mTxBuffer);
 
          // Wait for the acknowledgement notification.
          mNotify.wait(cCmdAckTimeout);

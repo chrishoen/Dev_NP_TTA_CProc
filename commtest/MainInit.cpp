@@ -4,6 +4,7 @@
 
 #include "risBaseDir.h"
 #include "risPortableCalls.h"
+#include "smShare.h"
 #include "acomCommParms.h"
 
 //******************************************************************************
@@ -60,6 +61,14 @@ void main_initialize(int argc,char** argv)
    // Read parameters files.
    ACom::gCommParms.reset();
    ACom::gCommParms.readSection("default");
+
+   //***************************************************************************
+   //***************************************************************************
+   //***************************************************************************
+   // Initialize program resources.
+
+   // Initialize shared memory.
+   SM::initializeShare();
 
    //***************************************************************************
    //***************************************************************************

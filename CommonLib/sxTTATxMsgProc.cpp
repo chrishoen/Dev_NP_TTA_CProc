@@ -8,6 +8,7 @@ Description:
 
 #include "stdafx.h"
 
+#include "sxCRC.h"
 #include "sxMsgDefs.h"
 
 #include "sxTTATxMsgProc.h"
@@ -15,9 +16,6 @@ Description:
 namespace SX
 {
 
-//******************************************************************************
-//******************************************************************************
-//******************************************************************************
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
@@ -37,12 +35,18 @@ TTATxMsgProc::TTATxMsgProc()
 
 const char* TTATxMsgProc::buildMsg(int aMsgId, const char* aPayload)
 {
-   strcpy(mTxBuffer, ";01");
+   // Build the header.
+   strcpy(mTxBuffer, ";10");
    strncat(mTxBuffer, get_MsgId_asString(aMsgId), cMaxStringSize - 1);
 
+   // Concatenate the payload.
    if (aPayload)
    {
+      // Concatenate the payload.
       strncat(mTxBuffer, aPayload, cMaxStringSize - 1);
+
+      // Concatenate the payload crc.
+      doConcatenateCRC(&mTxBuffer[6]);
    }
 
    return mTxBuffer;
