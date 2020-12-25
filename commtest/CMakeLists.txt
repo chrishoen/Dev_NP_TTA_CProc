@@ -7,9 +7,11 @@ my_add_compile_options (commtest)
 my_add_pch (commtest)
 
 my_inc_import_CommonLib(commtest)
+my_inc_import_ShareLib(commtest)
 my_inc_import_RisLib(commtest)
 
 my_lib_import_RisLib(commtest)
+my_lib_import_ShareLib(commtest)
 my_lib_import_CommonLib(commtest)
 
 add_custom_command(
