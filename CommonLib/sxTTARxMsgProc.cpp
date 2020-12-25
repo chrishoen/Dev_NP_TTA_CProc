@@ -10,7 +10,7 @@ Description:
 
 #include "sxMsgDefs.h"
 
-#include "sxTTATxMsgProc.h"
+#include "sxTTARxMsgProc.h"
 
 namespace SX
 {
@@ -23,29 +23,31 @@ namespace SX
 //******************************************************************************
 // Constructor.
 
-TTATxMsgProc::TTATxMsgProc()
+TTARxMsgProc::TTARxMsgProc()
 {
-   mTxBuffer[0] = 0;
+   resetVars();
 }
 
-//******************************************************************************
-//******************************************************************************
-//******************************************************************************
-// Build a transmit message string. Fill the transmit buffer with the
-// full string for the given message ident. This can then be transmitted. 
-// Return a pointer to the buffer.
-
-const char* TTATxMsgProc::buildMsg(int aMsgId, const char* aPayload)
+void TTARxMsgProc::resetVars()
 {
-   strcpy(mTxBuffer, ";01");
-   strncat(mTxBuffer, get_MsgId_asString(aMsgId), cMaxStringSize - 1);
+   mRxBuffer[0] = 0;
+   mRxValid = false;
+   mRxMsgId = 0;
+   char* mRxPayload = 0;
+}
 
-   if (aPayload)
-   {
-      strncat(mTxBuffer, aPayload, cMaxStringSize - 1);
-   }
 
-   return mTxBuffer;
+//******************************************************************************
+//******************************************************************************
+//******************************************************************************
+// Copy the receive message string to the receive buffer and process
+// the receive buffer. Validate the message, extract message content,
+// and set the message member variables accordingly. Return true if
+// the message is valid.
+
+bool TTARxMsgProc::processMsg(const char* aRxString)
+{
+   return false;
 }
 
 //******************************************************************************

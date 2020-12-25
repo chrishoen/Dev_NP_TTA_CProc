@@ -16,11 +16,11 @@ namespace SX
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
-// This is a class that implments functions that can be used to generate
-// transmit message strings. The strings contain the header, data, and 
-// crc footer.
+// This is a class that implments functions that can be used to validate
+// and extract the contents of receive message strings. The strings contain
+// the header, data, and  crc footer.
 
-class TTATxMsgProc
+class TTARxMsgProc
 {
 public:
 
@@ -36,8 +36,17 @@ public:
    //***************************************************************************
    // Members.
 
-   // Full message string to be transmitted.
-   char mTxBuffer[cMaxStringSize];
+   // Full receive message string to be processed.
+   char mRxBuffer[cMaxStringSize];
+
+   // This is true if the receive message is valid.
+   bool mRxValid;
+
+   // The receive message identifier.
+   int mRxMsgId;
+
+   // The receive message payload.
+   char* mRxPayload;
 
    //***************************************************************************
    //***************************************************************************
@@ -45,17 +54,19 @@ public:
    // Methods.
 
    // Constructor.
-   TTATxMsgProc();
+   TTARxMsgProc();
+   void resetVars();
 
    //***************************************************************************
    //***************************************************************************
    //***************************************************************************
    // Methods.
 
-   // Build a transmit message string. Fill the transmit buffer with the
-   // full string for the given message ident. This can then be transmitted. 
-   // Return a pointer to the buffer.
-   const char* buildMsg(int aMsgId, const char* aPayload = 0);
+   // Copy the receive message string to the receive buffer and process
+   // the receive buffer. Validate the message, extract message content,
+   // and set the message member variables accordingly. Return true if
+   // the message is valid.
+   bool processMsg(const char* aRxString);
 };
 
 //******************************************************************************

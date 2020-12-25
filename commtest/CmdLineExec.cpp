@@ -66,7 +66,7 @@ void CmdLineExec::executeTest(Ris::CmdLineCmd* aCmd)
 void CmdLineExec::executeTx(Ris::CmdLineCmd* aCmd)
 {
    SX::TTATxMsgProc tTxProc;
-   tTxProc.getMsg(SX::cMsgId_gsx, "abcdefg");
+   tTxProc.buildMsg(SX::cMsgId_gsx, "abcdefg");
    Prn::print(0, "%s", tTxProc.mTxBuffer);
 }
 
