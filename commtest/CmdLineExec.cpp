@@ -36,7 +36,7 @@ void CmdLineExec::execute(Ris::CmdLineCmd* aCmd)
    if(aCmd->isCmd("RESET"))     reset();
    if (aCmd->isCmd("TEST"))     executeTest(aCmd);
    if (aCmd->isCmd("A"))        executeAbort(aCmd);
-   if (aCmd->isCmd("TX"))       executeTx(aCmd);
+   if (aCmd->isCmd("TXCODE"))   executeTxCode(aCmd);
 
    if (aCmd->isCmd("GO1"))      executeGo1(aCmd);
    if (aCmd->isCmd("GO2"))      executeGo2(aCmd);
@@ -63,11 +63,10 @@ void CmdLineExec::executeTest(Ris::CmdLineCmd* aCmd)
 //******************************************************************************
 //******************************************************************************
 
-void CmdLineExec::executeTx(Ris::CmdLineCmd* aCmd)
+void CmdLineExec::executeTxCode(Ris::CmdLineCmd* aCmd)
 {
-   SX::TTATxMsgProc tTxProc;
-   tTxProc.buildMsg(SX::cMsgId_gsx, "abcdefg");
-   Prn::print(0, "%s", tTxProc.mTxBuffer);
+   ACom::gTestSeqThread->mTxCode = SX::get_MsgId_asInt(aCmd->argString(1));
+   Prn::print(0, "%s", SX::get_MsgId_asString(ACom::gTestSeqThread->mTxCode));
 }
 
 //******************************************************************************
@@ -98,7 +97,9 @@ void CmdLineExec::executeGo1(Ris::CmdLineCmd* aCmd)
 
 void CmdLineExec::executeGo2(Ris::CmdLineCmd* aCmd)
 {
-   ACom::gExperiment.finalize();
+   SX::TTATxMsgProc tTxProc;
+   tTxProc.buildMsg(SX::cMsgId_gsx, "abcdefg");
+   Prn::print(0, "%s", tTxProc.mTxBuffer);
 }
 
 //******************************************************************************

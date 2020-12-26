@@ -33,7 +33,7 @@ public:
    // Constants:
 
    // Wait timeouts.
-   static const int cCmdAckTimeout = -1;
+   static const int cCmdAckTimeout = 2000;
 
    // Notification codes.
    static const int cCmdAckNotifyCode = 11;
@@ -72,6 +72,9 @@ public:
 
    // Run test exit code.
    int mLoopExitCode;
+
+   // Tx message code.
+   int mTxCode;
 
    SX::TTATxMsgProc mTxMsgProc;
    SX::TTARxMsgProc mRxMsgProc;

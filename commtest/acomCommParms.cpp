@@ -47,7 +47,7 @@ void CommParms::reset()
    mCmdCommPortTimeout = 0;
    mCmdCommPort485Flag = false;
    mDelay = 0;
-   mTxCommand[0] = 0;
+   mTxCode = 0;
    mSerialStringPrintLevel = 0;
    mTestSeqShortPrintLevel = 0;
    mTestSeqLongPrintLevel = 0;
@@ -77,7 +77,7 @@ void CommParms::show()
 
    printf("\n");
    printf("Delay                   %12d\n", mDelay);
-   printf("TxCommand               %12s\n", mTxCommand);
+   printf("TxCode                  %12d\n", mTxCode);
    printf("PrintViewIPAdds         %-12s\n", mPrintViewIPAddress);
 }
 
@@ -102,7 +102,7 @@ void CommParms::execute(Ris::CmdLineCmd* aCmd)
    if (aCmd->isCmd("TestSeqLongPrintLevel"))  mTestSeqLongPrintLevel = aCmd->argInt(1);
 
    if (aCmd->isCmd("Delay"))                  mDelay = aCmd->argInt(1);
-   if (aCmd->isCmd("TxCommand"))              aCmd->copyArgString(1, mTxCommand, cMaxStringSize);
+   if (aCmd->isCmd("TxCode"))                 mTxCode = aCmd->argInt(1);
    if (aCmd->isCmd("PrintViewIPAddress"))     aCmd->copyArgString(1, mPrintViewIPAddress, cMaxStringSize);
 }
 

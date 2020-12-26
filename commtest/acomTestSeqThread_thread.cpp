@@ -52,6 +52,7 @@ TestSeqThread::TestSeqThread()
    mLoopExitCode = 0;
    mTxCount = 0;
    mRxCount = 0;
+   mTxCode = gCommParms.mTxCode;
 }
 
 //******************************************************************************
