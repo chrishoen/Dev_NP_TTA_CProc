@@ -10,6 +10,10 @@ project ("Dev_NP_TTA_NewCProc")
 my_init_global_import_variables()
 
 add_subdirectory ("CommonLib")
+add_subdirectory ("newcproc")
+return()
+
+add_subdirectory ("CommonLib")
 add_subdirectory ("commtest")
 return()
 

@@ -23,8 +23,8 @@ Priorities::Priorities()
 {
    mTsPrint           = Ris::Threads::Priority(-1, 20);
    mSerialString      = Ris::Threads::Priority(-1, 80);
-   mCommSeqLong       = Ris::Threads::Priority(-1, 50);
-   mCommSeqShort      = Ris::Threads::Priority(-1, 70);
+   mCommLong          = Ris::Threads::Priority(-1, 50);
+   mCommShort         = Ris::Threads::Priority(-1, 70);
 }
 
 //******************************************************************************

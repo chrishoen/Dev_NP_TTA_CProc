@@ -32,8 +32,8 @@ public:
 
    Ris::Threads::Priority mTsPrint;
    Ris::Threads::Priority mSerialString;
-   Ris::Threads::Priority mCommSeqLong;
-   Ris::Threads::Priority mCommSeqShort;
+   Ris::Threads::Priority mCommLong;
+   Ris::Threads::Priority mCommShort;
 
    //***************************************************************************
    //***************************************************************************

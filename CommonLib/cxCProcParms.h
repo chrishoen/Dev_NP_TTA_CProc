@@ -1,7 +1,6 @@
 #pragma once
 
 /*==============================================================================
-Prototype communications message classes.
 Parameters class whose values are read from a command file. 
 ==============================================================================*/
 
@@ -10,12 +9,13 @@ Parameters class whose values are read from a command file.
 //******************************************************************************
 
 #include "risCmdLineParms.h"
+#include "tsDefs.h"
 
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
 
-namespace Cmn
+namespace CX
 {
 
 //******************************************************************************
@@ -47,7 +47,7 @@ namespace Cmn
 // structure. If so, then this class is the root.
 // 
 
-class ProgramParms : public Ris::BaseCmdLineParms
+class CProcParms : public Ris::BaseCmdLineParms
 {
 public:
 
@@ -63,28 +63,45 @@ public:
    //***************************************************************************
    // Members.
 
-   // Device name, ttyO4
-   typedef char DeviceNameT[40];
-   DeviceNameT mDeviceName[5];
-
-   // Thread print and log levels.
-   int mSerialStringPrintLevel;
-   int mCommSeqShortPrintLevel;
-   int mCommSeqLongPrintLevel;
+   // If true then enable the buzzer.
+   bool mBuzzerEnable;
 
    //***************************************************************************
    //***************************************************************************
    //***************************************************************************
    // Members.
 
-   // If true then enable all five threads, else only enable the main acm.
-   bool mEnableAll;
+   // If true then enable aux alarm input overrides.
+   bool mAuxOverrideEnable;
 
-   // Main acm. This is the one that enables prints.
-   int mMainACM;
+   // If true then enable hlc input overrides.
+   bool mHLCOverrideEnable;
 
-   // Delay between transmits.
-   int mDelay;
+   // If true then enable hlc input overrides with a simulated sinusoid.
+   bool mHLCSimSinEnable;
+
+   // Simulated sinusoid period and amplitude limits.
+   double mHLCSimSinPeriod;
+   double mHLCSimSinAmpHi;
+   double mHLCSimSinAmpLo;
+
+   // Simulated sinusoid period and amplitude limits.
+   double mHLCOffsetESS;
+   double mHLCOffsetSA;
+
+   //***************************************************************************
+   //***************************************************************************
+   //***************************************************************************
+   // Members.
+
+   // Thread print level.
+   int mPrintLevel;
+
+   // Print code.
+   int mShowCode;
+
+   // Transmit test code.
+   int mTxCode;
 
    //***************************************************************************
    //***************************************************************************
@@ -100,16 +117,24 @@ public:
    //***************************************************************************
    //***************************************************************************
    //***************************************************************************
+   // Members.
+
+   // Test code.
+   int  mTestCode;
+
+   //***************************************************************************
+   //***************************************************************************
+   //***************************************************************************
    // Expanded members that are not read from the parms file.
 
    //***************************************************************************
    //***************************************************************************
    //***************************************************************************
-   // Infrastucture.
+   // Methods.
 
    // Constructor,
    typedef Ris::BaseCmdLineParms BaseClass;
-   ProgramParms();
+   CProcParms();
    void reset();
    void show();
 
@@ -128,10 +153,10 @@ public:
 //******************************************************************************
 // Global instance.
 
-#ifdef _CMNPROGRAMPARMS_CPP_
-   ProgramParms gProgramParms;
+#ifdef _CXCPROCPARMS_CPP_
+   CProcParms gCProcParms;
 #else
-   extern ProgramParms gProgramParms;
+   extern CProcParms gCProcParms;
 #endif
 
 //******************************************************************************
