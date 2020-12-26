@@ -29,7 +29,7 @@ int main(int argc,char** argv)
    if (true)
    {
       CX::gTTACommThread = new CX::TTACommThread;
-      CX::gTTACommThread->launchThreads();
+      CX::gTTACommThread->launchThread();
    }
 
    //***************************************************************************
@@ -55,7 +55,7 @@ int main(int argc,char** argv)
    //***************************************************************************
    // Shutdown program threads.
 
-   if (CX::gTTACommThread)   CX::gTTACommThread->shutdownThreads();
+   if (CX::gTTACommThread)   CX::gTTACommThread->shutdownThread();
 
    //***************************************************************************
    //***************************************************************************

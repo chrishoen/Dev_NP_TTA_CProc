@@ -53,9 +53,6 @@ public:
    // Methods.
 
    // Execute specific commands.
-   void executeTest    (Ris::CmdLineCmd* aCmd);
-   void executeAbort   (Ris::CmdLineCmd* aCmd);
-
    void executeTxCode  (Ris::CmdLineCmd* aCmd);
 
    void executeGo1(Ris::CmdLineCmd* aCmd);

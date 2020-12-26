@@ -83,15 +83,15 @@ void TTACommThread::executeRxString(std::string* aString)
 
    Prn::print(Prn::Show1, "<<<< %s", aString->c_str());
 
-   // Signal the notification that an acknowledgement was received.
-   mNotify.notify(cCmdAckNotifyCode);
-
    // Process the receive message.
    mRxMsgProc.processMsg(aString->c_str());
 
    // Show.
    Prn::print(Prn::Show1, "Rx Valid  %s", my_string_from_bool(mRxMsgProc.mRxValid));
    Prn::print(Prn::Show1, "Rx MsgId  %s", SX::get_MsgId_asString(mRxMsgProc.mRxMsgId));
+
+   // Signal the notification that an acknowledgement was received.
+   mNotify.notify(cCmdAckNotifyCode);
 
    // Delete the string.
    delete aString;

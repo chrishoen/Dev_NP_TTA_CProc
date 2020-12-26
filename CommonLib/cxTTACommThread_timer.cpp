@@ -1,5 +1,5 @@
 /*==============================================================================
-Description:
+Detestion:
 ==============================================================================*/
 
 //******************************************************************************
@@ -8,22 +8,24 @@ Description:
 
 #include "stdafx.h"
 
-#define  _CMNPRIORITIES_CPP_
-#include "cmnPriorities.h"
+#include "cxCProcParms.h"
 
-namespace Cmn
+#include "cxTTACommThread.h"
+
+namespace CX
 {
 
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
-// Constructor.
+// This is called periodically by the base class threadRunFunction.
 
-Priorities::Priorities()
+void TTACommThread::executeOnTimer(int aTimerCount)
 {
-   mTsPrint           = Ris::Threads::Priority(-1, 20);
-   mSerialString      = Ris::Threads::Priority(-1, 80);
-   mComm              = Ris::Threads::Priority(-1, 70);
+   // Guard.
+   if (!mConnectionFlag) return;
+
+   doProcess_gcs(aTimerCount);
 }
 
 //******************************************************************************

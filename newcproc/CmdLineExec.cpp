@@ -33,8 +33,6 @@ void CmdLineExec::reset()
 void CmdLineExec::execute(Ris::CmdLineCmd* aCmd)
 {
    if (aCmd->isCmd("RESET"))    reset();
-   if (aCmd->isCmd("TEST"))     executeTest(aCmd);
-   if (aCmd->isCmd("A"))        executeAbort(aCmd);
    if (aCmd->isCmd("TXCODE"))   executeTxCode(aCmd);
 
    if (aCmd->isCmd("GO1"))      executeGo1(aCmd);
@@ -43,19 +41,6 @@ void CmdLineExec::execute(Ris::CmdLineCmd* aCmd)
    if (aCmd->isCmd("GO4"))      executeGo4(aCmd);
    if (aCmd->isCmd("GO5"))      executeGo5(aCmd);
    if (aCmd->isCmd("PARMS"))    executeParms(aCmd);
-}
-
-//******************************************************************************
-//******************************************************************************
-//******************************************************************************
-
-void CmdLineExec::executeTest(Ris::CmdLineCmd* aCmd)
-{
-   CX::gCProcParms.reset();
-   CX::gCProcParms.readSection("default");
-
-   aCmd->setArgDefault(1, 1);
-   CX::gTTACommThread->mRunTest1QCall(aCmd->argInt(1));
 }
 
 //******************************************************************************
@@ -72,22 +57,8 @@ void CmdLineExec::executeTxCode(Ris::CmdLineCmd* aCmd)
 //******************************************************************************
 //******************************************************************************
 
-void CmdLineExec::executeAbort(Ris::CmdLineCmd* aCmd)
-{
-   CX::gTTACommThread->mAbortTestQCall();
-}
-
-//******************************************************************************
-//******************************************************************************
-//******************************************************************************
-
 void CmdLineExec::executeGo1(Ris::CmdLineCmd* aCmd)
 {
-   CX::gCProcParms.reset();
-   CX::gCProcParms.readSection("default");
-
-   aCmd->setArgDefault(1, 1);
-   CX::gTTACommThread->mRunTest1QCall(10000000);
 }
 
 //******************************************************************************
