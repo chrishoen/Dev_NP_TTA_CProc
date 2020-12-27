@@ -43,9 +43,9 @@ public:
    static const int cRxMsgNotifyCode = 11;
 
    // Loop exit status codes.
-   static const int cLoopExitNormal = 0;
-   static const int cLoopExitAborted = 1;
-   static const int cLoopExitError = 2;
+   static const int cProcExitNormal = 0;
+   static const int cProcExitAborted = 1;
+   static const int cProcExitError = 2;
 
    //***************************************************************************
    //***************************************************************************
@@ -77,7 +77,7 @@ public:
    // Members.
 
    // Process loop exit code.
-   int mLoopExitCode;
+   int mProcExitCode;
 
    // Tx message code.
    int mLoopState;

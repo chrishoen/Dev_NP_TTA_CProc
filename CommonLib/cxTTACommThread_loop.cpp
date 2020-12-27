@@ -43,7 +43,7 @@ void TTACommThread::executeProcessLoop()
 
    try
    {
-      // Loop to transmit and receive.
+      // Loop to transmit and receive messages.
       while (true)
       {
          //*********************************************************************
@@ -53,11 +53,9 @@ void TTACommThread::executeProcessLoop()
 
          // Wait for timer or abort.
          mLoopWaitable.waitForTimerOrSemaphore();
-         if (mLoopWaitable.wasSemaphore())
-         {
-            // The waitable semahore was posted for an abort.
-            throw 668;
-         }
+
+         // Test for an abort
+         if (mLoopWaitable.wasSemaphore()) throw 668;
 
          // Guard.
          if (!mConnectionFlag) continue;
@@ -67,16 +65,19 @@ void TTACommThread::executeProcessLoop()
          //*********************************************************************
          // Send a request to the slave, wait for the response and process it.
 
-         mLoopExitCode = cLoopExitNormal;
-
          try
          {
+            // Initialize. This will be set by the specific subfunction.
+            mProcExitCode = cProcExitNormal;
+
             // Test for a notification exception.
+            // This can throw an execption if there's an abort.
             mNotify.testException();
 
             // Set the thread notification mask.
             mNotify.setMaskOne("RxMsg", cRxMsgNotifyCode);
 
+            // Execute a specific subfunction based on the state.
             if (mLoopState == SX::cMsgId_gcs)
             {
                doProcess_gcs();
@@ -85,12 +86,28 @@ void TTACommThread::executeProcessLoop()
             {
                doProcess_gsx();
             }
-
          }
          catch (int aException)
          {
-            mLoopExitCode = cLoopExitAborted;
-            Prn::print(0, "EXCEPTION TTACommThread::doProcess_gcs %d %s", aException, mNotify.mException);
+            if (aException == 667)
+            {
+               Prn::print(0, "EXCEPTION TTACommThread::doProcess TIMEOUT %s %d",
+                  SX::get_MsgId_asString(mLoopState),
+                  aException);
+            }
+            else if (aException == cProcExitError)
+            {
+               Prn::print(0, "EXCEPTION TTACommThread::doProcess ERROR %s %d",
+                  SX::get_MsgId_asString(mLoopState),
+                  aException);
+            }
+            else
+            {
+               Prn::print(0, "EXCEPTION TTACommThread::doProcess %s %d %s",
+                  SX::get_MsgId_asString(mLoopState),
+                  aException,
+                  mNotify.mException);
+            }
          }
       }
    }
@@ -99,6 +116,10 @@ void TTACommThread::executeProcessLoop()
       if (aException == 668)
       {
          Prn::print(0, "EXCEPTION TTACommThread::executeProcessLoop %d %s", aException, mNotify.mException);
+      }
+      else
+      {
+         Prn::print(0, "EXCEPTION TTACommThread::executeProcessLoop %d", aException);
       }
    }
 

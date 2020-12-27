@@ -40,7 +40,7 @@ bool TTACommThread::doProcess_gsx()
    mNotify.wait(cRxMsgTimeout);
 
    // Decode and validate the received response message.
-   if (!mRxMsgDecoder.mRxValid) throw cLoopExitError;
+   if (!mRxMsgDecoder.mRxValid) throw cProcExitError;
 
    // Copy the response message payload into the super state.
    SuperStateTTA_copyFrom(&SM::gShare->mSuperStateTTA, mRxMsgDecoder.mRxPayload);

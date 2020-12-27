@@ -48,7 +48,7 @@ TTACommThread::TTACommThread()
    mRxStringQCall.bind(this->mShortThread, this, &TTACommThread::executeRxString);
 
    // Set member variables.
-   mLoopExitCode = 0;
+   mProcExitCode = 0;
    mTxCount = 0;
    mRxCount = 0;
    mLoopState = SX::cMsgId_gsx;
