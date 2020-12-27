@@ -37,12 +37,10 @@ public:
    static const int cFastLoopPeriod = 2000;
 
    // Wait timeouts.
-   static const int cCmdAckTimeout = 2000;
+   static const int cRxMsgTimeout = 2000;
 
    // Notification codes.
-   static const int cCmdAckNotifyCode = 11;
-
-   static const int cFlushCmdAckNotifyCode = 17;
+   static const int cRxMsgNotifyCode = 11;
 
    // Loop exit status codes.
    static const int cLoopExitNormal = 0;
@@ -82,7 +80,7 @@ public:
    int mLoopExitCode;
 
    // Tx message code.
-   int mTxCode;
+   int mLoopState;
 
    // Message encoder/decoder.
    SX::TTATxMsgEncoder mTxMsgEncoder;

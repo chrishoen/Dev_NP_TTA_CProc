@@ -47,7 +47,6 @@ void CProcParms::reset()
 
    mPrintLevel = 0;
    mShowCode = 0;
-   mTxCode = 0;
    mTestCode = 0;
    mPrintViewEnable = false;
    mPrintViewIPAddress[0] = 0;
@@ -80,7 +79,6 @@ void CProcParms::show()
    printf("CProcPrintLevel            %-10d\n", mPrintLevel);
    printf("ShowCode                   %-10d\n", mShowCode);
    printf("ShowCode                   %-10d\n", mShowCode);
-   printf("TxCode                     %-10d\n", mTxCode);
    printf("TestCode                   %-10d\n", mTestCode);
    printf("\n");
    printf("PrintViewEnable            %-12s\n", my_string_from_bool(mPrintViewEnable));
@@ -112,7 +110,6 @@ void CProcParms::execute(Ris::CmdLineCmd* aCmd)
 
    if (aCmd->isCmd("PrintLevel"))              mPrintLevel = aCmd->argInt(1);
    if (aCmd->isCmd("ShowCode"))                mShowCode = aCmd->argInt(1);
-   if (aCmd->isCmd("TxCode"))                  mTxCode = aCmd->argInt(1);
    if (aCmd->isCmd("TestCode"))                mTestCode = aCmd->argInt(1);
    if (aCmd->isCmd("PrintViewEnable"))         mPrintViewEnable = aCmd->argBool(1);
    if (aCmd->isCmd("PrintViewIPAddress"))      aCmd->copyArgString(1, mPrintViewIPAddress, cMaxStringSize);

@@ -34,7 +34,7 @@ bool TTACommThread::doProcess_gsx()
       mNotify.testException();
 
       // Set the thread notification mask.
-      mNotify.setMaskOne("CmdAck", cCmdAckNotifyCode);
+      mNotify.setMaskOne("CmdAck", cRxMsgNotifyCode);
 
       // Encode a request message.
       SM::gShare->mSuperWantsTTA.mCount++;
@@ -47,7 +47,7 @@ bool TTACommThread::doProcess_gsx()
       sendString(mTxMsgEncoder.mTxBuffer);
 
       // Wait for the receive response message notification.
-      mNotify.wait(cCmdAckTimeout);
+      mNotify.wait(cRxMsgTimeout);
 
       // Decode and validate the received response message.
       if (!mRxMsgDecoder.mRxValid) throw cLoopExitError;

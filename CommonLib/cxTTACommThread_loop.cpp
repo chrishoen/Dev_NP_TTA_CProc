@@ -67,11 +67,11 @@ void TTACommThread::executeProcessLoop()
          //*********************************************************************
          // Send a request to the slave, wait for the response and process it.
 
-         if (mTxCode == SX::cMsgId_gcs)
+         if (mLoopState == SX::cMsgId_gcs)
          {
             doProcess_gcs();
          }
-         else if (mTxCode == SX::cMsgId_gsx)
+         else if (mLoopState == SX::cMsgId_gsx)
          {
             doProcess_gsx();
          }

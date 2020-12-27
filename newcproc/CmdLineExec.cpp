@@ -32,7 +32,7 @@ void CmdLineExec::reset()
 void CmdLineExec::execute(Ris::CmdLineCmd* aCmd)
 {
    if (aCmd->isCmd("RESET"))    reset();
-   if (aCmd->isCmd("TXCODE"))   executeTxCode(aCmd);
+   if (aCmd->isCmd("TXCODE"))   executeLoopState(aCmd);
 
    if (aCmd->isCmd("GO1"))      executeGo1(aCmd);
    if (aCmd->isCmd("GO2"))      executeGo2(aCmd);
@@ -46,10 +46,10 @@ void CmdLineExec::execute(Ris::CmdLineCmd* aCmd)
 //******************************************************************************
 //******************************************************************************
 
-void CmdLineExec::executeTxCode(Ris::CmdLineCmd* aCmd)
+void CmdLineExec::executeLoopState(Ris::CmdLineCmd* aCmd)
 {
-   CX::gTTACommThread->mTxCode = SX::get_MsgId_asInt(aCmd->argString(1));
-   Prn::print(0, "%s", SX::get_MsgId_asString(CX::gTTACommThread->mTxCode));
+   CX::gTTACommThread->mLoopState = SX::get_MsgId_asInt(aCmd->argString(1));
+   Prn::print(0, "%s", SX::get_MsgId_asString(CX::gTTACommThread->mLoopState));
 }
 
 //******************************************************************************

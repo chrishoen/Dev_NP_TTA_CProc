@@ -10,6 +10,7 @@ Detestion:
 
 #include "cmnPriorities.h"
 #include "cxCProcParms.h"
+#include "sxMsgDefs.h"
 
 #define  _TTACOMMTHREAD_CPP_
 #include "cxTTACommThread.h"
@@ -23,7 +24,7 @@ namespace CX
 // Constructor.
 
 TTACommThread::TTACommThread()
-   : mCmdAckNotify(&mNotify, cCmdAckNotifyCode)
+   : mCmdAckNotify(&mNotify, cRxMsgNotifyCode)
 {
    using namespace std::placeholders;
 
@@ -50,7 +51,7 @@ TTACommThread::TTACommThread()
    mLoopExitCode = 0;
    mTxCount = 0;
    mRxCount = 0;
-   mTxCode = gCProcParms.mTxCode;
+   mLoopState = SX::cMsgId_gsx;
 }
 
 //******************************************************************************

@@ -34,7 +34,7 @@ bool TTACommThread::doProcess_gcs()
       mNotify.testException();
 
       // Set the thread notification mask.
-      mNotify.setMaskOne("CmdAck", cCmdAckNotifyCode);
+      mNotify.setMaskOne("CmdAck", cRxMsgNotifyCode);
 
       // Encode a request message.
       mTxMsgEncoder.encodeMsg(SX::cMsgId_gcs);
@@ -43,7 +43,7 @@ bool TTACommThread::doProcess_gcs()
       sendString(mTxMsgEncoder.mTxBuffer);
 
       // Wait for the acknowledgement notification.
-      mNotify.wait(cCmdAckTimeout);
+      mNotify.wait(cRxMsgTimeout);
    }
    catch(int aException)
    {

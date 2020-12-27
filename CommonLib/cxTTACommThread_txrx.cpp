@@ -92,7 +92,7 @@ void TTACommThread::executeRxString(std::string* aString)
    Prn::print(Prn::Show1, "Rx MsgId  %s", SX::get_MsgId_asString(mRxMsgDecoder.mRxMsgId));
 
    // Notify the long thread that an acknowledgement was received.
-   mNotify.notify(cCmdAckNotifyCode);
+   mNotify.notify(cRxMsgNotifyCode);
 
    // Delete the string.
    delete aString;
