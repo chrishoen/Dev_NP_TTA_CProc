@@ -160,6 +160,7 @@ public:
    // Send a request message to the slave, wait for the response message and
    // process it. Return true if successful. This is called by the process
    // loop qcall function, based on the state.
+   bool doProcess();
    bool doProcess_tst();
    bool doProcess_gcs();
    bool doProcess_gbc();

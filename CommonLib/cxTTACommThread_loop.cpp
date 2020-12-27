@@ -78,14 +78,7 @@ void TTACommThread::executeProcessLoop()
             mNotify.setMaskOne("RxMsg", cRxMsgNotifyCode);
 
             // Execute a specific subfunction based on the state.
-            if (mLoopState == SX::cMsgId_gcs)
-            {
-               doProcess_gcs();
-            }
-            else if (mLoopState == SX::cMsgId_gsx)
-            {
-               doProcess_gsx();
-            }
+            doProcess();
          }
          catch (int aException)
          {
@@ -128,6 +121,25 @@ void TTACommThread::executeProcessLoop()
    mNotify.clearFlags();
 
    Prn::print(0, "CommSeqThread::doProcessAcquire END");
+}
+
+//******************************************************************************
+//******************************************************************************
+//******************************************************************************
+// Send a request message to the slave, wait for the response message and
+// process it. Return true if successful. This is called by the process
+// loop qcall function, based on the state.
+
+bool TTACommThread::doProcess()
+{
+   if (mLoopState == SX::cMsgId_gcs)
+   {
+      return doProcess_gcs();
+   }
+   else if (mLoopState == SX::cMsgId_gsx)
+   {
+      return doProcess_gsx();
+   }
 }
 
 //******************************************************************************
