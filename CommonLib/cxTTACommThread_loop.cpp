@@ -21,14 +21,16 @@ namespace CX
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
-// Run loop qcall function. Execute an infinite loop that sends a request
+// Process loop qcall function. Execute an infinite loop that sends a request
 // to the slave, waits for the response, and processes it. It calls one
 // of the process subroutines, based on the state. It executes in the
-// context of the short thread.
+// context of the long thread. The purpose of this is to provide long
+// thread execution context for message processing. It is only executed
+// once, at thhread initialization.
 
-void TTACommThread::executeRunLoop()
+void TTACommThread::executeProcessLoop()
 {
-   Prn::print(0, "TTACommThread::executeRunLoop BEGIN");
+   Prn::print(0, "TTACommThread::executeProcessLoop BEGIN");
 
    //***************************************************************************
    //***************************************************************************
@@ -80,7 +82,7 @@ void TTACommThread::executeRunLoop()
    {
       if (aException == 668)
       {
-         Prn::print(0, "EXCEPTION TTACommThread::executeRunLoop %d %s", aException, mNotify.mException);
+         Prn::print(0, "EXCEPTION TTACommThread::executeProcessLoop %d %s", aException, mNotify.mException);
       }
    }
 

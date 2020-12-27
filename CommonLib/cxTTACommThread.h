@@ -126,20 +126,21 @@ public:
    //***************************************************************************
    // Methods. 
 
-   // Session callback qcall.
+   // Serial session callback qcall.
    Ris::Threads::QCall1<bool> mSessionQCall;
 
-   // Session qcall function. This is invoked by the child thread when 
-   // the serial port is closed because of an error or when it is reopened
-   // correctly.
+   // Serial session qcall function. This is invoked by the serial child
+   // thread when the serial port is opened or closed because of an error
+   // or when it is reopened correctly.
    void executeSession(bool aConnected);
 
-   // Receive string callback qcall.
+   // Serial receive string callback qcall.
    Ris::Threads::QCall1<std::string*> mRxStringQCall;
 
-   // Receive string qcall function. This is invoked by the child thread 
-   // when a string is received and it processes the received string
-   // in the context of the short thread.
+   // Receive string qcall function. This is invoked by the serial child
+   // thread when a string is received. It executes in the context of the
+   // short thread. It decodes and validates the received message and
+   // then notifies the long thread.
    void executeRxString(std::string* aString);
 
    //***************************************************************************
@@ -147,18 +148,20 @@ public:
    //***************************************************************************
    // Methods. qcalls.
 
-   // Run loop qcall. It is invoked by the command line executive.
-   Ris::Threads::QCall0 mRunLoopQCall;
+   // Process loop qcall. 
+   Ris::Threads::QCall0 mProcessLoopQCall;
 
-   // Run loop qcall function. Execute an infinite loop that sends a request
+   // Process loop qcall function. Execute an infinite loop that sends a request
    // to the slave, waits for the response, and processes it. It calls one
    // of the process subroutines, based on the state. It executes in the
-   // context of the short thread.
-   void executeRunLoop();
+   // context of the long thread. The purpose of this is to provide long
+   // thread execution context for message processing. It is only executed
+   // once, at thhread initialization.
+   void executeProcessLoop();
 
-   // Send a request to the slave, wait for the response and process it.
-   // Return true if successful. This is called by the run loop qcall
-   // function, based on the state.
+   // Send a request message to the slave, wait for the response message and
+   // process it. Return true if successful. This is called by the process
+   // loop qcall function, based on the state.
    bool doProcess_tst();
    bool doProcess_gcs();
    bool doProcess_gbc();

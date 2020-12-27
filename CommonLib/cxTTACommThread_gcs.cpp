@@ -20,9 +20,9 @@ namespace CX
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
-// Send a request to the slave, wait for the response and process it.
-// Return true if successful. This is called by the run loop qcall
-// function, based on the state.
+// Send a request message to the slave, wait for the response message and
+// process it. Return true if successful. This is called by the process
+// loop qcall function, based on the state.
 
 bool TTACommThread::doProcess_gcs()
 {

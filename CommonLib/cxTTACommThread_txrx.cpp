@@ -72,9 +72,10 @@ void TTACommThread::sendString(std::string* aString)
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
-// Receive string qcall function. This is invoked by the child thread 
-// when a string is received and it processes the received string
-// in the context of the short thread.
+// Receive string qcall function. This is invoked by the serial child
+// thread when a string is received. It executes in the context of the
+// short thread. It decodes and validates the received message and
+// then notifies the long thread.
 
 void TTACommThread::executeRxString(std::string* aString)
 {
@@ -83,14 +84,14 @@ void TTACommThread::executeRxString(std::string* aString)
 
    Prn::print(Prn::Show1, "<<<< %s", aString->c_str());
 
-   // Process the receive message.
+   // Decode and validate the receive message.
    mRxMsgDecoder.decodeMsg(aString->c_str());
 
    // Show.
    Prn::print(Prn::Show1, "Rx Valid  %s", my_string_from_bool(mRxMsgDecoder.mRxValid));
    Prn::print(Prn::Show1, "Rx MsgId  %s", SX::get_MsgId_asString(mRxMsgDecoder.mRxMsgId));
 
-   // Signal the notification that an acknowledgement was received.
+   // Notify the long thread that an acknowledgement was received.
    mNotify.notify(cCmdAckNotifyCode);
 
    // Delete the string.

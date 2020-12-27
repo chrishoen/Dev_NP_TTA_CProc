@@ -42,7 +42,7 @@ TTACommThread::TTACommThread()
    BaseClass::mShortThread->mThreadExecuteOnTimerCallPointer = std::bind(&TTACommThread::executeOnTimer, this, _1);
 
    // Set qcalls.
-   mRunLoopQCall.bind(this->mLongThread, this, &TTACommThread::executeRunLoop);
+   mProcessLoopQCall.bind(this->mLongThread, this, &TTACommThread::executeProcessLoop);
    mSessionQCall.bind(this->mShortThread, this, &TTACommThread::executeSession);
    mRxStringQCall.bind(this->mShortThread, this, &TTACommThread::executeRxString);
 
@@ -83,7 +83,7 @@ void TTACommThread::threadInitFunction()
    mSerialStringThread->launchThread();
 
    // Launch the loop qcall.
-   mRunLoopQCall();
+   mProcessLoopQCall();
 }
 
 //******************************************************************************
@@ -116,9 +116,9 @@ void TTACommThread::shutdownThreads()
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
-// Session qcall function. This is invoked by the child thread when 
-// the serial port is closed because of an error or when it is reopened
-// correctly.
+// Serial session qcall function. This is invoked by the serial child
+// thread when the serial port is opened or closed because of an error
+// or when it is reopened correctly.
 
 void TTACommThread::executeSession(bool aConnected)
 {
