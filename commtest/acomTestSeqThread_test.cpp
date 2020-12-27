@@ -56,23 +56,23 @@ void TestSeqThread::executeRunTest1(int aNumTx)
 
          if (mTxCode == SX::cMsgId_tst)
          {
-            mTxMsgProc.buildMsg(SX::cMsgId_tst);
-            sendString(mTxMsgProc.mTxBuffer);
+            mTxMsgEncoder.encodeMsg(SX::cMsgId_tst);
+            sendString(mTxMsgEncoder.mTxBuffer);
          }
          else if (mTxCode == SX::cMsgId_gcs)
          {
-            mTxMsgProc.buildMsg(SX::cMsgId_gcs);
-            sendString(mTxMsgProc.mTxBuffer);
+            mTxMsgEncoder.encodeMsg(SX::cMsgId_gcs);
+            sendString(mTxMsgEncoder.mTxBuffer);
          }
          else if (mTxCode == SX::cMsgId_gbc)
          {
-            mTxMsgProc.buildMsg(SX::cMsgId_gbc);
-            sendString(mTxMsgProc.mTxBuffer);
+            mTxMsgEncoder.encodeMsg(SX::cMsgId_gbc);
+            sendString(mTxMsgEncoder.mTxBuffer);
          }
          else if (mTxCode == SX::cMsgId_gft)
          {
-            mTxMsgProc.buildMsg(SX::cMsgId_gft);
-            sendString(mTxMsgProc.mTxBuffer);
+            mTxMsgEncoder.encodeMsg(SX::cMsgId_gft);
+            sendString(mTxMsgEncoder.mTxBuffer);
          }
          else if (mTxCode == SX::cMsgId_gsx)
          {
@@ -81,8 +81,8 @@ void TestSeqThread::executeRunTest1(int aNumTx)
             char tPayload[200];
             SuperWantsTTA_copyTo(&SM::gShare->mSuperWantsTTA, tPayload);
             SuperWantsTTA_clearFlags(&SM::gShare->mSuperWantsTTA);
-            mTxMsgProc.buildMsg(SX::cMsgId_gsx, tPayload);
-            sendString(mTxMsgProc.mTxBuffer);
+            mTxMsgEncoder.encodeMsg(SX::cMsgId_gsx, tPayload);
+            sendString(mTxMsgEncoder.mTxBuffer);
          }
 
          // Wait for the acknowledgement notification.

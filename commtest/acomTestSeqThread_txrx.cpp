@@ -88,11 +88,11 @@ void TestSeqThread::executeRxString(std::string* aString)
    mNotify.notify(cCmdAckNotifyCode);
 
    // Process the receive message.
-   mRxMsgProc.processMsg(aString->c_str());
+   mRxMsgDecoder.decodeMsg(aString->c_str());
 
    // Show.
-   Prn::print(Prn::Show1, "Rx Valid  %s", my_string_from_bool(mRxMsgProc.mRxValid));
-   Prn::print(Prn::Show1, "Rx MsgId  %s", SX::get_MsgId_asString(mRxMsgProc.mRxMsgId));
+   Prn::print(Prn::Show1, "Rx Valid  %s", my_string_from_bool(mRxMsgDecoder.mRxValid));
+   Prn::print(Prn::Show1, "Rx MsgId  %s", SX::get_MsgId_asString(mRxMsgDecoder.mRxMsgId));
 
    // Delete the string.
    delete aString;

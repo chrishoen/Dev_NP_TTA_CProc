@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include "sxTTATxMsgProc.h"
+#include "sxTTATxMsgEncoder.h"
 #include "sxMsgDefs.h"
 
 #include "acomCommParms.h"
@@ -97,8 +97,8 @@ void CmdLineExec::executeGo1(Ris::CmdLineCmd* aCmd)
 
 void CmdLineExec::executeGo2(Ris::CmdLineCmd* aCmd)
 {
-   SX::TTATxMsgProc tTxProc;
-   tTxProc.buildMsg(SX::cMsgId_gsx, "abcdefg");
+   SX::TTATxMsgEncoder tTxProc;
+   tTxProc.encodeMsg(SX::cMsgId_gsx, "abcdefg");
    Prn::print(0, "%s", tTxProc.mTxBuffer);
 }
 
