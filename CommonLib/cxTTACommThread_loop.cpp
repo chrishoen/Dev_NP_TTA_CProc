@@ -132,9 +132,21 @@ void TTACommThread::executeProcessLoop()
 
 bool TTACommThread::doProcess()
 {
-   if (mLoopState == SX::cMsgId_gcs)
+   if (mLoopState == SX::cMsgId_tst)
+   {
+      return doProcess_tst();
+   }
+   else if (mLoopState == SX::cMsgId_gcs)
    {
       return doProcess_gcs();
+   }
+   else if (mLoopState == SX::cMsgId_gbc)
+   {
+      return doProcess_gbc();
+   }
+   else if (mLoopState == SX::cMsgId_gft)
+   {
+      return doProcess_gft();
    }
    else if (mLoopState == SX::cMsgId_gsx)
    {

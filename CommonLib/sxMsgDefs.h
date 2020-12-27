@@ -24,10 +24,10 @@ namespace SX
 
 static const int cMsgId_none = 0;
 static const int cMsgId_tst = 1;
-static const int cMsgId_gcs = 2;
-static const int cMsgId_gbc = 3;
-static const int cMsgId_gft = 4;
-static const int cMsgId_gsx = 5;
+static const int cMsgId_gbc = 2;
+static const int cMsgId_gft = 3;
+static const int cMsgId_gsx = 4;
+static const int cMsgId_gcs = 5;
 
 //******************************************************************************
 //******************************************************************************
