@@ -6,6 +6,7 @@
 #include "CmdLineExec.h"
 
 #include "cxTTACommThread.h"
+#include "cxDACommThread.h"
 
 //******************************************************************************
 //******************************************************************************
@@ -25,10 +26,16 @@ int main(int argc,char** argv)
    //***************************************************************************
    // Launch program threads.
 
-   if (true)
+   if (false)
    {
       CX::gTTACommThread = new CX::TTACommThread;
       CX::gTTACommThread->launchThreads();
+   }
+
+   if (true)
+   {
+      CX::gDACommThread = new CX::DACommThread;
+      CX::gDACommThread->launchThreads();
    }
 
    //***************************************************************************
@@ -39,6 +46,8 @@ int main(int argc,char** argv)
    Ris::Threads::showCurrentThreadInfo();
    if (CX::gTTACommThread)   CX::gTTACommThread->showThreadInfo();
    if (CX::gTTACommThread)   CX::gTTACommThread->mSerialStringThread->showThreadInfo();
+   if (CX::gDACommThread)    CX::gDACommThread->showThreadInfo();
+   if (CX::gDACommThread)    CX::gDACommThread->mSerialStringThread->showThreadInfo();
 
    //***************************************************************************
    //***************************************************************************
@@ -55,6 +64,7 @@ int main(int argc,char** argv)
    // Shutdown program threads.
 
    if (CX::gTTACommThread)   CX::gTTACommThread->shutdownThreads();
+   if (CX::gDACommThread)    CX::gDACommThread->shutdownThreads();
 
    //***************************************************************************
    //***************************************************************************
@@ -65,6 +75,12 @@ int main(int argc,char** argv)
    {
       delete CX::gTTACommThread;
       CX::gTTACommThread = 0;
+   }
+
+   if (CX::gDACommThread)
+   {
+      delete CX::gDACommThread;
+      CX::gDACommThread = 0;
    }
 
    //***************************************************************************

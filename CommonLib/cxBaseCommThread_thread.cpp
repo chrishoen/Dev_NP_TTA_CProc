@@ -168,7 +168,7 @@ void BaseCommThread::executeSession(bool aConnected)
       }
       else
       {
-         Prn::print(0, "TTA serial port open  CONNECTED");
+         Prn::print(0, "DA  serial port open  CONNECTED");
       }
 
    }
@@ -176,7 +176,7 @@ void BaseCommThread::executeSession(bool aConnected)
    {
       if (mTTAFlag)
       {
-         Prn::print(0, "DA  serial port error DISCONNECTED");
+         Prn::print(0, "TTA serial port error DISCONNECTED");
       }
       else
       {
