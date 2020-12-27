@@ -36,6 +36,14 @@ bool TTACommThread::doProcess_gft()
    // Throw an exception if there's a timeout. 
    mNotify.wait(cRxMsgTimeout);
 
+   // Test the received response message.
+   if (!mRxMsgDecoder.mRxValid)
+   {
+      Prn::print(mPF1, "TTA Proc gft factory test record ERROR");
+      throw cProcExitError;
+   }
+   Prn::print(mPF1, "TTA Proc gft factory test record");
+
    // Done.
    return true;
 }

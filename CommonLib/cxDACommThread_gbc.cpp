@@ -36,6 +36,14 @@ bool DACommThread::doProcess_gbc()
    // Throw an exception if there's a timeout. 
    mNotify.wait(cRxMsgTimeout);
 
+   // Test the received response message.
+   if (!mRxMsgDecoder.mRxValid)
+   {
+      Prn::print(mPF1, "DA  Proc gbc birth certificate ERROR");
+      throw cProcExitError;
+   }
+   Prn::print(mPF1, "DA  Proc gbc birth certificate");
+
    // Done.
    return true;
 }

@@ -36,6 +36,15 @@ bool TTACommThread::doProcess_gcs()
    // Throw an exception if there's a timeout. 
    mNotify.wait(cRxMsgTimeout);
 
+   // Test the received response message.
+   if (!mRxMsgDecoder.mRxValid)
+   {
+      Prn::print(mPF1, "TTA Proc gcs common share ERROR");
+      throw cProcExitError;
+   }
+   Prn::print(mPF1, "TTA  Proc gcs common share");
+
+
    // Done.
    return true;
 }

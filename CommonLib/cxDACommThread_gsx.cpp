@@ -39,8 +39,13 @@ bool DACommThread::doProcess_gsx()
    // Throw an exception if there's a timeout. 
    mNotify.wait(cRxMsgTimeout);
 
-   // Decode and validate the received response message.
-   if (!mRxMsgDecoder.mRxValid) throw cProcExitError;
+   // Test the received response message.
+   if (!mRxMsgDecoder.mRxValid)
+   {
+      Prn::print(mPF1, "DA  Proc gsx superstate ERROR");
+      throw cProcExitError;
+   }
+   Prn::print(mPF1, "DA  Proc gsx superstate %d", mTxCount);
 
    // Copy the response message payload into the super state.
    SuperStateDA_copyFrom(&SM::gShare->mSuperStateDA, mRxMsgDecoder.mRxPayload);

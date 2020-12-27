@@ -27,7 +27,7 @@ void BaseCommThread::sendString(const char* aString)
    // Guard.
    if (!mConnectionFlag)
    {
-      Prn::print(mPF1, ">>>> NOT CONNECTED");
+      Prn::print(0, ">>>> NOT CONNECTED");
       return;
    }
 
@@ -35,7 +35,7 @@ void BaseCommThread::sendString(const char* aString)
    mTxCount++;
 
    // Print the string.
-   Prn::print(mPF1, ">>>> %s", aString);
+   Prn::print(mPF5, ">>>> %s", aString);
 
    // Send the string.
    mSerialStringThread->sendString(aString);
@@ -54,7 +54,7 @@ void BaseCommThread::sendString(std::string* aString)
    // Guard.
    if (!mConnectionFlag)
    {
-      Prn::print(mPF1, ">>>> NOT CONNECTED");
+      Prn::print(0, ">>>> NOT CONNECTED");
       delete aString;
       return;
    }
@@ -63,7 +63,7 @@ void BaseCommThread::sendString(std::string* aString)
    mTxCount++;
 
    // Print the string.
-   Prn::print(mPF1, ">>>> %s", aString->c_str());
+   Prn::print(mPF5, ">>>> %s", aString->c_str());
 
    // Send the string.
    mSerialStringThread->sendString(aString);

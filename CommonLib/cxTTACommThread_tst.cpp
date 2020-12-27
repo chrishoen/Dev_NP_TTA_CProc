@@ -36,6 +36,14 @@ bool TTACommThread::doProcess_tst()
    // Throw an exception if there's a timeout. 
    mNotify.wait(cRxMsgTimeout);
 
+   // Test the received response message.
+   if (!mRxMsgDecoder.mRxValid)
+   {
+      Prn::print(mPF1, "TTA Proc tst test message ERROR");
+      throw cProcExitError;
+   }
+   Prn::print(mPF1, "TTA Proc tst test message");
+
    // Done.
    return true;
 }

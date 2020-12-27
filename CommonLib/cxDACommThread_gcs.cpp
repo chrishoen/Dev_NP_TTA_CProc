@@ -36,6 +36,14 @@ bool DACommThread::doProcess_gcs()
    // Throw an exception if there's a timeout. 
    mNotify.wait(cRxMsgTimeout);
 
+   // Test the received response message.
+   if (!mRxMsgDecoder.mRxValid)
+   {
+      Prn::print(mPF1, "DA  Proc gcs common share ERROR");
+      throw cProcExitError;
+   }
+   Prn::print(mPF1, "DA  Proc gcs common share");
+
    // Done.
    return true;
 }
