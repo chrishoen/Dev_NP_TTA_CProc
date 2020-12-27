@@ -25,9 +25,9 @@ namespace CX
 // Return true if successful. This is called by the above execute on
 // timer, based on the state.
 
-bool TTACommThread::doProcess_gcs(int aTimerCount)
+bool TTACommThread::doProcess_gcs()
 {
-   mProcExitCode = cProcExitNormal;
+   mLoopExitCode = cLoopExitNormal;
 
    try
    {
@@ -38,11 +38,7 @@ bool TTACommThread::doProcess_gcs(int aTimerCount)
       mNotify.setMaskOne("CmdAck", cCmdAckNotifyCode);
 
       // Build a message.
-      SM::gShare->mSuperWantsTTA.mCount++;
-      char tPayload[200];
-      SuperWantsTTA_copyTo(&SM::gShare->mSuperWantsTTA, tPayload);
-      SuperWantsTTA_clearFlags(&SM::gShare->mSuperWantsTTA);
-      mTxMsgProc.buildMsg(SX::cMsgId_gsx, tPayload);
+      mTxMsgProc.buildMsg(SX::cMsgId_gcs);
 
       // Send the message.
       sendString(mTxMsgProc.mTxBuffer);
@@ -52,12 +48,12 @@ bool TTACommThread::doProcess_gcs(int aTimerCount)
    }
    catch(int aException)
    {
-      mProcExitCode = cProcExitAborted;
+      mLoopExitCode = cLoopExitAborted;
       Prn::print(0, "EXCEPTION TTACommThread::doProcess_gcs %d %s", aException, mNotify.mException);
    }
 
    // Done.
-   return mProcExitCode == cProcExitNormal;
+   return mLoopExitCode == cLoopExitNormal;
 }
 
 //******************************************************************************

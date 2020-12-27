@@ -1,4 +1,3 @@
-
 #include "stdafx.h"
 
 #include "risThreadsProcess.h"
@@ -29,7 +28,7 @@ int main(int argc,char** argv)
    if (true)
    {
       CX::gTTACommThread = new CX::TTACommThread;
-      CX::gTTACommThread->launchThread();
+      CX::gTTACommThread->launchThreads();
    }
 
    //***************************************************************************
@@ -55,7 +54,7 @@ int main(int argc,char** argv)
    //***************************************************************************
    // Shutdown program threads.
 
-   if (CX::gTTACommThread)   CX::gTTACommThread->shutdownThread();
+   if (CX::gTTACommThread)   CX::gTTACommThread->shutdownThreads();
 
    //***************************************************************************
    //***************************************************************************

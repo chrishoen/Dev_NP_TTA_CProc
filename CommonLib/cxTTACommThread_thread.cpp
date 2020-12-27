@@ -11,7 +11,7 @@ Detestion:
 #include "cmnPriorities.h"
 #include "cxCProcParms.h"
 
-#define  _CXTTACOMMTHREAD_CPP_
+#define  _TTACOMMTHREAD_CPP_
 #include "cxTTACommThread.h"
 
 namespace CX
@@ -23,24 +23,34 @@ namespace CX
 // Constructor.
 
 TTACommThread::TTACommThread()
+   : mCmdAckNotify(&mNotify, cCmdAckNotifyCode)
 {
    using namespace std::placeholders;
 
    // Set base class thread variables.
-   BaseClass::setThreadName("TTACommThread");
-   BaseClass::setThreadPriority(Cmn::gPriorities.mComm);
-   BaseClass::setThreadPrintLevel(3);
-   BaseClass::mTimerPeriod = cSlowTimerPeriod;
+   BaseClass::mShortThread->setThreadName("TTACommShort");
+   BaseClass::mShortThread->setThreadPriority(Cmn::gPriorities.mCommShort);
+   BaseClass::mShortThread->setThreadPrintLevel(3);
+
+   BaseClass::mLongThread->setThreadName("TTACommLong");
+   BaseClass::mLongThread->setThreadPriority(Cmn::gPriorities.mCommLong);
+   BaseClass::mLongThread->setThreadPrintLevel(3);
+
+   // Set base class call pointers.
+   BaseClass::mShortThread->mThreadInitCallPointer           = std::bind(&TTACommThread::threadInitFunction, this);
+   BaseClass::mShortThread->mThreadExitCallPointer           = std::bind(&TTACommThread::threadExitFunction, this);
+   BaseClass::mShortThread->mThreadExecuteOnTimerCallPointer = std::bind(&TTACommThread::executeOnTimer, this, _1);
 
    // Set qcalls.
-   mSessionQCall.bind(this,  &TTACommThread::executeSession);
-   mRxStringQCall.bind(this, &TTACommThread::executeRxString);
+   mRunLoopQCall.bind(this->mLongThread, this, &TTACommThread::executeRunLoop);
+   mSessionQCall.bind(this->mShortThread, this, &TTACommThread::executeSession);
+   mRxStringQCall.bind(this->mShortThread, this, &TTACommThread::executeRxString);
 
    // Set member variables.
-   mProcExitCode = 0;
-   mTxCount = gCProcParms.mTestCode;
+   mLoopExitCode = 0;
+   mTxCount = 0;
    mRxCount = 0;
-   mTxCode = 2;
+   mTxCode = gCProcParms.mTxCode;
 }
 
 //******************************************************************************
@@ -71,6 +81,9 @@ void TTACommThread::threadInitFunction()
 
    // Launch the child thread.
    mSerialStringThread->launchThread();
+
+   // Launch the loop qcall.
+   mRunLoopQCall();
 }
 
 //******************************************************************************
@@ -88,15 +101,16 @@ void TTACommThread::threadExitFunction()
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
-// Thread shutdown function. This shuts down the thread.
+// Thread shutdown function. This shuts down the two threads.
 
-void TTACommThread::shutdownThread()
+void TTACommThread::shutdownThreads()
 {
-   // Abort the notification.
-   mNotify.abort();
+   // Abort the long thread.
+   BaseClass::mNotify.abort();
+   mLoopWaitable.postSemaphore();
 
-   // Shutdown the thread.
-   BaseClass::shutdownThread();
+   // Shutdown the two threads.
+   BaseClass::shutdownThreads();
 }
 
 //******************************************************************************

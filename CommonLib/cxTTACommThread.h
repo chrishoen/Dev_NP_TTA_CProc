@@ -7,8 +7,8 @@
 //******************************************************************************
 //******************************************************************************
 
-#include "risThreadsQCallThread.h"
-#include "risThreadsNotify.h"
+#include "risThreadsTwoThread.h"
+#include "risThreadsWaitable.h"
 #include "risSerialStringThread.h"
 
 #include "sxTTATxMsgProc.h"
@@ -19,13 +19,13 @@ namespace CX
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
-// This is an example master thread that sends commands to a slave thread
+// This is a master thread that sends commands to a slave thread
 // and waits for responses.
 
-class TTACommThread : public Ris::Threads::BaseQCallThread
+class TTACommThread : public Ris::Threads::BaseTwoThread
 {
 public:
-   typedef Ris::Threads::BaseQCallThread BaseClass;
+   typedef Ris::Threads::BaseTwoThread BaseClass;
 
    //***************************************************************************
    //***************************************************************************
@@ -33,8 +33,8 @@ public:
    // Constants:
 
    // Timer periods..
-   static const int cSlowTimerPeriod = 2000;
-   static const int cFastTimerPeriod = 2000;
+   static const int cSlowLoopPeriod = 2000;
+   static const int cFastLoopPeriod = 2000;
 
    // Wait timeouts.
    static const int cCmdAckTimeout = 2000;
@@ -45,8 +45,8 @@ public:
    static const int cFlushCmdAckNotifyCode = 17;
 
    // Loop exit status codes.
-   static const int cProcExitNormal    = 0;
-   static const int cProcExitAborted   = 1;
+   static const int cLoopExitNormal = 0;
+   static const int cLoopExitAborted = 1;
 
    //***************************************************************************
    //***************************************************************************
@@ -67,7 +67,10 @@ public:
    // Members.
 
    // Notifications.
-   Ris::Threads::Notify mNotify;
+   Ris::Threads::NotifyWrapper mCmdAckNotify;
+
+   // Waitable timer.
+   Ris::Threads::Waitable mLoopWaitable;
 
    //***************************************************************************
    //***************************************************************************
@@ -75,7 +78,7 @@ public:
    // Members.
 
    // Run test exit code.
-   int mProcExitCode;
+   int mLoopExitCode;
 
    // Tx message code.
    int mTxCode;
@@ -114,20 +117,7 @@ public:
    void threadExitFunction() override;
 
    // Thread shutdown function. This shuts down the two threads.
-   void shutdownThread() override;
-
-   //***************************************************************************
-   //***************************************************************************
-   //***************************************************************************
-   // Methods. Inheritor overloads.
-
-   // This is called periodically by the base class threadRunFunction.
-   void executeOnTimer(int aTimerCount) override;
-
-   // Send a request to the slave, wait for the response and process it.
-   // Return true if successful. This is called by the above execute on
-   // timer, based on the state.
-   bool doProcess_gcs(int aTimerCount);
+   void shutdownThreads() override;
 
    //***************************************************************************
    //***************************************************************************
@@ -153,6 +143,29 @@ public:
    //***************************************************************************
    //***************************************************************************
    //***************************************************************************
+   // Methods. qcalls.
+
+   // Run loop qcall. It is invoked by the command line executive.
+   Ris::Threads::QCall0 mRunLoopQCall;
+
+   // Run loop qcall function. Execute an infinite loop that sends a request
+   // to the slave, waits for the response, and processes it. It calls one
+   // of the process subroutines, based on the state. It executes in the
+   // context of the short thread.
+   void executeRunLoop();
+
+   // Send a request to the slave, wait for the response and process it.
+   // Return true if successful. This is called by the above, based on the 
+   // state.
+   bool doProcess_tst();
+   bool doProcess_gcs();
+   bool doProcess_gbc();
+   bool doProcess_gft();
+   bool doProcess_gsx();
+
+   //***************************************************************************
+   //***************************************************************************
+   //***************************************************************************
    // Methods.
 
    // Send a null terminated string via the serial port. A newline terminator
@@ -172,7 +185,7 @@ public:
 //******************************************************************************
 // Global instance.
 
-#ifdef    _CXTTACOMMTHREAD_CPP_
+#ifdef    _TTACOMMTHREAD_CPP_
           TTACommThread* gTTACommThread = 0;
 #else
    extern TTACommThread* gTTACommThread;
