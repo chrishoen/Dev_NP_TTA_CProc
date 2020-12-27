@@ -28,14 +28,14 @@ void DACommThread::executeRxString(std::string* aString)
    // Metrics.
    mRxCount++;
 
-   Prn::print(mPF1, "<<<< %s", aString->c_str());
+   Prn::print(mPF5, "<<<< %s", aString->c_str());
 
    // Decode and validate the receive message.
    mRxMsgDecoder.decodeMsg(aString->c_str());
 
    // Show.
-   Prn::print(mPF1, "Rx Valid  %s", my_string_from_bool(mRxMsgDecoder.mRxValid));
-   Prn::print(mPF1, "Rx MsgId  %s", SX::get_MsgId_asString(mRxMsgDecoder.mRxMsgId));
+   Prn::print(mPF5, "Rx Valid  %s", my_string_from_bool(mRxMsgDecoder.mRxValid));
+   Prn::print(mPF5, "Rx MsgId  %s", SX::get_MsgId_asString(mRxMsgDecoder.mRxMsgId));
 
    // Notify the long thread that an acknowledgement was received.
    mNotify.notify(cRxMsgNotifyCode);

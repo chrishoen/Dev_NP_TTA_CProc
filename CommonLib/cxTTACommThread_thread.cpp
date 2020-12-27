@@ -31,7 +31,11 @@ TTACommThread::TTACommThread()
    mPF2 = Prn::TTA2;
    mPF3 = Prn::TTA3;
    mPF4 = Prn::TTA4;
-   mRxMsgDecoder.mPF1 = mPF2;
+   mPF5 = Prn::TTA5;
+   mPF6 = Prn::TTA6;
+   mPF7 = Prn::TTA7;
+   mPF8 = Prn::TTA8;
+   mRxMsgDecoder.mPF1 = mPF6;
 }
 
 //******************************************************************************

@@ -31,7 +31,11 @@ DACommThread::DACommThread()
    mPF2 = Prn::DA2;
    mPF3 = Prn::DA3;
    mPF4 = Prn::DA4;
-   mRxMsgDecoder.mPF1 = mPF2;
+   mPF5 = Prn::DA5;
+   mPF6 = Prn::DA6;
+   mPF7 = Prn::DA7;
+   mPF8 = Prn::DA8;
+   mRxMsgDecoder.mPF1 = mPF6;
 }
 
 //******************************************************************************

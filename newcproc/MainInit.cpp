@@ -75,15 +75,23 @@ void main_initialize(int argc,char** argv)
    Prn::initializePrint();
 
    // Initialize print filters.
-   Prn::setFilter(Prn::TTA1, true, 1);
-   Prn::setFilter(Prn::TTA2, true, 2);
+   Prn::setFilter(Prn::TTA1, false, 1);
+   Prn::setFilter(Prn::TTA2, false, 2);
    Prn::setFilter(Prn::TTA3, false, 1);
    Prn::setFilter(Prn::TTA4, false, 1);
+   Prn::setFilter(Prn::TTA5, true, 1);
+   Prn::setFilter(Prn::TTA6, true, 2);
+   Prn::setFilter(Prn::TTA7, false, 1);
+   Prn::setFilter(Prn::TTA8, false, 1);
 
-   Prn::setFilter(Prn::DA1, true, 1);
-   Prn::setFilter(Prn::DA2, true, 2);
+   Prn::setFilter(Prn::DA1, false, 1);
+   Prn::setFilter(Prn::DA2, false, 2);
    Prn::setFilter(Prn::DA3, false, 1);
    Prn::setFilter(Prn::DA4, false, 1);
+   Prn::setFilter(Prn::DA5, true, 1);
+   Prn::setFilter(Prn::DA6, true, 2);
+   Prn::setFilter(Prn::DA7, false, 1);
+   Prn::setFilter(Prn::DA8, false, 1);
 
    //***************************************************************************
    //***************************************************************************
