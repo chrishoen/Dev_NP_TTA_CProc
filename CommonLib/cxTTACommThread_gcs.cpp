@@ -10,7 +10,6 @@ Detestion:
 
 #include "smShare.h"
 #include "sxMsgDefs.h"
-
 #include "cxCProcParms.h"
 
 #include "cxTTACommThread.h"
@@ -37,11 +36,11 @@ bool TTACommThread::doProcess_gcs()
       // Set the thread notification mask.
       mNotify.setMaskOne("CmdAck", cCmdAckNotifyCode);
 
-      // Build a message.
-      mTxMsgProc.buildMsg(SX::cMsgId_gcs);
+      // Encode a request message.
+      mTxMsgEncoder.encodeMsg(SX::cMsgId_gcs);
 
-      // Send the message.
-      sendString(mTxMsgProc.mTxBuffer);
+      // Transmit the request message.
+      sendString(mTxMsgEncoder.mTxBuffer);
 
       // Wait for the acknowledgement notification.
       mNotify.wait(cCmdAckTimeout);

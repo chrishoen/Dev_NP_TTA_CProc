@@ -10,7 +10,7 @@ Description:
 
 #include "sxCRC.h"
 #include "sxMsgDefs.h"
-#include "sxTTARxMsgProc.h"
+#include "sxTTARxMsgDecoder.h"
 
 namespace SX
 {
@@ -20,12 +20,12 @@ namespace SX
 //******************************************************************************
 // Constructor.
 
-TTARxMsgProc::TTARxMsgProc()
+TTARxMsgDecoder::TTARxMsgDecoder()
 {
    resetVars();
 }
 
-void TTARxMsgProc::resetVars()
+void TTARxMsgDecoder::resetVars()
 {
    mRxBuffer[0] = 0;
    mRxPayload[0] = 0;
@@ -38,12 +38,11 @@ void TTARxMsgProc::resetVars()
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
-// Copy the receive message string to the receive buffer and process
-// the receive buffer. Validate the message, extract message content,
-// and set the message member variables accordingly. Return true if
-// the message is valid.
+// Copy the receive message string to the receive buffer and process the 
+// receive buffer. Decode and validate the message and set the result member
+// variables accordingly. Return true if the message is valid.
 
-bool TTARxMsgProc::processMsg(const char* aRxString)
+bool TTARxMsgDecoder::decodeMsg(const char* aRxString)
 {
    Prn::print(Prn::Show2, "RX ************************");
 

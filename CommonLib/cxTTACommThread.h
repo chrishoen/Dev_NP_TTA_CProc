@@ -11,8 +11,8 @@
 #include "risThreadsWaitable.h"
 #include "risSerialStringThread.h"
 
-#include "sxTTATxMsgProc.h"
-#include "sxTTARxMsgProc.h"
+#include "sxTTATxMsgEncoder.h"
+#include "sxTTARxMsgDecoder.h"
 
 namespace CX
 {
@@ -84,8 +84,9 @@ public:
    // Tx message code.
    int mTxCode;
 
-   SX::TTATxMsgProc mTxMsgProc;
-   SX::TTARxMsgProc mRxMsgProc;
+   // Message encoder/decoder.
+   SX::TTATxMsgEncoder mTxMsgEncoder;
+   SX::TTARxMsgDecoder mRxMsgDecoder;
 
    //***************************************************************************
    //***************************************************************************

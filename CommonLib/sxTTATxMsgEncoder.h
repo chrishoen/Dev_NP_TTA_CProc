@@ -1,14 +1,12 @@
 #pragma once
 
 /*==============================================================================
-Provides a class definition for the active alarm list record
+Provides a class for an atmel transmit messages encoder.
 ==============================================================================*/
 
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
-
-#include <string>
 
 namespace SX
 {
@@ -16,11 +14,11 @@ namespace SX
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
-// This is a class that implments functions that can be used to generate
-// transmit message strings. The strings contain the header, data, and 
-// crc footer.
+// This is a class that provides a function that encodes a transmit message
+// into a member transmit buffer. It is intended that this is used by the 
+// the comm thread to encode messages. It is not thread safe.
 
-class TTATxMsgProc
+class TTATxMsgEncoder
 {
 public:
 
@@ -29,7 +27,7 @@ public:
    //***************************************************************************
    // Constants.
 
-   static const int cMaxStringSize = 1000;
+   static const int cMaxStringSize = 2000;
 
    //***************************************************************************
    //***************************************************************************
@@ -45,17 +43,19 @@ public:
    // Methods.
 
    // Constructor.
-   TTATxMsgProc();
+   TTATxMsgEncoder();
 
    //***************************************************************************
    //***************************************************************************
    //***************************************************************************
    // Methods.
 
-   // Build a transmit message string. Fill the transmit buffer with the
-   // full string for the given message ident. This can then be transmitted. 
-   // Return a pointer to the buffer.
-   const char* buildMsg(int aMsgId, const char* aPayload = 0);
+   // Encode a transmit message string. Fill the transmit buffer with the
+   // full string for the given message ident. The string content consists
+   // of header, payload, and crc footer. This can then be transmitted. This
+   // does not append a crlf at the end of the string, the serial thread does
+   // that. Return a pointer to the buffer.
+   const char* encodeMsg(int aMsgId, const char* aPayload = 0);
 };
 
 //******************************************************************************

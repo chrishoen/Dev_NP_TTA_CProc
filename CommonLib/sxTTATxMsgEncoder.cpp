@@ -11,7 +11,7 @@ Description:
 #include "sxCRC.h"
 #include "sxMsgDefs.h"
 
-#include "sxTTATxMsgProc.h"
+#include "sxTTATxMsgEncoder.h"
 
 namespace SX
 {
@@ -21,7 +21,7 @@ namespace SX
 //******************************************************************************
 // Constructor.
 
-TTATxMsgProc::TTATxMsgProc()
+TTATxMsgEncoder::TTATxMsgEncoder()
 {
    mTxBuffer[0] = 0;
 }
@@ -29,13 +29,15 @@ TTATxMsgProc::TTATxMsgProc()
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
-// Build a transmit message string. Fill the transmit buffer with the
-// full string for the given message ident. This can then be transmitted. 
-// Return a pointer to the buffer.
+// Encode a transmit message string. Fill the transmit buffer with the
+// full string for the given message ident. The string content consists
+// of header, payload, and crc footer. This can then be transmitted. This
+// does not append a crlf at the end of the string, the serial thread does
+// that. Return a pointer to the buffer.
 
-const char* TTATxMsgProc::buildMsg(int aMsgId, const char* aPayload)
+const char* TTATxMsgEncoder::encodeMsg(int aMsgId, const char* aPayload)
 {
-   // Build the header.
+   // Encode the header.
    strcpy(mTxBuffer, ";10");
    strncat(mTxBuffer, get_MsgId_asString(aMsgId), cMaxStringSize - 1);
 
@@ -49,6 +51,7 @@ const char* TTATxMsgProc::buildMsg(int aMsgId, const char* aPayload)
       doConcatenateCRC(&mTxBuffer[6]);
    }
 
+   // Done.
    return mTxBuffer;
 }
 

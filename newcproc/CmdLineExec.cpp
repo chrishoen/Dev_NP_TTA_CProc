@@ -1,6 +1,5 @@
 #include "stdafx.h"
 
-#include "sxTTATxMsgProc.h"
 #include "sxMsgDefs.h"
 
 #include "cxCProcParms.h"
@@ -67,9 +66,6 @@ void CmdLineExec::executeGo1(Ris::CmdLineCmd* aCmd)
 
 void CmdLineExec::executeGo2(Ris::CmdLineCmd* aCmd)
 {
-   SX::TTATxMsgProc tTxProc;
-   tTxProc.buildMsg(SX::cMsgId_gsx, "abcdefg");
-   Prn::print(0, "%s", tTxProc.mTxBuffer);
 }
 
 //******************************************************************************

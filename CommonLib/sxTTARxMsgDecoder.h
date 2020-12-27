@@ -1,14 +1,12 @@
 #pragma once
 
 /*==============================================================================
-Provides a class definition for the active alarm list record
+Provides a class for an atmel transmit messages encoder.
 ==============================================================================*/
 
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
-
-#include <string>
 
 namespace SX
 {
@@ -16,11 +14,12 @@ namespace SX
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
-// This is a class that implments functions that can be used to validate
-// and extract the contents of receive message strings. The strings contain
-// the header, data, and  crc footer.
+// This is a class that provides a function that copies a receive message
+// into a member receive message buffer. It then decodes and validates the
+// message. It is intended that this is used by the 
+// the comm thread to decode messages. It is not thread safe.
 
-class TTARxMsgProc
+   class TTARxMsgDecoder
 {
 public:
 
@@ -29,26 +28,26 @@ public:
    //***************************************************************************
    // Constants.
 
-   static const int cMaxStringSize = 1000;
+   static const int cMaxStringSize = 2000;
 
    //***************************************************************************
    //***************************************************************************
    //***************************************************************************
    // Members.
 
-   // Full receive message string to be processed.
+   // Full receive message string to be decoded and validated.
    char mRxBuffer[cMaxStringSize];
 
-   // This is true if the receive message is valid.
+   // Result. If true then the receive message is valid.
    bool mRxValid;
 
-   // The receive message identifier.
+   // Result. The receive message identifier.
    int mRxMsgId;
 
-   // If true then marker is val else data.
+   // Result. If true then marker is val else data.
    bool mRxValMarker;
 
-   // The receive message payload.
+   // Result. The receive message payload.
    char mRxPayload[cMaxStringSize];
 
    //***************************************************************************
@@ -57,7 +56,7 @@ public:
    // Methods.
 
    // Constructor.
-   TTARxMsgProc();
+   TTARxMsgDecoder();
    void resetVars();
 
    //***************************************************************************
@@ -65,11 +64,10 @@ public:
    //***************************************************************************
    // Methods.
 
-   // Copy the receive message string to the receive buffer and process
-   // the receive buffer. Validate the message, extract message content,
-   // and set the message member variables accordingly. Return true if
-   // the message is valid.
-   bool processMsg(const char* aRxString);
+   // Copy the receive message string to the receive buffer and process the 
+   // receive buffer. Decode and validate the message and set the result member
+   // variables accordingly. Return true if the message is valid.
+   bool decodeMsg(const char* aRxString);
 };
 
 //******************************************************************************

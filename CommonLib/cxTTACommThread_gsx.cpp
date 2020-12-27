@@ -10,7 +10,6 @@ Detestion:
 
 #include "smShare.h"
 #include "sxMsgDefs.h"
-
 #include "cxCProcParms.h"
 
 #include "cxTTACommThread.h"
@@ -37,24 +36,24 @@ bool TTACommThread::doProcess_gsx()
       // Set the thread notification mask.
       mNotify.setMaskOne("CmdAck", cCmdAckNotifyCode);
 
-      // Build a request message.
+      // Encode a request message.
       SM::gShare->mSuperWantsTTA.mCount++;
       char tPayload[200];
       SuperWantsTTA_copyTo(&SM::gShare->mSuperWantsTTA, tPayload);
       SuperWantsTTA_clearFlags(&SM::gShare->mSuperWantsTTA);
-      mTxMsgProc.buildMsg(SX::cMsgId_gsx, tPayload);
+      mTxMsgEncoder.encodeMsg(SX::cMsgId_gsx, tPayload);
 
-      // Send the request message.
-      sendString(mTxMsgProc.mTxBuffer);
+      // Transmit the request message.
+      sendString(mTxMsgEncoder.mTxBuffer);
 
       // Wait for the receive response message notification.
       mNotify.wait(cCmdAckTimeout);
 
-      // Guard. The receive message proc has saved and validated
-      // the response message.
-      if (!mRxMsgProc.mRxValid) throw cLoopExitError;
+      // Decode and validate the received response message.
+      if (!mRxMsgDecoder.mRxValid) throw cLoopExitError;
+
       // Copy the response message payload into the super state.
-      SuperStateTTA_copyFrom(&SM::gShare->mSuperStateTTA, mRxMsgProc.mRxPayload);
+      SuperStateTTA_copyFrom(&SM::gShare->mSuperStateTTA, mRxMsgDecoder.mRxPayload);
    }
    catch(int aException)
    {
