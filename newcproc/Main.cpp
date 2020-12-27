@@ -26,7 +26,7 @@ int main(int argc,char** argv)
    //***************************************************************************
    // Launch program threads.
 
-   if (false)
+   if (true)
    {
       CX::gTTACommThread = new CX::TTACommThread;
       CX::gTTACommThread->launchThreads();
