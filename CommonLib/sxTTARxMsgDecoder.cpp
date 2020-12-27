@@ -23,6 +23,7 @@ namespace SX
 TTARxMsgDecoder::TTARxMsgDecoder()
 {
    resetVars();
+   mPF1 = 0;
 }
 
 void TTARxMsgDecoder::resetVars()
@@ -44,7 +45,7 @@ void TTARxMsgDecoder::resetVars()
 
 bool TTARxMsgDecoder::decodeMsg(const char* aRxString)
 {
-   Prn::print(Prn::Show2, "RX ************************");
+   Prn::print(mPF1, "RX ************************");
 
    //***************************************************************************
    //***************************************************************************
@@ -60,7 +61,7 @@ bool TTARxMsgDecoder::decodeMsg(const char* aRxString)
    // Temp buffer index.
    int tIndex = 0;
 
-   Prn::print(Prn::Show2, "RX start %s", &mRxBuffer[0]);
+   Prn::print(mPF1, "RX start %s", &mRxBuffer[0]);
 
    //***************************************************************************
    //***************************************************************************
@@ -79,10 +80,10 @@ bool TTARxMsgDecoder::decodeMsg(const char* aRxString)
    }
    else
    {
-      Prn::print(Prn::Show2, "RX header1 FAIL");
+      Prn::print(mPF1, "RX header1 FAIL");
       return false;
    }
-   Prn::print(Prn::Show2, "RX header1 PASS %d %s", tIndex, my_string_from_bool(mRxValMarker));
+   Prn::print(mPF1, "RX header1 PASS %d %s", tIndex, my_string_from_bool(mRxValMarker));
 
    //***************************************************************************
    //***************************************************************************
@@ -92,19 +93,19 @@ bool TTARxMsgDecoder::decodeMsg(const char* aRxString)
    char tMsgIdString[40];
    strncpy(tMsgIdString, &mRxBuffer[tIndex], 3);
 
-   Prn::print(Prn::Show2, "RX header2 TEST1 %d %s", tIndex, mRxBuffer);
-   Prn::print(Prn::Show2, "RX header2 TEST2 %d %s", tIndex, tMsgIdString);
+   Prn::print(mPF1, "RX header2 TEST1 %d %s", tIndex, mRxBuffer);
+   Prn::print(mPF1, "RX header2 TEST2 %d %s", tIndex, tMsgIdString);
 
    mRxMsgId = get_MsgId_asInt(tMsgIdString);
 
    if (mRxMsgId == 0)
    {
-      Prn::print(Prn::Show2, "RX header2 FAIL %d %s", tIndex, tMsgIdString);
+      Prn::print(mPF1, "RX header2 FAIL %d %s", tIndex, tMsgIdString);
       return false;
    }
 
    tIndex += 3;
-   Prn::print(Prn::Show2, "RX header2 PASS %d %s", tIndex, get_MsgId_asString(mRxMsgId));
+   Prn::print(mPF1, "RX header2 PASS %d %s", tIndex, get_MsgId_asString(mRxMsgId));
 
    //***************************************************************************
    //***************************************************************************
@@ -113,11 +114,11 @@ bool TTARxMsgDecoder::decodeMsg(const char* aRxString)
 
    if (doValidateCRC(&mRxBuffer[tIndex]))
    {
-      Prn::print(Prn::Show2, "RX crc PASS");
+      Prn::print(mPF1, "RX crc PASS");
    }
    else
    {
-      Prn::print(Prn::Show2, "RX crc FAIL");
+      Prn::print(mPF1, "RX crc FAIL");
       return false;
    }
 
@@ -134,7 +135,7 @@ bool TTARxMsgDecoder::decodeMsg(const char* aRxString)
    //***************************************************************************
    // Done.
 
-   Prn::print(Prn::Show2, "RX done PASS");
+   Prn::print(mPF1, "RX done PASS");
    mRxValid = true;
    return true;
 }

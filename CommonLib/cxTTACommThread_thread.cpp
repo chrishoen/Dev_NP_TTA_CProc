@@ -52,6 +52,13 @@ TTACommThread::TTACommThread()
    mTxCount = 0;
    mRxCount = 0;
    mLoopState = SX::cMsgId_tst;
+
+   // Set member print filters.
+   mPF1 = Prn::TTA1;
+   mPF2 = Prn::TTA2;
+   mPF3 = Prn::TTA3;
+   mPF4 = Prn::TTA4;
+   mRxMsgDecoder.mPF1 = mPF2;
 }
 
 //******************************************************************************

@@ -80,10 +80,15 @@ void main_initialize(int argc,char** argv)
    Prn::setFilter(Prn::View13, false, 1);
    Prn::setFilter(Prn::View14, false, 1);
 
-   Prn::setFilter(Prn::Show1, true, 1);
-   Prn::setFilter(Prn::Show2, true, 2);
-   Prn::setFilter(Prn::Show3, false, 1);
-   Prn::setFilter(Prn::Show4, false, 1);
+// Prn::setFilter(Prn::Show1, true, 1);
+// Prn::setFilter(Prn::Show2, true, 2);
+// Prn::setFilter(Prn::Show3, false, 1);
+// Prn::setFilter(Prn::Show4, false, 1);
+
+   Prn::setFilter(Prn::TTA1, true, 1);
+   Prn::setFilter(Prn::TTA2, true, 2);
+   Prn::setFilter(Prn::TTA3, false, 1);
+   Prn::setFilter(Prn::TTA4, false, 1);
 
    //***************************************************************************
    //***************************************************************************

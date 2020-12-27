@@ -58,7 +58,6 @@ char* doConcatenateCRC(char* aString)
 {
    char tCRCString[5];
    unsigned tCRCValue = doCalcCRC(aString, strlen(aString));
-   Prn::print(Prn::Show2, "doConcatenateCRC %X", tCRCValue);
    sprintf(tCRCString, "%04X", tCRCValue);
    strcat(aString, tCRCString);
    return aString;
@@ -74,11 +73,9 @@ bool doValidateCRC(char* aString)
 {
    char tCRCString[5];
    int  tCRCStart = strlen(aString) - 4;
-   Prn::print(Prn::Show2, "doValidateCRC1 %d %s", tCRCStart, aString);
    unsigned tCRCValue1 = doCalcCRC(aString, tCRCStart);
    unsigned tCRCValue2 = 0;
    sscanf(&aString[tCRCStart], "%x", &tCRCValue2);
-   Prn::print(Prn::Show2, "doValidateCRC2 %X", tCRCValue2);
    return tCRCValue1 == tCRCValue2;
 }
 

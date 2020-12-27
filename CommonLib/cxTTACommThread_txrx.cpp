@@ -27,7 +27,7 @@ void TTACommThread::sendString(const char* aString)
    // Guard.
    if (!mConnectionFlag)
    {
-      Prn::print(Prn::Show1, ">>>> NOT CONNECTED");
+      Prn::print(mPF1, ">>>> NOT CONNECTED");
       return;
    }
 
@@ -35,7 +35,7 @@ void TTACommThread::sendString(const char* aString)
    mTxCount++;
 
    // Print the string.
-   Prn::print(Prn::Show1, ">>>> %s", aString);
+   Prn::print(mPF1, ">>>> %s", aString);
 
    // Send the string.
    mSerialStringThread->sendString(aString);
@@ -54,7 +54,7 @@ void TTACommThread::sendString(std::string* aString)
    // Guard.
    if (!mConnectionFlag)
    {
-      Prn::print(Prn::Show1, ">>>> NOT CONNECTED");
+      Prn::print(mPF1, ">>>> NOT CONNECTED");
       delete aString;
       return;
    }
@@ -63,7 +63,7 @@ void TTACommThread::sendString(std::string* aString)
    mTxCount++;
 
    // Print the string.
-   Prn::print(Prn::Show1, ">>>> %s", aString->c_str());
+   Prn::print(mPF1, ">>>> %s", aString->c_str());
 
    // Send the string.
    mSerialStringThread->sendString(aString);
@@ -82,14 +82,14 @@ void TTACommThread::executeRxString(std::string* aString)
    // Metrics.
    mRxCount++;
 
-   Prn::print(Prn::Show1, "<<<< %s", aString->c_str());
+   Prn::print(mPF1, "<<<< %s", aString->c_str());
 
    // Decode and validate the receive message.
    mRxMsgDecoder.decodeMsg(aString->c_str());
 
    // Show.
-   Prn::print(Prn::Show1, "Rx Valid  %s", my_string_from_bool(mRxMsgDecoder.mRxValid));
-   Prn::print(Prn::Show1, "Rx MsgId  %s", SX::get_MsgId_asString(mRxMsgDecoder.mRxMsgId));
+   Prn::print(mPF1, "Rx Valid  %s", my_string_from_bool(mRxMsgDecoder.mRxValid));
+   Prn::print(mPF1, "Rx MsgId  %s", SX::get_MsgId_asString(mRxMsgDecoder.mRxMsgId));
 
    // Notify the long thread that an acknowledgement was received.
    mNotify.notify(cRxMsgNotifyCode);
