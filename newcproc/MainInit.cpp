@@ -75,11 +75,6 @@ void main_initialize(int argc,char** argv)
    Prn::initializePrint();
 
    // Initialize print filters.
-   Prn::setFilter(Prn::View11, true,  1);
-   Prn::setFilter(Prn::View12, false, 1);
-   Prn::setFilter(Prn::View13, false, 1);
-   Prn::setFilter(Prn::View14, false, 1);
-
    Prn::setFilter(Prn::TTA1, true, 1);
    Prn::setFilter(Prn::TTA2, true, 2);
    Prn::setFilter(Prn::TTA3, false, 1);
@@ -95,7 +90,7 @@ void main_initialize(int argc,char** argv)
    //***************************************************************************
    // Initialize program resources.
 
-   Prn::print(Prn::View11,"NewCProc Program********************************************BEGIN");
+   Prn::print(Prn::TTA1, "NewCProc Program********************************************BEGIN");
 }
 
 //******************************************************************************
@@ -105,6 +100,8 @@ void main_initialize(int argc,char** argv)
 
 void main_finalize()
 {
+   Prn::print(Prn::TTA1, "NewCProc Program********************************************END");
+
    // Finalize print facility.
    Prn::finalizePrint();
 
