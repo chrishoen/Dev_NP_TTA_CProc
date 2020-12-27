@@ -32,7 +32,7 @@ void CmdLineExec::reset()
 void CmdLineExec::execute(Ris::CmdLineCmd* aCmd)
 {
    if (aCmd->isCmd("RESET"))    reset();
-   if (aCmd->isCmd("TXCODE"))   executeLoopState(aCmd);
+   if (aCmd->isCmd("LOOP"))     executeLoopState(aCmd);
 
    if (aCmd->isCmd("GO1"))      executeGo1(aCmd);
    if (aCmd->isCmd("GO2"))      executeGo2(aCmd);
