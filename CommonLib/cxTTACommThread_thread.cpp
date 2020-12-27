@@ -51,7 +51,25 @@ TTACommThread::TTACommThread()
    mProcExitCode = 0;
    mTxCount = 0;
    mRxCount = 0;
-   mLoopState = SX::cMsgId_gsx;
+   mLoopState = SX::cMsgId_tst;
+}
+
+//******************************************************************************
+//******************************************************************************
+//******************************************************************************
+// Set the loop waitable timer slow or fast.
+
+void TTACommThread::setLoopWaitableSlow()
+{
+   if (mLoopWaitableSlow) return;
+   mLoopWaitable.initialize(cSlowLoopPeriod);
+   mLoopWaitableSlow = true;
+}
+void TTACommThread::setLoopWaitableFast()
+{
+   if (!mLoopWaitableSlow) return;
+   mLoopWaitable.initialize(cFastLoopPeriod);
+   mLoopWaitableSlow = false;
 }
 
 //******************************************************************************

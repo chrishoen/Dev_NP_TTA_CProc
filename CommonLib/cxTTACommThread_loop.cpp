@@ -39,6 +39,7 @@ void TTACommThread::executeProcessLoop()
 
    // Initialize the synchronization objects.
    mLoopWaitable.initialize(cSlowLoopPeriod);
+   mLoopWaitableSlow = true;
    mNotify.clearFlags();
 
    try
@@ -134,23 +135,50 @@ bool TTACommThread::doProcess()
 {
    if (mLoopState == SX::cMsgId_tst)
    {
-      return doProcess_tst();
-   }
-   else if (mLoopState == SX::cMsgId_gcs)
-   {
-      return doProcess_gcs();
+      if (doProcess_tst())
+      {
+         mLoopState = SX::cMsgId_gbc;
+         setLoopWaitableSlow();
+         return true;
+      }
+      else
+      {
+         return false;
+      }
    }
    else if (mLoopState == SX::cMsgId_gbc)
    {
-      return doProcess_gbc();
+      if (doProcess_gbc())
+      {
+         mLoopState = SX::cMsgId_gft;
+         setLoopWaitableSlow();
+         return true;
+      }
+      else
+      {
+         return false;
+      }
    }
    else if (mLoopState == SX::cMsgId_gft)
    {
-      return doProcess_gft();
+      if (doProcess_gft())
+      {
+         mLoopState = SX::cMsgId_gsx;
+         setLoopWaitableFast();
+         return true;
+      }
+      else
+      {
+         return false;
+      }
    }
    else if (mLoopState == SX::cMsgId_gsx)
    {
       return doProcess_gsx();
+   }
+   else if (mLoopState == SX::cMsgId_gcs)
+   {
+      return doProcess_gcs();
    }
    return false;
 }

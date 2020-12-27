@@ -33,7 +33,7 @@ public:
    // Constants:
 
    // Timer periods.
-   static const int cSlowLoopPeriod = 2000;
+   static const int cSlowLoopPeriod = 4000;
    static const int cFastLoopPeriod = 2000;
 
    // Wait timeouts.
@@ -71,6 +71,9 @@ public:
    // Waitable timer.
    Ris::Threads::Waitable mLoopWaitable;
 
+   // True if the waitable timer is slow, false if it is fast.
+   bool mLoopWaitableSlow;
+
    //***************************************************************************
    //***************************************************************************
    //***************************************************************************
@@ -102,6 +105,10 @@ public:
 
    // Constructor.
    TTACommThread();
+
+   // Set the loop waitable timer slow or fast.
+   void setLoopWaitableSlow();
+   void setLoopWaitableFast();
 
    //***************************************************************************
    //***************************************************************************
