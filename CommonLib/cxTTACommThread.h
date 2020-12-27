@@ -66,7 +66,7 @@ public:
    // Members.
 
    // Notifications.
-   Ris::Threads::NotifyWrapper mCmdAckNotify;
+   Ris::Threads::NotifyWrapper mRxMsgNotify;
 
    // Waitable timer.
    Ris::Threads::Waitable mLoopWaitable;

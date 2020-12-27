@@ -24,7 +24,7 @@ namespace CX
 // Constructor.
 
 TTACommThread::TTACommThread()
-   : mCmdAckNotify(&mNotify, cRxMsgNotifyCode)
+   : mRxMsgNotify(&mNotify, cRxMsgNotifyCode)
 {
    using namespace std::placeholders;
 

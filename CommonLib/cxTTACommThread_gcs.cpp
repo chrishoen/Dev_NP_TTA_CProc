@@ -26,33 +26,18 @@ namespace CX
 
 bool TTACommThread::doProcess_gcs()
 {
-   mLoopExitCode = cLoopExitNormal;
+   // Encode a request message.
+   mTxMsgEncoder.encodeMsg(SX::cMsgId_gcs);
 
-   try
-   {
-      // Test for a notification exception.
-      mNotify.testException();
+   // Transmit the request message.
+   sendString(mTxMsgEncoder.mTxBuffer);
 
-      // Set the thread notification mask.
-      mNotify.setMaskOne("CmdAck", cRxMsgNotifyCode);
-
-      // Encode a request message.
-      mTxMsgEncoder.encodeMsg(SX::cMsgId_gcs);
-
-      // Transmit the request message.
-      sendString(mTxMsgEncoder.mTxBuffer);
-
-      // Wait for the acknowledgement notification.
-      mNotify.wait(cRxMsgTimeout);
-   }
-   catch(int aException)
-   {
-      mLoopExitCode = cLoopExitAborted;
-      Prn::print(0, "EXCEPTION TTACommThread::doProcess_gcs %d %s", aException, mNotify.mException);
-   }
+   // Wait for the receive response message notification.
+   // Throw an exception if there's a timeout. 
+   mNotify.wait(cRxMsgTimeout);
 
    // Done.
-   return mLoopExitCode == cLoopExitNormal;
+   return true;
 }
 
 //******************************************************************************

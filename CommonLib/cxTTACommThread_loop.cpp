@@ -67,15 +67,31 @@ void TTACommThread::executeProcessLoop()
          //*********************************************************************
          // Send a request to the slave, wait for the response and process it.
 
-         if (mLoopState == SX::cMsgId_gcs)
-         {
-            doProcess_gcs();
-         }
-         else if (mLoopState == SX::cMsgId_gsx)
-         {
-            doProcess_gsx();
-         }
+         mLoopExitCode = cLoopExitNormal;
 
+         try
+         {
+            // Test for a notification exception.
+            mNotify.testException();
+
+            // Set the thread notification mask.
+            mNotify.setMaskOne("RxMsg", cRxMsgNotifyCode);
+
+            if (mLoopState == SX::cMsgId_gcs)
+            {
+               doProcess_gcs();
+            }
+            else if (mLoopState == SX::cMsgId_gsx)
+            {
+               doProcess_gsx();
+            }
+
+         }
+         catch (int aException)
+         {
+            mLoopExitCode = cLoopExitAborted;
+            Prn::print(0, "EXCEPTION TTACommThread::doProcess_gcs %d %s", aException, mNotify.mException);
+         }
       }
    }
    catch (int aException)

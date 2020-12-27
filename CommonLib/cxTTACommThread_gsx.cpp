@@ -26,43 +26,27 @@ namespace CX
 
 bool TTACommThread::doProcess_gsx()
 {
-   mLoopExitCode = cLoopExitNormal;
+   // Encode a request message.
+   SM::gShare->mSuperWantsTTA.mCount++;
+   char tPayload[200];
+   SuperWantsTTA_copyTo(&SM::gShare->mSuperWantsTTA, tPayload);
+   SuperWantsTTA_clearFlags(&SM::gShare->mSuperWantsTTA);
+   mTxMsgEncoder.encodeMsg(SX::cMsgId_gsx, tPayload);
 
-   try
-   {
-      // Test for a notification exception.
-      mNotify.testException();
+   // Transmit the request message.
+   sendString(mTxMsgEncoder.mTxBuffer);
 
-      // Set the thread notification mask.
-      mNotify.setMaskOne("CmdAck", cRxMsgNotifyCode);
+   // Throw an exception if there's a timeout. 
+   mNotify.wait(cRxMsgTimeout);
 
-      // Encode a request message.
-      SM::gShare->mSuperWantsTTA.mCount++;
-      char tPayload[200];
-      SuperWantsTTA_copyTo(&SM::gShare->mSuperWantsTTA, tPayload);
-      SuperWantsTTA_clearFlags(&SM::gShare->mSuperWantsTTA);
-      mTxMsgEncoder.encodeMsg(SX::cMsgId_gsx, tPayload);
+   // Decode and validate the received response message.
+   if (!mRxMsgDecoder.mRxValid) throw cLoopExitError;
 
-      // Transmit the request message.
-      sendString(mTxMsgEncoder.mTxBuffer);
-
-      // Wait for the receive response message notification.
-      mNotify.wait(cRxMsgTimeout);
-
-      // Decode and validate the received response message.
-      if (!mRxMsgDecoder.mRxValid) throw cLoopExitError;
-
-      // Copy the response message payload into the super state.
-      SuperStateTTA_copyFrom(&SM::gShare->mSuperStateTTA, mRxMsgDecoder.mRxPayload);
-   }
-   catch(int aException)
-   {
-      mLoopExitCode = cLoopExitAborted;
-      Prn::print(0, "EXCEPTION TTACommThread::doProcess_gcs %d %s", aException, mNotify.mException);
-   }
+   // Copy the response message payload into the super state.
+   SuperStateTTA_copyFrom(&SM::gShare->mSuperStateTTA, mRxMsgDecoder.mRxPayload);
 
    // Done.
-   return mLoopExitCode == cLoopExitNormal;
+   return true;
 }
 
 //******************************************************************************
