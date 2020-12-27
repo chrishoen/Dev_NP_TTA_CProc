@@ -54,7 +54,6 @@ bool TTACommThread::doProcess_gsx()
       // the response message.
       if (!mRxMsgProc.mRxValid) throw cLoopExitError;
       // Copy the response message payload into the super state.
-//    Prn::print(Prn::Show2, "RXPAYLOAD %s", mRxMsgProc.mRxPayload);
       SuperStateTTA_copyFrom(&SM::gShare->mSuperStateTTA, mRxMsgProc.mRxPayload);
    }
    catch(int aException)
