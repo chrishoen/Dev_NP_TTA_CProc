@@ -140,6 +140,7 @@ bool TTACommThread::doProcess()
    {
       return doProcess_gsx();
    }
+   return false;
 }
 
 //******************************************************************************
