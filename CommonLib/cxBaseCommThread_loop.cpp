@@ -13,7 +13,7 @@ Detestion:
 
 #include "cxCProcParms.h"
 
-#include "cxTTACommThread.h"
+#include "cxBaseCommThread.h"
 
 namespace CX
 {
@@ -28,9 +28,9 @@ namespace CX
 // thread execution context for message processing. It is only executed
 // once, at thhread initialization.
 
-void TTACommThread::executeProcessLoop()
+void BaseCommThread::executeProcessLoop()
 {
-   Prn::print(0, "TTACommThread::executeProcessLoop BEGIN");
+   Prn::print(0, "BaseCommThread::executeProcessLoop BEGIN");
 
    //***************************************************************************
    //***************************************************************************
@@ -85,19 +85,19 @@ void TTACommThread::executeProcessLoop()
          {
             if (aException == 667)
             {
-               Prn::print(0, "EXCEPTION TTACommThread::doProcess TIMEOUT %s %d",
+               Prn::print(0, "EXCEPTION BaseCommThread::doProcess TIMEOUT %s %d",
                   SX::get_MsgId_asString(mLoopState),
                   aException);
             }
             else if (aException == cProcExitError)
             {
-               Prn::print(0, "EXCEPTION TTACommThread::doProcess ERROR %s %d",
+               Prn::print(0, "EXCEPTION BaseCommThread::doProcess ERROR %s %d",
                   SX::get_MsgId_asString(mLoopState),
                   aException);
             }
             else
             {
-               Prn::print(0, "EXCEPTION TTACommThread::doProcess %s %d %s",
+               Prn::print(0, "EXCEPTION BaseCommThread::doProcess %s %d %s",
                   SX::get_MsgId_asString(mLoopState),
                   aException,
                   mNotify.mException);
@@ -109,11 +109,11 @@ void TTACommThread::executeProcessLoop()
    {
       if (aException == 668)
       {
-         Prn::print(0, "EXCEPTION TTACommThread::executeProcessLoop %d %s", aException, mNotify.mException);
+         Prn::print(0, "EXCEPTION BaseCommThread::executeProcessLoop %d %s", aException, mNotify.mException);
       }
       else
       {
-         Prn::print(0, "EXCEPTION TTACommThread::executeProcessLoop %d", aException);
+         Prn::print(0, "EXCEPTION BaseCommThread::executeProcessLoop %d", aException);
       }
    }
 
@@ -131,7 +131,7 @@ void TTACommThread::executeProcessLoop()
 // process it. Return true if successful. This is called by the process
 // loop qcall function, based on the state.
 
-bool TTACommThread::doProcess()
+bool BaseCommThread::doProcess()
 {
    if (mLoopState == SX::cMsgId_tst)
    {
