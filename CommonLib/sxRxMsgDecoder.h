@@ -19,7 +19,7 @@ namespace SX
 // message. It is intended that this is used by the 
 // the comm thread to decode messages. It is not thread safe.
 
-   class TTARxMsgDecoder
+   class RxMsgDecoder
 {
 public:
 
@@ -64,7 +64,7 @@ public:
    // Methods.
 
    // Constructor.
-   TTARxMsgDecoder();
+   RxMsgDecoder();
    void resetVars();
 
    //***************************************************************************

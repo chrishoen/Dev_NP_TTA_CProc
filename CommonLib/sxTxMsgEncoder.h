@@ -18,7 +18,7 @@ namespace SX
 // into a member transmit buffer. It is intended that this is used by the 
 // the comm thread to encode messages. It is not thread safe.
 
-class TTATxMsgEncoder
+class TxMsgEncoder
 {
 public:
 
@@ -43,7 +43,7 @@ public:
    // Methods.
 
    // Constructor.
-   TTATxMsgEncoder();
+   TxMsgEncoder();
 
    //***************************************************************************
    //***************************************************************************

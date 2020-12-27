@@ -11,7 +11,7 @@ Description:
 #include "sxCRC.h"
 #include "sxMsgDefs.h"
 
-#include "sxTTATxMsgEncoder.h"
+#include "sxTxMsgEncoder.h"
 
 namespace SX
 {
@@ -21,7 +21,7 @@ namespace SX
 //******************************************************************************
 // Constructor.
 
-TTATxMsgEncoder::TTATxMsgEncoder()
+TxMsgEncoder::TxMsgEncoder()
 {
    mTxBuffer[0] = 0;
 }
@@ -35,7 +35,7 @@ TTATxMsgEncoder::TTATxMsgEncoder()
 // does not append a crlf at the end of the string, the serial thread does
 // that. Return a pointer to the buffer.
 
-const char* TTATxMsgEncoder::encodeMsg(int aMsgId, const char* aPayload)
+const char* TxMsgEncoder::encodeMsg(int aMsgId, const char* aPayload)
 {
    // Encode the header.
    strcpy(mTxBuffer, ";10");

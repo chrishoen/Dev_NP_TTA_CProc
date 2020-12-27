@@ -9,9 +9,6 @@
 
 #include "cxBaseCommThread.h"
 
-#include "sxTTATxMsgEncoder.h"
-#include "sxTTARxMsgDecoder.h"
-
 namespace CX
 {
 //******************************************************************************
@@ -24,15 +21,6 @@ class TTACommThread : public BaseCommThread
 {
 public:
    typedef BaseCommThread BaseClass;
-
-   //***************************************************************************
-   //***************************************************************************
-   //***************************************************************************
-   // Members.
-
-   // Message encoder/decoder.
-   SX::TTATxMsgEncoder mTxMsgEncoder;
-   SX::TTARxMsgDecoder mRxMsgDecoder;
 
    //***************************************************************************
    //***************************************************************************

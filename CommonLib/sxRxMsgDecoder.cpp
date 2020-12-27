@@ -10,7 +10,7 @@ Description:
 
 #include "sxCRC.h"
 #include "sxMsgDefs.h"
-#include "sxTTARxMsgDecoder.h"
+#include "sxRxMsgDecoder.h"
 
 namespace SX
 {
@@ -20,13 +20,13 @@ namespace SX
 //******************************************************************************
 // Constructor.
 
-TTARxMsgDecoder::TTARxMsgDecoder()
+RxMsgDecoder::RxMsgDecoder()
 {
    resetVars();
    mPF1 = 0;
 }
 
-void TTARxMsgDecoder::resetVars()
+void RxMsgDecoder::resetVars()
 {
    mRxBuffer[0] = 0;
    mRxPayload[0] = 0;
@@ -43,7 +43,7 @@ void TTARxMsgDecoder::resetVars()
 // receive buffer. Decode and validate the message and set the result member
 // variables accordingly. Return true if the message is valid.
 
-bool TTARxMsgDecoder::decodeMsg(const char* aRxString)
+bool RxMsgDecoder::decodeMsg(const char* aRxString)
 {
    Prn::print(mPF1, "RX ************************");
 
