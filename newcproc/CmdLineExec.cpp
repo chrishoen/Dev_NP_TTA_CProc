@@ -4,6 +4,7 @@
 
 #include "cxCProcParms.h"
 #include "cxTTACommThread.h"
+#include "cxDACommThread.h"
 
 #include "CmdLineExec.h"
 
@@ -48,8 +49,8 @@ void CmdLineExec::execute(Ris::CmdLineCmd* aCmd)
 
 void CmdLineExec::executeLoopState(Ris::CmdLineCmd* aCmd)
 {
-   CX::gTTACommThread->mLoopState = SX::get_MsgId_asInt(aCmd->argString(1));
-   Prn::print(0, "%s", SX::get_MsgId_asString(CX::gTTACommThread->mLoopState));
+   CX::gDACommThread->mLoopState = SX::get_MsgId_asInt(aCmd->argString(1));
+   Prn::print(0, "%s", SX::get_MsgId_asString(CX::gDACommThread->mLoopState));
 }
 
 //******************************************************************************

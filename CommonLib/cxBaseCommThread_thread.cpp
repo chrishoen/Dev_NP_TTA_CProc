@@ -29,6 +29,8 @@ BaseCommThread::BaseCommThread(int aTTAFlag)
 
    // Set flag.
    mTTAFlag = aTTAFlag;
+   if (mTTAFlag) strcpy(mLabel, "TTA");
+   else                 strcpy(mLabel, "DA");
 
    // Set base class thread variables.
    if (mTTAFlag)
@@ -162,26 +164,11 @@ void BaseCommThread::executeSession(bool aConnected)
 {
    if (aConnected)
    {
-      if (mTTAFlag)
-      {
-         Prn::print(0, "TTA serial port open  CONNECTED");
-      }
-      else
-      {
-         Prn::print(0, "DA  serial port open  CONNECTED");
-      }
-
+      Prn::print(0, "%s serial port open  CONNECTED", mLabel);
    }
    else
    {
-      if (mTTAFlag)
-      {
-         Prn::print(0, "TTA serial port error DISCONNECTED");
-      }
-      else
-      {
-         Prn::print(0, "DA  serial port error DISCONNECTED");
-      }
+      Prn::print(0, "%s serial port open  DISCONNECTED", mLabel);
    }
 
    mConnectionFlag = aConnected;

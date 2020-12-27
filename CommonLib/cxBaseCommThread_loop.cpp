@@ -30,7 +30,7 @@ namespace CX
 
 void BaseCommThread::executeProcessLoop()
 {
-   Prn::print(0, "BaseCommThread::executeProcessLoop BEGIN");
+   Prn::print(0, "%sCommThread::executeProcessLoop BEGIN", mLabel);
 
    //***************************************************************************
    //***************************************************************************
@@ -85,19 +85,22 @@ void BaseCommThread::executeProcessLoop()
          {
             if (aException == 667)
             {
-               Prn::print(0, "EXCEPTION BaseCommThread::doProcess TIMEOUT %s %d",
+               Prn::print(0, "EXCEPTION %sCommThread::doProcess TIMEOUT %s %d",
+                  mLabel,
                   SX::get_MsgId_asString(mLoopState),
                   aException);
             }
             else if (aException == cProcExitError)
             {
-               Prn::print(0, "EXCEPTION BaseCommThread::doProcess ERROR %s %d",
+               Prn::print(0, "EXCEPTION %sCommThread::doProcess ERROR %s %d",
+                  mLabel,
                   SX::get_MsgId_asString(mLoopState),
                   aException);
             }
             else
             {
-               Prn::print(0, "EXCEPTION BaseCommThread::doProcess %s %d %s",
+               Prn::print(0, "EXCEPTION %sCommThread::doProcess %s %d %s",
+                  mLabel,
                   SX::get_MsgId_asString(mLoopState),
                   aException,
                   mNotify.mException);
@@ -109,11 +112,15 @@ void BaseCommThread::executeProcessLoop()
    {
       if (aException == 668)
       {
-         Prn::print(0, "EXCEPTION BaseCommThread::executeProcessLoop %d %s", aException, mNotify.mException);
+         Prn::print(0, "EXCEPTION %sCommThread::executeProcessLoop %d %s", 
+            mLabel, 
+            aException, mNotify.mException);
       }
       else
       {
-         Prn::print(0, "EXCEPTION BaseCommThread::executeProcessLoop %d", aException);
+         Prn::print(0, "EXCEPTION %sCommThread::executeProcessLoop %d",
+            mLabel,
+            aException);
       }
    }
 
@@ -121,7 +128,7 @@ void BaseCommThread::executeProcessLoop()
    mLoopWaitable.finalize();
    mNotify.clearFlags();
 
-   Prn::print(0, "CommSeqThread::doProcessAcquire END");
+   Prn::print(0, "%sCommThread::executeProcessLoop END", mLabel);
 }
 
 //******************************************************************************
