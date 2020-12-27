@@ -32,7 +32,7 @@ public:
    //***************************************************************************
    // Constants:
 
-   // Timer periods..
+   // Timer periods.
    static const int cSlowLoopPeriod = 2000;
    static const int cFastLoopPeriod = 2000;
 
@@ -78,7 +78,7 @@ public:
    //***************************************************************************
    // Members.
 
-   // Run test exit code.
+   // Process loop exit code.
    int mLoopExitCode;
 
    // Tx message code.
