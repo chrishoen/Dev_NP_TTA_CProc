@@ -30,20 +30,25 @@ void TTACommThread::executeRunLoop()
 {
    Prn::print(0, "TTACommThread::executeRunLoop BEGIN");
 
+   //***************************************************************************
+   //***************************************************************************
+   //***************************************************************************
+   // Do this first.
+
    // Initialize the synchronization objects.
    mLoopWaitable.initialize(cSlowLoopPeriod);
    mNotify.clearFlags();
-
-   // Wait for the child thread.
-   while (!mConnectionFlag && false)
-   {
-   }
 
    try
    {
       // Loop to transmit and receive.
       while (true)
       {
+         //*********************************************************************
+         //*********************************************************************
+         //*********************************************************************
+         // Wait.
+
          // Wait for timer or abort.
          mLoopWaitable.waitForTimerOrSemaphore();
          if (mLoopWaitable.wasSemaphore())
@@ -55,7 +60,20 @@ void TTACommThread::executeRunLoop()
          // Guard.
          if (!mConnectionFlag) continue;
 
-         doProcess_gcs();
+         //*********************************************************************
+         //*********************************************************************
+         //*********************************************************************
+         // Send a request to the slave, wait for the response and process it.
+
+         if (mTxCode == SX::cMsgId_gcs)
+         {
+            doProcess_gcs();
+         }
+         else if (mTxCode == SX::cMsgId_gsx)
+         {
+            doProcess_gsx();
+         }
+
       }
    }
    catch (int aException)

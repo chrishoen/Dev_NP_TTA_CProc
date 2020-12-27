@@ -49,7 +49,7 @@ public:
    bool mRxValMarker;
 
    // The receive message payload.
-   char* mRxPayload;
+   char mRxPayload[cMaxStringSize];
 
    //***************************************************************************
    //***************************************************************************

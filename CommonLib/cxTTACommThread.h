@@ -47,6 +47,7 @@ public:
    // Loop exit status codes.
    static const int cLoopExitNormal = 0;
    static const int cLoopExitAborted = 1;
+   static const int cLoopExitError = 2;
 
    //***************************************************************************
    //***************************************************************************
@@ -155,8 +156,8 @@ public:
    void executeRunLoop();
 
    // Send a request to the slave, wait for the response and process it.
-   // Return true if successful. This is called by the above, based on the 
-   // state.
+   // Return true if successful. This is called by the run loop qcall
+   // function, based on the state.
    bool doProcess_tst();
    bool doProcess_gcs();
    bool doProcess_gbc();

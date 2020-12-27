@@ -28,6 +28,7 @@ TTARxMsgProc::TTARxMsgProc()
 void TTARxMsgProc::resetVars()
 {
    mRxBuffer[0] = 0;
+   mRxPayload[0] = 0;
    mRxValid = false;
    mRxMsgId = 0;
    mRxValMarker = false;
@@ -120,6 +121,14 @@ bool TTARxMsgProc::processMsg(const char* aRxString)
       Prn::print(Prn::Show2, "RX crc FAIL");
       return false;
    }
+
+   //***************************************************************************
+   //***************************************************************************
+   //***************************************************************************
+   // Store the payload and strip off the crc.
+
+   strcpy(mRxPayload, &mRxBuffer[tIndex]);
+   mRxPayload[strlen(mRxPayload) - 4] = 0;
 
    //***************************************************************************
    //***************************************************************************

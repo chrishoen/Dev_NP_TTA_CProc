@@ -66,7 +66,7 @@ void TTACommThread::threadInitFunction()
    // Instance of serial port settings.
    Ris::SerialSettings tSerialSettings;
 
-   tSerialSettings.setPortDevice("/dev/ttyO4");
+   tSerialSettings.setPortDevice("/dev/ttyO2");
    tSerialSettings.setPortSetup("38400,N,8,1");
    tSerialSettings.mRxTimeout = 0;
    tSerialSettings.mTermMode = Ris::cSerialTermMode_CRLF;
