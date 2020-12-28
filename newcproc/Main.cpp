@@ -6,8 +6,10 @@
 #include "risCmdLineConsole.h"
 #include "CmdLineExec.h"
 
+#include "evtEventLogThread.h"
 #include "cxTTACommThread.h"
 #include "cxDACommThread.h"
+#include "cxMainTimerThread.h"
 
 //******************************************************************************
 //******************************************************************************
@@ -30,6 +32,12 @@ int main(int argc,char** argv)
 
    if (true)
    {
+      Evt::gEventLogThread = new Evt::EventLogThread;
+      Evt::gEventLogThread->launchThread();
+   }
+
+   if (true)
+   {
       CX::gTTACommThread = new CX::TTACommThread;
       CX::gTTACommThread->launchThreads();
    }
@@ -40,16 +48,24 @@ int main(int argc,char** argv)
       CX::gDACommThread->launchThreads();
    }
 
+   if (true)
+   {
+      CX::gMainTimerThread = new CX::MainTimerThread;
+      CX::gMainTimerThread->launchThread();
+   }
+
    //***************************************************************************
    //***************************************************************************
    //***************************************************************************
    // Show program threads.
 
    Ris::Threads::showCurrentThreadInfo();
-   if (CX::gTTACommThread)   CX::gTTACommThread->showThreadInfo();
-   if (CX::gTTACommThread)   CX::gTTACommThread->mSerialStringThread->showThreadInfo();
-   if (CX::gDACommThread)    CX::gDACommThread->showThreadInfo();
-   if (CX::gDACommThread)    CX::gDACommThread->mSerialStringThread->showThreadInfo();
+   if (Evt::gEventLogThread)   Evt::gEventLogThread->showThreadInfo();
+   if (CX::gTTACommThread)     CX::gTTACommThread->showThreadInfo();
+   if (CX::gTTACommThread)     CX::gTTACommThread->mSerialStringThread->showThreadInfo();
+   if (CX::gDACommThread)      CX::gDACommThread->showThreadInfo();
+   if (CX::gDACommThread)      CX::gDACommThread->mSerialStringThread->showThreadInfo();
+   if (CX::gMainTimerThread)   CX::gMainTimerThread->showThreadInfo();
 
    //***************************************************************************
    //***************************************************************************
@@ -65,13 +81,21 @@ int main(int argc,char** argv)
    //***************************************************************************
    // Shutdown program threads.
 
-   if (CX::gTTACommThread)   CX::gTTACommThread->shutdownThreads();
-   if (CX::gDACommThread)    CX::gDACommThread->shutdownThreads();
+   if (Evt::gEventLogThread)     Evt::gEventLogThread->shutdownThread();
+   if (CX::gTTACommThread)       CX::gTTACommThread->shutdownThreads();
+   if (CX::gDACommThread)        CX::gDACommThread->shutdownThreads();
+   if (CX::gMainTimerThread)     CX::gMainTimerThread->shutdownThread();
 
    //***************************************************************************
    //***************************************************************************
    //***************************************************************************
    // Delete program threads.
+
+   if (Evt::gEventLogThread)
+   {
+      delete Evt::gEventLogThread;
+      Evt::gEventLogThread = 0;
+   }
 
    if (CX::gTTACommThread)
    {
@@ -83,6 +107,12 @@ int main(int argc,char** argv)
    {
       delete CX::gDACommThread;
       CX::gDACommThread = 0;
+   }
+
+   if (CX::gMainTimerThread)
+   {
+      delete CX::gMainTimerThread;
+      CX::gMainTimerThread = 0;
    }
 
    //***************************************************************************
