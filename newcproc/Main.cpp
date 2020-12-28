@@ -10,6 +10,7 @@
 #include "cxTTACommThread.h"
 #include "cxDACommThread.h"
 #include "cxMainTimerThread.h"
+#include "cxHLCTimerThread.h"
 
 //******************************************************************************
 //******************************************************************************
@@ -54,6 +55,12 @@ int main(int argc,char** argv)
       CX::gMainTimerThread->launchThread();
    }
 
+   if (true)
+   {
+      CX::gHLCTimerThread = new CX::HLCTimerThread;
+      CX::gHLCTimerThread->launchThread();
+   }
+
    //***************************************************************************
    //***************************************************************************
    //***************************************************************************
@@ -66,6 +73,7 @@ int main(int argc,char** argv)
    if (CX::gDACommThread)      CX::gDACommThread->showThreadInfo();
    if (CX::gDACommThread)      CX::gDACommThread->mSerialStringThread->showThreadInfo();
    if (CX::gMainTimerThread)   CX::gMainTimerThread->showThreadInfo();
+   if (CX::gHLCTimerThread)    CX::gHLCTimerThread->showThreadInfo();
 
    //***************************************************************************
    //***************************************************************************
@@ -85,6 +93,7 @@ int main(int argc,char** argv)
    if (CX::gTTACommThread)       CX::gTTACommThread->shutdownThreads();
    if (CX::gDACommThread)        CX::gDACommThread->shutdownThreads();
    if (CX::gMainTimerThread)     CX::gMainTimerThread->shutdownThread();
+   if (CX::gHLCTimerThread)      CX::gHLCTimerThread->shutdownThread();
 
    //***************************************************************************
    //***************************************************************************
@@ -113,6 +122,12 @@ int main(int argc,char** argv)
    {
       delete CX::gMainTimerThread;
       CX::gMainTimerThread = 0;
+   }
+
+   if (CX::gHLCTimerThread)
+   {
+      delete CX::gHLCTimerThread;
+      CX::gHLCTimerThread = 0;
    }
 
    //***************************************************************************
