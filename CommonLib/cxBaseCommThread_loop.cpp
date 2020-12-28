@@ -55,6 +55,9 @@ void BaseCommThread::executeProcessLoop()
          // If true then there was a serial timeout.
          bool tTimeoutFlag = false;
 
+         // If true then there was a processing error.
+         bool tProcErrorFlag = false;
+
          // Wait for timer or abort.
          mLoopWaitable.waitForTimerOrSemaphore();
 
@@ -83,7 +86,11 @@ void BaseCommThread::executeProcessLoop()
 
             // Execute a specific subfunction based on the state.
             // This can throw an exception.
-            doProcess();
+            if (!doProcess())
+            {
+               // There was a processing error.
+               tProcErrorFlag = true;
+            }
          }
          catch (int aException)
          {
@@ -94,8 +101,15 @@ void BaseCommThread::executeProcessLoop()
                   SX::get_MsgId_asString(mLoopState),
                   aException);
 
+               Prn::print(mPF1, "EXCEPTION %s TIMEOUT %s",
+                  mLabel,
+                  SX::get_MsgId_asString(mLoopState));
+
                // Serial rx timeout.
                tTimeoutFlag = true;
+
+               // There was a processing error.
+               tProcErrorFlag = true;
             }
             else if (aException == cProcExitError)
             {
@@ -103,6 +117,13 @@ void BaseCommThread::executeProcessLoop()
                   mLabel,
                   SX::get_MsgId_asString(mLoopState),
                   aException);
+
+               Prn::print(mPF1, "EXCEPTION %s ERROR %s",
+                  mLabel,
+                  SX::get_MsgId_asString(mLoopState));
+
+               // There was a processing error.
+               tProcErrorFlag = true;
             }
             else
             {
@@ -111,7 +132,22 @@ void BaseCommThread::executeProcessLoop()
                   SX::get_MsgId_asString(mLoopState),
                   aException,
                   mNotify.mException);
+
+               // There was a processing error.
+               tProcErrorFlag = true;
             }
+         }
+
+         //*********************************************************************
+         //*********************************************************************
+         //*********************************************************************
+         // Check errors.
+         
+         if (tProcErrorFlag)
+         {
+            // There was a processing error, set the loop state back to
+            // the top of the ladder.
+            mLoopState = SX::cMsgId_tst;
          }
 
          //*********************************************************************
