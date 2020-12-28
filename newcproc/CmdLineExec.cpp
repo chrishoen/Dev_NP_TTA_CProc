@@ -5,6 +5,7 @@
 #include "cxCProcParms.h"
 #include "cxTTACommThread.h"
 #include "cxDACommThread.h"
+#include "cmnPriorities.h"
 
 #include "CmdLineExec.h"
 
@@ -59,6 +60,10 @@ void CmdLineExec::executeLoopState(Ris::CmdLineCmd* aCmd)
 
 void CmdLineExec::executeGo1(Ris::CmdLineCmd* aCmd)
 {
+   Prn::print(0, "mMainTimer.mPriority   %d", Cmn::gPriorities.mMainTimer.mPriority);
+   Prn::print(0, "mMainTimer.mProcessor  %d", Cmn::gPriorities.mMainTimer.mProcessor);
+   Prn::print(0, "mHLCTimer.mPriority    %d", Cmn::gPriorities.mHLCTimer.mPriority);
+   Prn::print(0, "mHLCTimer.mProcessor   %d", Cmn::gPriorities.mHLCTimer.mProcessor);
 }
 
 //******************************************************************************
