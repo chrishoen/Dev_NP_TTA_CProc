@@ -2,10 +2,11 @@
 
 #include "risThreadsProcess.h"
 
-#include "risBaseDir.h"
-#include "risPortableCalls.h"
-#include "smShare.h"
+#include "risNetWait.h"
+#include "risThreadsThreads.h"
 #include "cxCProcParms.h"
+#include "smShare.h"
+#include "evtEventStore.h"
 
 //******************************************************************************
 //******************************************************************************
@@ -74,6 +75,12 @@ void main_initialize(int argc,char** argv)
    //***************************************************************************
    // Initialize program resources.
 
+   // Initialize the event store.
+   Evt::gEventStore.initialize();
+
+   //***************************************************************************
+   //***************************************************************************
+   //***************************************************************************
    Prn::print(Prn::TTA1, "NewCProc Program********************************************BEGIN");
 }
 
