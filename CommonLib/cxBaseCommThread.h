@@ -125,6 +125,17 @@ public:
    //***************************************************************************
    //***************************************************************************
    //***************************************************************************
+   // Members.
+
+   bool mBirthCertificateValid;
+   bool mSoftwareVersionValid;
+   bool mFactoryTestRecordValid;
+   bool mSysInfoValid;
+   bool mGainCalcValid;
+
+   //***************************************************************************
+   //***************************************************************************
+   //***************************************************************************
    // Methods.
 
    // Constructor. True is tta, false is da.
@@ -195,6 +206,7 @@ public:
    virtual bool doProcess_tst() = 0;
    virtual bool doProcess_gcs() = 0;
    virtual bool doProcess_gbc() = 0;
+   virtual bool doProcess_gsv() = 0;
    virtual bool doProcess_gft() = 0;
    virtual bool doProcess_gsx() = 0;
 

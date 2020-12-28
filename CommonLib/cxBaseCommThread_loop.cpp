@@ -230,6 +230,19 @@ bool BaseCommThread::doProcess()
    {
       if (doProcess_gbc())
       {
+         mLoopState = SX::cMsgId_gsv;
+         setLoopWaitableSlow();
+         return true;
+      }
+      else
+      {
+         return false;
+      }
+   }
+   else if (mLoopState == SX::cMsgId_gsv)
+   {
+      if (doProcess_gsv())
+      {
          mLoopState = SX::cMsgId_gft;
          setLoopWaitableSlow();
          return true;
