@@ -11,3 +11,4 @@ target_include_directories(CommonLib PUBLIC ${PROJECT_SOURCE_DIR})
 
 my_inc_import_RisLib(CommonLib)
 my_inc_import_ShareLib(CommonLib)
+my_inc_import_EventLib(CommonLib)

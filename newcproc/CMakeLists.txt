@@ -9,10 +9,12 @@ my_add_pch (newcproc)
 my_inc_import_CommonLib(newcproc)
 my_inc_import_ShareLib(newcproc)
 my_inc_import_RisLib(newcproc)
+my_inc_import_EventLib(newcproc)
 
 my_lib_import_RisLib(newcproc)
 my_lib_import_ShareLib(newcproc)
 my_lib_import_CommonLib(newcproc)
+my_lib_import_EventLib(newcproc)
 
 add_custom_command(
    TARGET  newcproc
