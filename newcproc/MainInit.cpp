@@ -34,7 +34,7 @@ void main_initialize(int argc,char** argv)
 
    TS::reset();
    TS::setProgramName("NewCProc");
-   TS::setProgramPrintLevel(3);
+   TS::setProgramPrintLevel(0);
    TS::initialize();
 
    //***************************************************************************
@@ -92,6 +92,10 @@ void main_initialize(int argc,char** argv)
 void main_finalize()
 {
    Prn::print(Prn::TTA1, "NewCProc Program********************************************END");
+   printf("\n");
+   printf("NewCProc Program********************************************END\n\n");
+   printf("NewCProc Program********************************************END\n\n");
+   printf("NewCProc Program********************************************END\n\n");
 
    // Finalize print facility.
    Prn::finalizePrint();
@@ -101,10 +105,6 @@ void main_finalize()
 
    // Finalize thread services.
    TS::finalize();
-
-   // Done.
-   printf("\n");
-   printf("NewCProc Program********************************************END\n\n");
 }
 
 //******************************************************************************

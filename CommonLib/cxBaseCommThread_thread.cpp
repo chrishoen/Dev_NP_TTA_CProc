@@ -45,10 +45,10 @@ BaseCommThread::BaseCommThread(int aTTAFlag)
    }
 
    BaseClass::mShortThread->setThreadPriority(Cmn::gPriorities.mCommShort);
-   BaseClass::mShortThread->setThreadPrintLevel(3);
+   BaseClass::mShortThread->setThreadPrintLevel(0);
 
    BaseClass::mLongThread->setThreadPriority(Cmn::gPriorities.mCommLong);
-   BaseClass::mLongThread->setThreadPrintLevel(3);
+   BaseClass::mLongThread->setThreadPrintLevel(0);
 
    // Set base class call pointers.
    BaseClass::mShortThread->mThreadInitCallPointer = std::bind(&BaseCommThread::threadInitFunction, this);
