@@ -176,22 +176,25 @@ void SuperStateEvaluator::doEvaluateTTA()
    // Evaluate path variables.
 
    // Evaluate the superstate. Send an event accordingly.
+   if (mSuperStateTTA.mPreferRFPath != mLastSuperStateTTA.mPreferRFPath)
+   {
+      Prn::print(Prn::TTA1, "TTA Prefer RF Path ********************** %s", get_TTA_RFPath_asString(mSuperStateTTA.mPreferRFPath));
+      // Create new event record, set args, and send it to the event thread.
+      Evt::EventRecord* tRecord = new Evt::EventRecord(Evt::cEvt_Ident_TTA_PreferRFPath);
+      tRecord->setArg1("%s", get_TTA_RFPath_asString(mSuperStateTTA.mPreferRFPath));
+      tRecord->sendToEventLogThread();
+   }
+
+   // Evaluate the superstate. Send an event accordingly.
    if (mSuperStateTTA.mRFPath != mLastSuperStateTTA.mRFPath)
    {
+      Prn::print(Prn::TTA1, "TTA RF Path ***************************** %s", get_TTA_RFPath_asString(mSuperStateTTA.mRFPath));
       // Create new event record, set args, and send it to the event thread.
       Evt::EventRecord* tRecord = new Evt::EventRecord(Evt::cEvt_Ident_TTA_RFPath);
       tRecord->setArg1("%s", get_TTA_RFPath_asString(mSuperStateTTA.mRFPath));
       tRecord->sendToEventLogThread();
    }
 
-   // Evaluate the superstate. Send an event accordingly.
-   if (mSuperStateTTA.mPreferRFPath != mLastSuperStateTTA.mPreferRFPath)
-   {
-      // Create new event record, set args, and send it to the event thread.
-      Evt::EventRecord* tRecord = new Evt::EventRecord(Evt::cEvt_Ident_TTA_PreferRFPath);
-      tRecord->setArg1("%s", get_TTA_RFPath_asString(mSuperStateTTA.mPreferRFPath));
-      tRecord->sendToEventLogThread();
-   }
 }
 
 //******************************************************************************

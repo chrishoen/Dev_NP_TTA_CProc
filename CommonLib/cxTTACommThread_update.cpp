@@ -25,6 +25,7 @@ namespace CX
 
 void TTACommThread::doUpdateSysInfoTTA()
 {
+	return;
 	// Guard.
 	if (mSysInfoValid) return;
 	if (!mBirthCertificateValid) return;
@@ -53,6 +54,7 @@ void TTACommThread::doUpdateSysInfoTTA()
 
 void TTACommThread::doUpdateGainCalcTTA()
 {
+	return;
 	// Nicknames.
 	SuperStateTTA& tTTAX = SM::gShare->mSuperStateTTA;
 	SuperStateDA& tDAX = SM::gShare->mSuperStateDA;
@@ -89,6 +91,7 @@ void TTACommThread::doUpdateGainCalcTTA()
 
 void TTACommThread::doUpdateRFPathTTA()
 {
+	return;
 	// Nicknames.
 	SuperStateTTA& tTTAX = SM::gShare->mSuperStateTTA;
 	SuperWantsTTA& tTTAW = SM::gShare->mSuperWantsTTA;

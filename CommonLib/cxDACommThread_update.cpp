@@ -25,6 +25,8 @@ namespace CX
 
 void DACommThread::doUpdateSysInfoDA()
 {
+	return;
+
 	SuperStateDA& tDAX = SM::gShare->mSuperStateDA;
 
 	// Guard.
@@ -57,6 +59,7 @@ void DACommThread::doUpdateSysInfoDA()
 
 void DACommThread::doUpdateGainCalcDA()
 {
+	return;
 	// Nicknames.
 	SuperStateTTA& tTTAX = SM::gShare->mSuperStateTTA;
 	SuperStateDA& tDAX = SM::gShare->mSuperStateDA;
@@ -93,6 +96,7 @@ void DACommThread::doUpdateGainCalcDA()
 
 void DACommThread::doUpdateUserAttenDA()
 {
+	return;
 	// Nicknames.
 	SuperStateDA& tDAX = SM::gShare->mSuperStateDA;
 	Calc::GainCalc& tCalc = SM::gShare->mGainCalc;
