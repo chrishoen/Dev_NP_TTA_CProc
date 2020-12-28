@@ -10,8 +10,8 @@ Detestion:
 
 #include "smShare.h"
 #include "sxMsgDefs.h"
-
 #include "cxCProcParms.h"
+#include "evtService.h"
 
 #include "cxBaseCommThread.h"
 
@@ -52,6 +52,9 @@ void BaseCommThread::executeProcessLoop()
          //*********************************************************************
          // Wait.
 
+         // If true then there was a serial timeout.
+         bool tTimeoutFlag = false;
+
          // Wait for timer or abort.
          mLoopWaitable.waitForTimerOrSemaphore();
 
@@ -68,7 +71,7 @@ void BaseCommThread::executeProcessLoop()
 
          try
          {
-            // Initialize. This will be set by the specific subfunction.
+            // Default. This will be set by the specific subfunction.
             mProcExitCode = cProcExitNormal;
 
             // Test for a notification exception.
@@ -79,16 +82,20 @@ void BaseCommThread::executeProcessLoop()
             mNotify.setMaskOne("RxMsg", cRxMsgNotifyCode);
 
             // Execute a specific subfunction based on the state.
+            // This can throw an exception.
             doProcess();
          }
          catch (int aException)
          {
-            if (aException == 667)
+            if (aException == Ris::Threads::Notify::cTimeoutException)
             {
                Prn::print(0, "EXCEPTION %sCommThread::doProcess TIMEOUT %s %d",
                   mLabel,
                   SX::get_MsgId_asString(mLoopState),
                   aException);
+
+               // Serial rx timeout.
+               tTimeoutFlag = true;
             }
             else if (aException == cProcExitError)
             {
@@ -104,6 +111,32 @@ void BaseCommThread::executeProcessLoop()
                   SX::get_MsgId_asString(mLoopState),
                   aException,
                   mNotify.mException);
+            }
+         }
+
+         //*********************************************************************
+         //*********************************************************************
+         //*********************************************************************
+         // Events.
+
+         if (mTTAFlag)
+         {
+            // Send an event accordingly.
+            if (Evt::EventRecord* tRecord = Evt::trySendEvent(
+               Evt::cEvt_Ident_TTA_CommLost,
+               tTimeoutFlag))
+            {
+               tRecord->sendToEventLogThread();
+            }
+         }
+         else
+         {
+            // Send an event accordingly.
+            if (Evt::EventRecord* tRecord = Evt::trySendEvent(
+               Evt::cEvt_Ident_DA_CommLost,
+               tTimeoutFlag))
+            {
+               tRecord->sendToEventLogThread();
             }
          }
       }
@@ -122,6 +155,10 @@ void BaseCommThread::executeProcessLoop()
             mLabel,
             aException);
       }
+   }
+   catch (...)
+   {
+      Prn::print(0, "EXCEPTION %sCommThread::executeProcessLoop UNKNOWN", mLabel);
    }
 
    // Finalize the synchronization objects.
