@@ -50,6 +50,13 @@ bool TTACommThread::doProcess_gsx()
    // Copy the response message payload into the super state.
    SuperStateTTA_copyFrom(&SM::gShare->mSuperStateTTA, mRxMsgDecoder.mRxPayload);
 
+   // Update the mode info.
+   SM::gShare->doUpdateModeInfoTTA();
+   // Update the gain calculations.
+   doUpdateGainCalcTTA();
+   // Update the rf path.
+   doUpdateRFPathTTA();
+
    // Done.
    return true;
 }

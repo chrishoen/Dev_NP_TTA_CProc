@@ -50,6 +50,13 @@ bool DACommThread::doProcess_gsx()
    // Copy the response message payload into the super state.
    SuperStateDA_copyFrom(&SM::gShare->mSuperStateDA, mRxMsgDecoder.mRxPayload);
 
+   // Update the mode info.
+   SM::gShare->doUpdateModeInfoDA();
+   // Update the gain calculations.
+   doUpdateGainCalcDA();
+   doUpdateUserAttenDA();
+   doUpdateSysInfoDA();
+
    // Done.
    return true;
 }

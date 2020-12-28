@@ -44,6 +44,12 @@ bool DACommThread::doProcess_gbc()
    }
    Prn::print(mPF1, "DA  Proc gbc birth certificate");
 
+   // Update the birth certificate.
+   mBirthCertificate.fillWithCommandData(mRxMsgDecoder.mRxPayload);
+   mBirthCertificate.doWriteToJsonFile();
+   doUpdateSysInfoDA();
+   mBirthCertificateValid = true;
+
    // Done.
    return true;
 }

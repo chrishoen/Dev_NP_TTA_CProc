@@ -44,6 +44,12 @@ bool TTACommThread::doProcess_gft()
    }
    Prn::print(mPF1, "TTA Proc gft factory test record");
 
+   // Update the factory test record.
+   mFactoryTestRecordTTA.fillWithCommandData(mRxMsgDecoder.mRxPayload);
+   mFactoryTestRecordTTA.doWriteToJsonFile();
+   mFactoryTestRecordTTA.mValidFlag = true;
+   mFactoryTestRecordValid = true;
+
    // Done.
    return true;
 }

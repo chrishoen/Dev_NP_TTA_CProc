@@ -44,6 +44,12 @@ bool TTACommThread::doProcess_gbc()
    }
    Prn::print(mPF1, "TTA Proc gbc birth certificate");
 
+   // Update the birth certificate.
+   mBirthCertificate.fillWithCommandData(mRxMsgDecoder.mRxPayload);
+   mBirthCertificate.doWriteToJsonFile();
+   doUpdateSysInfoTTA();
+   mBirthCertificateValid = true;
+
    // Done.
    return true;
 }

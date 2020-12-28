@@ -44,6 +44,11 @@ bool DACommThread::doProcess_gsv()
    }
    Prn::print(mPF1, "DA  Proc gsv software version");
 
+   // Update the software version.
+   mSoftwareVersion = mRxMsgDecoder.mRxPayload;
+   mSoftwareVersionValid = true;
+   doUpdateSysInfoDA();
+
    // Done.
    return true;
 }

@@ -44,6 +44,11 @@ bool TTACommThread::doProcess_gsv()
    }
    Prn::print(mPF1, "TTA Proc gsv software version");
 
+   // Update the software version.
+   mSoftwareVersion = mRxMsgDecoder.mRxPayload;
+   mSoftwareVersionValid = true;
+   doUpdateSysInfoTTA();
+
    // Done.
    return true;
 }

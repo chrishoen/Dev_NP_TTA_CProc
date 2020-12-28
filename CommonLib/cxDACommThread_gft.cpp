@@ -44,6 +44,12 @@ bool DACommThread::doProcess_gft()
    }
    Prn::print(mPF1, "DA  Proc gft factory test record");
 
+   // Update the factory test record.
+   mFactoryTestRecordDA.fillWithCommandData(mRxMsgDecoder.mRxPayload);
+   mFactoryTestRecordDA.doWriteToJsonFile();
+   mFactoryTestRecordDA.mValidFlag = true;
+   mFactoryTestRecordValid = true;
+
    // Done.
    return true;
 }
