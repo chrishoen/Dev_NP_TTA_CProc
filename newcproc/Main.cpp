@@ -2,6 +2,7 @@
 
 #include "risThreadsProcess.h"
 #include "MainInit.h"
+#include "MainInfo.h"
 #include "risCmdLineConsole.h"
 #include "CmdLineExec.h"
 
@@ -20,6 +21,7 @@ int main(int argc,char** argv)
    // Begin program.
 
    main_initialize(argc, argv);
+   main_info_initialize();
 
    //***************************************************************************
    //***************************************************************************

@@ -21,17 +21,6 @@ void main_initialize(int argc,char** argv)
    //***************************************************************************
    //***************************************************************************
    //***************************************************************************
-   // Set program directory.
-
-   // Set the base directory global variable to the cproc directory path.
-   Ris::setBaseDirectory("/opt/prime");
-
-   // Set the program working directory to the cproc directory path.
-   Ris::chdirToBaseDirectory();
-
-   //***************************************************************************
-   //***************************************************************************
-   //***************************************************************************
    // Enter process.
 
    // Set program process for high priority.
@@ -69,29 +58,16 @@ void main_initialize(int argc,char** argv)
    // Initialize print facility.
 
    // Initialize print.
-   Prn::resetPrint(CX::gCProcParms.mPrintViewIPAddress);
-   Prn::useConsole(1);
-   Prn::useConsole(2);
-   Prn::initializePrint();
-
-   // Initialize print filters.
-   Prn::setFilter(Prn::TTA1, true, 1);
-   Prn::setFilter(Prn::TTA2, true, 2);
-   Prn::setFilter(Prn::TTA3, false, 1);
-   Prn::setFilter(Prn::TTA4, false, 1);
-   Prn::setFilter(Prn::TTA5, false, 1); //
-   Prn::setFilter(Prn::TTA6, false, 2); //
-   Prn::setFilter(Prn::TTA7, false, 1);
-   Prn::setFilter(Prn::TTA8, false, 1);
-
-   Prn::setFilter(Prn::DA1, true, 1);
-   Prn::setFilter(Prn::DA2, true, 2);
-   Prn::setFilter(Prn::DA3, false, 1);
-   Prn::setFilter(Prn::DA4, false, 1);
-   Prn::setFilter(Prn::DA5, false, 1); //
-   Prn::setFilter(Prn::DA6, false, 2); //
-   Prn::setFilter(Prn::DA7, false, 1);
-   Prn::setFilter(Prn::DA8, false, 1);
+   Prn::resetPrint();
+   if (CX::gCProcParms.mPrintViewEnable)
+   {
+      Prn::usePrintFilterTable(&SM::gShare->mPrintFilterTable);
+      Prn::resetPrint(CX::gCProcParms.mPrintViewIPAddress);
+      Prn::useConsole(1);
+      Prn::useConsole(2);
+      Prn::useConsole(4);
+      Prn::initializePrint();
+   }
 
    //***************************************************************************
    //***************************************************************************
