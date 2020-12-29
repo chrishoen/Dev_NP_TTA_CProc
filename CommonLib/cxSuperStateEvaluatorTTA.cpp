@@ -11,7 +11,8 @@ Description:
 #include "SuperStateDefs.h"
 #include "evtService.h"
 
-#include "cxSuperStateEvaluator.h"
+#define  _CXSUPERSTATEEVALUATORTTA_CPP_
+#include "cxSuperStateEvaluatorTTA.h"
 
 namespace CX
 {
@@ -19,9 +20,25 @@ namespace CX
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
+// Constructor
+
+SuperStateEvaluatorTTA::SuperStateEvaluatorTTA()
+{
+   reset();
+}
+
+void SuperStateEvaluatorTTA::reset()
+{
+   mValidFlagDA = false;
+   mValidFlagTTA = false;
+}
+
+//******************************************************************************
+//******************************************************************************
+//******************************************************************************
 // Evaluate superstates. The superstates are obtained from shared memory.
 
-void SuperStateEvaluator::doEvaluateTTA()
+void SuperStateEvaluatorTTA::doEvaluate()
 {
    //***************************************************************************
    //***************************************************************************
@@ -84,7 +101,7 @@ void SuperStateEvaluator::doEvaluateTTA()
 
    // Line resistiance.
    float tLineResistance = 0.0;
-
+#if 0
    // If tta and da superstates are valid.
    if (mValidFlagDA)
    {
@@ -103,7 +120,7 @@ void SuperStateEvaluator::doEvaluateTTA()
          if (tLineResistance < 0) tLineResistance = 0;
       }
    }
-
+#endif
    // Store line resistance.
    mSuperStateTTA.mLineResistance = tLineResistance;
    SM::gShare->mSuperStateTTA.mLineResistance = tLineResistance;

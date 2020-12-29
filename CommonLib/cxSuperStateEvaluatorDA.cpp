@@ -11,7 +11,8 @@ Description:
 #include "SuperStateDefs.h"
 #include "evtService.h"
 
-#include "cxSuperStateEvaluator.h"
+#define  _CXSUPERSTATEEVALUATORDA_CPP_
+#include "cxSuperStateEvaluatorDA.h"
 
 namespace CX
 {
@@ -19,9 +20,25 @@ namespace CX
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
+// Constructor
+
+SuperStateEvaluatorDA::SuperStateEvaluatorDA()
+{
+   reset();
+}
+
+void SuperStateEvaluatorDA::reset()
+{
+   mValidFlagDA = false;
+   mValidFlagTTA = false;
+}
+
+//******************************************************************************
+//******************************************************************************
+//******************************************************************************
 // Evaluate superstates. The superstates are obtained from shared memory.
 
-void SuperStateEvaluator::doEvaluateDA()
+void SuperStateEvaluatorDA::doEvaluate()
 {
    //***************************************************************************
    //***************************************************************************

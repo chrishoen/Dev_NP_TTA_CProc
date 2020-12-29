@@ -11,7 +11,7 @@ Detestion:
 #include "smShare.h"
 #include "sxMsgDefs.h"
 #include "cxCProcParms.h"
-#include "cxSuperStateEvaluator.h"
+#include "cxSuperStateEvaluatorDA.h"
 
 #include "cxDACommThread.h"
 
@@ -52,7 +52,7 @@ bool DACommThread::doProcess_gsx()
    SuperStateDA_copyFrom(&SM::gShare->mSuperStateDA, mRxMsgDecoder.mRxPayload);
 
    // Evaluate the super state.
-   gSuperStateEvaluator.doEvaluateDA();
+   gSuperStateEvaluatorDA.doEvaluate();
 
    // Update the mode info.
    SM::gShare->doUpdateModeInfoDA();

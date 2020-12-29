@@ -8,8 +8,6 @@
 //******************************************************************************
 
 #include "SuperStateTTA.h"
-#include "SuperStateDA.h"
-#include "SuperStateCU.h"
 
 namespace CX
 {
@@ -20,7 +18,7 @@ namespace CX
 // This class implements evaluation of superstates. It does calculations
 // based on superstate values and generates corresponding events.
 
-class SuperStateEvaluator
+class SuperStateEvaluatorTTA
 {
 public:
 
@@ -38,14 +36,6 @@ public:
    static constexpr float cTTA_MainCurrent_ThreshLo    = 0.30;
    static constexpr float cTTA_LineResistance_ThreshHi = 4.0;
 
-   // DA thresholds.
-   static constexpr float cDA_Temperature_ThreshHi = 40.0;
-   static constexpr float cDA_MainVoltage_ThreshLo = 7.0;
-   static constexpr float cDA_MainCurrent_ThreshLo = 0.30;
-   static constexpr float cDA_TowerVoltage_ThreshLo = 7.0;
-   static constexpr float cDA_TowerCurrent_ThreshLo = 0.30;
-
-
    //***************************************************************************
    //***************************************************************************
    //***************************************************************************
@@ -53,11 +43,9 @@ public:
 
    // Copies of received superstates.
    SuperStateTTA mSuperStateTTA;
-   SuperStateDA  mSuperStateDA;
 
    // Copies of previous received superstates.
    SuperStateTTA mLastSuperStateTTA;
-   SuperStateDA  mLastSuperStateDA;
 
    //***************************************************************************
    //***************************************************************************
@@ -65,8 +53,8 @@ public:
    // Members:
 
    // Valid flags.
-   bool mValidFlagTTA;
    bool mValidFlagDA;
+   bool mValidFlagTTA;
 
    //***************************************************************************
    //***************************************************************************
@@ -74,7 +62,7 @@ public:
    // Methods:
 
    // Constructor.
-   SuperStateEvaluator();
+   SuperStateEvaluatorTTA();
    void reset();
 
    //***************************************************************************
@@ -83,8 +71,7 @@ public:
    // Methods.
 
    // Evaluate superstates. The superstates are obtained from shared memory.
-   void doEvaluateTTA();
-   void doEvaluateDA();
+   void doEvaluate();
 };
 
 //******************************************************************************
@@ -92,10 +79,10 @@ public:
 //******************************************************************************
 // Global instance
 
-#ifdef _CXSUPERSTATEEVALUATOR_CPP_
-          SuperStateEvaluator gSuperStateEvaluator;
+#ifdef _CXSUPERSTATEEVALUATORTTA_CPP_
+          SuperStateEvaluatorTTA gSuperStateEvaluatorTTA;
 #else
-   extern SuperStateEvaluator gSuperStateEvaluator;
+   extern SuperStateEvaluatorTTA gSuperStateEvaluatorTTA;
 #endif
 
 //******************************************************************************
