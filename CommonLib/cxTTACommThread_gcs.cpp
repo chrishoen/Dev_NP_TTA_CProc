@@ -39,10 +39,10 @@ bool TTACommThread::doProcess_gcs()
    // Test the received response message.
    if (!mRxMsgDecoder.mRxValid)
    {
-      Prn::print(mPF1, "TTA Proc   gcs common share ERROR");
+      Prn::print(mPF1, "TTA Proc    gcs  common share ERROR");
       throw cProcExitError;
    }
-   Prn::print(mPF1, "TTA  Proc gcs common share");
+   Prn::print(mPF1, "TTA  Proc  gcs  common share");
 
 
    // Done.

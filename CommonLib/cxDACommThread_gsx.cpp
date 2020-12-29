@@ -43,10 +43,10 @@ bool DACommThread::doProcess_gsx()
    // Test the received response message.
    if (!mRxMsgDecoder.mRxValid)
    {
-      Prn::print(mPF1, "DA  Proc   gsx superstate ERROR");
+      Prn::print(mPF1, "DA  Proc    gsx  superstate ERROR");
       throw cProcExitError;
    }
-   Prn::print(mPF1, "DA  Proc   gsx superstate %d", mTxCount);
+   Prn::print(mPF1, "DA  Proc    gsx  superstate %d", mTxCount);
 
    // Copy the response message payload into the super state.
    SuperStateDA_copyFrom(&SM::gShare->mSuperStateDA, mRxMsgDecoder.mRxPayload);
@@ -55,7 +55,7 @@ bool DACommThread::doProcess_gsx()
    gSuperStateEvaluatorDA.doEvaluate();
 
    // Update the mode info.
-   SM::gShare->doUpdateModeInfoDA();
+   // SM::gShare->doUpdateModeInfoDA();
 
    // Done.
    return true;

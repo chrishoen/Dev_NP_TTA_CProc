@@ -20,14 +20,14 @@ void main_info_initialize()
 	// Update the system info.
 	
 	// Read the birth certificate.
-	Prn::print(Prn::View11, "CU  Update     birth certificate");
+	Prn::print(Prn::CProc1, "CU  Update       birth certificate");
 	BirthCertificateCU tBirthCertificateCU;
 	tBirthCertificateCU.doReadFromJsonFile();
 
 	// Read from the sys info json file, update it with variables, 
 	// and write to it.
-	Prn::print(Prn::View11, "CU  Update     sys info with birth certificate");
-	Prn::print(Prn::View11, "CU  Update     sys info with software version");
+	Prn::print(Prn::CProc1, "CU  Update       sys info with birth certificate");
+	Prn::print(Prn::CProc1, "CU  Update       sys info with software version");
 	gSysInfo.doReadModifyWriteBegin();
 	gSysInfo.readFrom(&tBirthCertificateCU);
 	gSysInfo.mCU_SoftwareVersion = cSoftwareVersion;
@@ -46,10 +46,10 @@ void main_info_initialize()
 	{
 		// Read the factory test record.
 		gFactoryTestRecordCUESS.doReadFromJsonFile();
-		Prn::print(Prn::View11, "CU  Update factory test record ess");
+		Prn::print(Prn::CProc1, "CU  Update  factory test record ess");
 
 		// Update the gain calculator json file.
-		Prn::print(Prn::View11, "CU  Update gain calc with factory test record ess");
+		Prn::print(Prn::CProc1, "CU  Update  gain calc with factory test record ess");
 		Calc::GainCalc* tCalc = &SM::gShare->mGainCalc;
 		tCalc->doReadModifyWriteBegin();
 		tCalc->readFrom(&gFactoryTestRecordCUESS);
@@ -59,10 +59,10 @@ void main_info_initialize()
 	{
 		// Update the gain calculator json file.
 		gFactoryTestRecordCUSA.doReadFromJsonFile();
-		Prn::print(Prn::View11, "CU  Update factory test record sa");
+		Prn::print(Prn::CProc1, "CU  Update  factory test record sa");
 
 		// Update the gain calculator json file.
-		Prn::print(Prn::View11, "CU  Update gain calc with factory test record sa");
+		Prn::print(Prn::CProc1, "CU  Update  gain calc with factory test record sa");
 		Calc::GainCalc* tCalc = &SM::gShare->mGainCalc;
 		tCalc->doReadModifyWriteBegin();
 		tCalc->readFrom(&gFactoryTestRecordCUSA);

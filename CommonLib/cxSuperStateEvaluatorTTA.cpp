@@ -47,7 +47,7 @@ void SuperStateEvaluatorTTA::doEvaluate()
    // Store copies of the last and current superstate.
    if (mFirstFlag)
    {
-      Prn::print(Prn::TTA1, "TTA Eval       first **********************");
+      Prn::print(Prn::TTA1, "TTA Eval         first **********************");
       // If this is the first update then set the last and the current to
       // the current from shared memory.
       mTTAX = SM::gShare->mSuperStateTTA;
@@ -223,7 +223,7 @@ void SuperStateEvaluatorTTA::doEvaluate()
    if (mTTAX.mRFPath != mLastTTAX.mRFPath || mFirstFlag)
    {
       // Update the gain calculator.
-      Prn::print(Prn::TTA1, "TTA Update     gain calc with rf path");
+      Prn::print(Prn::TTA1, "TTA Update       gain calc with rf path");
       Calc::GainCalc* tCalc = &SM::gShare->mGainCalc;
       tCalc->doReadModifyWriteBegin();
       tCalc->mRFPath = mTTAX.mRFPath;

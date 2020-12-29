@@ -42,19 +42,19 @@ bool DACommThread::doProcess_gbc()
    // Test the received response message.
    if (!mRxMsgDecoder.mRxValid)
    {
-      Prn::print(mPF1, "DA  Proc   gbc birth certificate ERROR");
+      Prn::print(mPF1, "DA  Proc   gbc  birth certificate ERROR");
       throw cProcExitError;
    }
-   Prn::print(mPF1, "DA  Proc   gbc birth certificate");
+   Prn::print(mPF1, "DA  Proc    gbc  birth certificate");
 
    // Update the birth certificate json file.
-   Prn::print(Prn::DA1, "DA  Update     birth certificate");
+   Prn::print(Prn::DA1, "DA  Update       birth certificate");
    BirthCertificateDA tBirthCertificate;
    tBirthCertificate.fillWithCommandData(mRxMsgDecoder.mRxPayload);
    tBirthCertificate.doWriteToJsonFile();
 
    // Update the sys info json file.
-   Prn::print(Prn::DA1, "DA  Update     sysinfo with birth certificate");
+   Prn::print(Prn::DA1, "DA  Update       sysinfo with birth certificate");
    gSysInfo.doReadModifyWriteBegin();
    gSysInfo.readFrom(&tBirthCertificate);
    gSysInfo.doReadModifyWriteEnd();
