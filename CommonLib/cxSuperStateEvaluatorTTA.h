@@ -42,10 +42,10 @@ public:
    // Members:
 
    // Copies of received superstates.
-   SuperStateTTA mSuperStateTTA;
+   SuperStateTTA mTTAX;
 
    // Copies of previous received superstates.
-   SuperStateTTA mLastSuperStateTTA;
+   SuperStateTTA mLastTTAX;
 
    //***************************************************************************
    //***************************************************************************

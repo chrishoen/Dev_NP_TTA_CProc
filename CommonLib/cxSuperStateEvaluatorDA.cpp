@@ -50,16 +50,16 @@ void SuperStateEvaluatorDA::doEvaluate()
       // If not valid then this is the first update.
       // Set the last and the current to the current from shared memory.
       mValidFlagDA = true;
-      mSuperStateDA = SM::gShare->mSuperStateDA;
-      mLastSuperStateDA = mSuperStateDA;
+      mDAX = SM::gShare->mSuperStateDA;
+      mLastDAX = mDAX;
    }
    else
    {
       // If valid then this is not the first update.
       // Set the last to the previous current and set the current from shared
       // memory.
-      mLastSuperStateDA = mSuperStateDA;
-      mSuperStateDA = SM::gShare->mSuperStateDA;
+      mLastDAX = mDAX;
+      mDAX = SM::gShare->mSuperStateDA;
    }
 
    //***************************************************************************
@@ -70,45 +70,45 @@ void SuperStateEvaluatorDA::doEvaluate()
    // Evaluate the superstate. Send an event accordingly.
    if (Evt::EventRecord* tRecord = Evt::trySendEvent(
       Evt::cEvt_Ident_DA_Temperature,
-      mSuperStateDA.mTemperature > cDA_Temperature_ThreshHi))
+      mDAX.mTemperature > cDA_Temperature_ThreshHi))
    {
-      tRecord->setArg1("%.1f", mSuperStateDA.mTemperature);
+      tRecord->setArg1("%.1f", mDAX.mTemperature);
       tRecord->sendToEventLogThread();
    }
 
    // Evaluate the superstate. Send an event accordingly.
    if (Evt::EventRecord* tRecord = Evt::trySendEvent(
       Evt::cEvt_Ident_DA_MainVoltage,
-      mSuperStateDA.mMainInputVoltage < cDA_MainVoltage_ThreshLo))
+      mDAX.mMainInputVoltage < cDA_MainVoltage_ThreshLo))
    {
-      tRecord->setArg1("%.1f", mSuperStateDA.mMainInputVoltage);
+      tRecord->setArg1("%.1f", mDAX.mMainInputVoltage);
       tRecord->sendToEventLogThread();
    }
 
    // Evaluate the superstate. Send an event accordingly.
    if (Evt::EventRecord* tRecord = Evt::trySendEvent(
       Evt::cEvt_Ident_DA_MainCurrent,
-      mSuperStateDA.mMainInputCurrent < cDA_MainCurrent_ThreshLo))
+      mDAX.mMainInputCurrent < cDA_MainCurrent_ThreshLo))
    {
-      tRecord->setArg1("%.1f", mSuperStateDA.mMainInputCurrent);
+      tRecord->setArg1("%.1f", mDAX.mMainInputCurrent);
       tRecord->sendToEventLogThread();
    }
 
    // Evaluate the superstate. Send an event accordingly.
    if (Evt::EventRecord* tRecord = Evt::trySendEvent(
       Evt::cEvt_Ident_DA_TowerVoltage,
-      mSuperStateDA.mTowerVoltage < cDA_TowerVoltage_ThreshLo))
+      mDAX.mTowerVoltage < cDA_TowerVoltage_ThreshLo))
    {
-      tRecord->setArg1("%.1f", mSuperStateDA.mTowerVoltage);
+      tRecord->setArg1("%.1f", mDAX.mTowerVoltage);
       tRecord->sendToEventLogThread();
    }
 
    // Evaluate the superstate. Send an event accordingly.
    if (Evt::EventRecord* tRecord = Evt::trySendEvent(
       Evt::cEvt_Ident_DA_TowerCurrent,
-      mSuperStateDA.mTowerCurrent < cDA_TowerCurrent_ThreshLo))
+      mDAX.mTowerCurrent < cDA_TowerCurrent_ThreshLo))
    {
-      tRecord->setArg1("%.1f", mSuperStateDA.mTowerCurrent);
+      tRecord->setArg1("%.1f", mDAX.mTowerCurrent);
       tRecord->sendToEventLogThread();
    }
 
@@ -118,19 +118,19 @@ void SuperStateEvaluatorDA::doEvaluate()
    // Evaluate amp class variables.
 
    // Evaluate the superstate. Send an event accordingly.
-   if (mSuperStateDA.mAmpClass != mLastSuperStateDA.mAmpClass)
+   if (mDAX.mAmpClass != mLastDAX.mAmpClass)
    {
       // Create new event record, set args, and send it to the event thread.
       Evt::EventRecord* tRecord = new Evt::EventRecord(Evt::cEvt_Ident_DA_AmpCurrent);
-      tRecord->mCState = abs(mSuperStateDA.mAmpClass) > 0;
-      switch (abs(mSuperStateDA.mAmpClass))
+      tRecord->mCState = abs(mDAX.mAmpClass) > 0;
+      switch (abs(mDAX.mAmpClass))
       {
       case 0: tRecord->mSeverity = Evt::cEvt_SeverityInfo;
       case 1: tRecord->mSeverity = Evt::cEvt_SeveritySevere;
       case 2: tRecord->mSeverity = Evt::cEvt_SeverityCritical;
       }
-      tRecord->setArg1("%.1f", mSuperStateDA.mAmpRegCurrent);
-      tRecord->setArg2("%s", get_AmpClass_asString(mSuperStateDA.mAmpClass));
+      tRecord->setArg1("%.1f", mDAX.mAmpRegCurrent);
+      tRecord->setArg2("%s", get_AmpClass_asString(mDAX.mAmpClass));
       tRecord->sendToEventLogThread();
    }
 
@@ -143,11 +143,11 @@ void SuperStateEvaluatorDA::doEvaluate()
    SM::gShare->doUpdateModeInfoDA();
 
    // Evaluate the superstate. Send an event accordingly.
-   if (mSuperStateDA.mOpMode != mLastSuperStateDA.mOpMode)
+   if (mDAX.mOpMode != mLastDAX.mOpMode)
    {
       // Create new event record, set args, and send it to the event thread.
       Evt::EventRecord* tRecord = new Evt::EventRecord(Evt::cEvt_Ident_DA_OpMode);
-      tRecord->setArg1("%s", get_OpMode_asString(mSuperStateDA.mOpMode));
+      tRecord->setArg1("%s", get_OpMode_asString(mDAX.mOpMode));
       tRecord->sendToEventLogThread();
    }
 
@@ -157,27 +157,27 @@ void SuperStateEvaluatorDA::doEvaluate()
    // Evaluate path variables.
 
    // Evaluate the superstate. Send an event accordingly.
-   if (mSuperStateDA.mRFPath != mLastSuperStateDA.mRFPath)
+   if (mDAX.mRFPath != mLastDAX.mRFPath)
    {
       // Create new event record, set args, and send it to the event thread.
       Evt::EventRecord* tRecord = new Evt::EventRecord(Evt::cEvt_Ident_DA_RFPath);
-      tRecord->setArg1("%s", get_DA_RFPath_asString(mSuperStateDA.mRFPath));
+      tRecord->setArg1("%s", get_DA_RFPath_asString(mDAX.mRFPath));
       tRecord->sendToEventLogThread();
    }
 
    // Evaluate the superstate. Send an event accordingly.
-   if (mSuperStateDA.mUserAtten != mLastSuperStateDA.mUserAtten)
+   if (mDAX.mUserAtten != mLastDAX.mUserAtten)
    {
       // Create new event record, set args, and send it to the event thread.
       Evt::EventRecord* tRecord = new Evt::EventRecord(Evt::cEvt_Ident_DA_UserAtten);
-      tRecord->setArg1("%.1f", mSuperStateDA.mUserAtten);
+      tRecord->setArg1("%.1f", mDAX.mUserAtten);
       tRecord->sendToEventLogThread();
 
       // Update the gain calculation json file.
       Prn::print(Prn::DA1, "DA  Update gain calc");
       Calc::GainCalc* tCalc = &SM::gShare->mGainCalc;
       tCalc->doReadModifyWriteBegin();
-      tCalc->mAttenSetting = mSuperStateDA.mUserAtten;
+      tCalc->mAttenSetting = mDAX.mUserAtten;
       tCalc->doReadModifyWriteEnd();
    }
 }

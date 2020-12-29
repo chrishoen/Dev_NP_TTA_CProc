@@ -44,10 +44,10 @@ public:
    // Members:
 
    // Copies of received superstates.
-   SuperStateDA  mSuperStateDA;
+   SuperStateDA  mDAX;
 
    // Copies of previous received superstates.
-   SuperStateDA  mLastSuperStateDA;
+   SuperStateDA  mLastDAX;
 
    //***************************************************************************
    //***************************************************************************
