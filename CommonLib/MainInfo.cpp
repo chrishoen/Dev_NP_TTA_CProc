@@ -20,12 +20,14 @@ void main_info_initialize()
 	// Update the system info.
 	
 	// Read the birth certificate.
+	Prn::print(Prn::View11, "CU  Update     birth certificate");
 	BirthCertificateCU tBirthCertificateCU;
 	tBirthCertificateCU.doReadFromJsonFile();
 
 	// Read from the sys info json file, update it with variables, 
 	// and write to it.
-	Prn::print(Prn::View11, "CU  Update sys info");
+	Prn::print(Prn::View11, "CU  Update     sys info with birth certificate");
+	Prn::print(Prn::View11, "CU  Update     sys info with software version");
 	gSysInfo.doReadModifyWriteBegin();
 	gSysInfo.readFrom(&tBirthCertificateCU);
 	gSysInfo.mCU_SoftwareVersion = cSoftwareVersion;
@@ -39,6 +41,7 @@ void main_info_initialize()
 	//***************************************************************************
 	// Update the gain calc..
 
+	return;
 	if (gSysInfo.mESSFlag)
 	{
 		// Read the factory test record.
