@@ -9,8 +9,11 @@ Detestion:
 #include "stdafx.h"
 
 #include "smShare.h"
+#include "SysInfo.h"
+
 #include "sxMsgDefs.h"
 #include "cxCProcParms.h"
+#include "BirthCertificate.h"
 
 #include "cxDACommThread.h"
 
@@ -44,11 +47,17 @@ bool DACommThread::doProcess_gbc()
    }
    Prn::print(mPF1, "DA  Proc gbc birth certificate");
 
-   // Update the birth certificate.
-   mBirthCertificate.fillWithCommandData(mRxMsgDecoder.mRxPayload);
-   mBirthCertificate.doWriteToJsonFile();
-   doUpdateSysInfoDA();
-   mBirthCertificateValid = true;
+   // Update the birth certificate json file.
+   Prn::print(Prn::DA1, "DA  Update birth certificate");
+   BirthCertificateDA tBirthCertificate;
+   tBirthCertificate.fillWithCommandData(mRxMsgDecoder.mRxPayload);
+   tBirthCertificate.doWriteToJsonFile();
+
+   // Update the sys info json file.
+   Prn::print(Prn::DA1, "DA  Update sysinfo with birth certificate");
+   gSysInfo.doReadModifyWriteBegin();
+   gSysInfo.readFrom(&tBirthCertificate);
+   gSysInfo.doReadModifyWriteEnd();
 
    // Done.
    return true;

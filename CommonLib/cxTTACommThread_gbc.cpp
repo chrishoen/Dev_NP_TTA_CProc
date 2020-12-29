@@ -9,6 +9,9 @@ Detestion:
 #include "stdafx.h"
 
 #include "smShare.h"
+#include "SysInfo.h"
+#include "BirthCertificate.h"
+
 #include "sxMsgDefs.h"
 #include "cxCProcParms.h"
 
@@ -44,11 +47,17 @@ bool TTACommThread::doProcess_gbc()
    }
    Prn::print(mPF1, "TTA Proc gbc birth certificate");
 
-   // Update the birth certificate.
-   mBirthCertificate.fillWithCommandData(mRxMsgDecoder.mRxPayload);
-   mBirthCertificate.doWriteToJsonFile();
-   doUpdateSysInfoTTA();
-   mBirthCertificateValid = true;
+   // Update the birth certificate json file.
+   Prn::print(Prn::TTA1, "TTA Update birth certificate");
+   BirthCertificateTTA tBirthCertificate;
+   tBirthCertificate.fillWithCommandData(mRxMsgDecoder.mRxPayload);
+   tBirthCertificate.doWriteToJsonFile();
+
+   // Update the sys info json file.
+   Prn::print(Prn::TTA1, "TTA Update sys info with birth certificate");
+   gSysInfo.doReadModifyWriteBegin();
+   gSysInfo.readFrom(&tBirthCertificate);
+   gSysInfo.doReadModifyWriteEnd();
 
    // Done.
    return true;

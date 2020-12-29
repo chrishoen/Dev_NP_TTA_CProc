@@ -122,6 +122,9 @@ void SuperStateEvaluator::doEvaluateDA()
    //***************************************************************************
    // Evaluate mode variables.
 
+   // Update the mode info.
+   SM::gShare->doUpdateModeInfoDA();
+
    // Evaluate the superstate. Send an event accordingly.
    if (mSuperStateDA.mOpMode != mLastSuperStateDA.mOpMode)
    {
@@ -152,6 +155,13 @@ void SuperStateEvaluator::doEvaluateDA()
       Evt::EventRecord* tRecord = new Evt::EventRecord(Evt::cEvt_Ident_DA_UserAtten);
       tRecord->setArg1("%.1f", mSuperStateDA.mUserAtten);
       tRecord->sendToEventLogThread();
+
+      // Update the gain calculation json file.
+      Prn::print(Prn::DA1, "DA  Update gain calc");
+      Calc::GainCalc* tCalc = &SM::gShare->mGainCalc;
+      tCalc->doReadModifyWriteBegin();
+      tCalc->mAttenSetting = mSuperStateDA.mUserAtten;
+      tCalc->doReadModifyWriteEnd();
    }
 }
 

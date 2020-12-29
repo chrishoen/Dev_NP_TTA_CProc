@@ -56,10 +56,6 @@ bool DACommThread::doProcess_gsx()
 
    // Update the mode info.
    SM::gShare->doUpdateModeInfoDA();
-   // Update the gain calculations.
-   doUpdateGainCalcDA();
-   doUpdateUserAttenDA();
-   doUpdateSysInfoDA();
 
    // Done.
    return true;

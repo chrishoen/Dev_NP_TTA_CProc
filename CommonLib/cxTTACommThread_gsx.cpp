@@ -56,10 +56,6 @@ bool TTACommThread::doProcess_gsx()
 
    // Update the mode info.
    SM::gShare->doUpdateModeInfoTTA();
-   // Update the gain calculations.
-   doUpdateGainCalcTTA();
-   // Update the rf path.
-   doUpdateRFPathTTA();
 
    // Done.
    return true;

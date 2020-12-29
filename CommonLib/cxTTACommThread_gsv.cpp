@@ -11,6 +11,7 @@ Detestion:
 #include "smShare.h"
 #include "sxMsgDefs.h"
 #include "cxCProcParms.h"
+#include "SysInfo.h"
 
 #include "cxTTACommThread.h"
 
@@ -45,9 +46,11 @@ bool TTACommThread::doProcess_gsv()
    Prn::print(mPF1, "TTA Proc gsv software version");
 
    // Update the software version.
-   mSoftwareVersion = mRxMsgDecoder.mRxPayload;
-   mSoftwareVersionValid = true;
-   doUpdateSysInfoTTA();
+   Prn::print(Prn::View11, "TTA Update sys info with software version");
+   std::string tSoftwareVersion = mRxMsgDecoder.mRxPayload;
+   gSysInfo.doReadModifyWriteBegin();
+   gSysInfo.mTTA_SoftwareVersion = tSoftwareVersion;
+   gSysInfo.doReadModifyWriteEnd();
 
    // Done.
    return true;

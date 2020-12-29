@@ -25,12 +25,10 @@ void main_info_initialize()
 
 	// Read from the sys info json file, update it with variables, 
 	// and write to it.
-	gSysInfo.doReadModifyWriteBegin();
 	Prn::print(Prn::View11, "CU  Update sys info");
-
+	gSysInfo.doReadModifyWriteBegin();
 	gSysInfo.readFrom(&tBirthCertificateCU);
 	gSysInfo.mCU_SoftwareVersion = cSoftwareVersion;
-
 	gSysInfo.doReadModifyWriteEnd();
 
 	// Set the hlc threshold.
@@ -47,34 +45,25 @@ void main_info_initialize()
 		gFactoryTestRecordCUESS.doReadFromJsonFile();
 		Prn::print(Prn::View11, "CU  Update factory test record ess");
 
-		// Read the current system gain calculation json file.
-		Prn::print(Prn::View11, "CU  Update gain calc ess");
+		// Update the gain calculator json file.
+		Prn::print(Prn::View11, "CU  Update gain calc with factory test record ess");
 		Calc::GainCalc* tCalc = &SM::gShare->mGainCalc;
 		tCalc->doReadModifyWriteBegin();
-
-		// Set some variables.
 		tCalc->readFrom(&gFactoryTestRecordCUESS);
-
-		// Calculate the system gain and write to json file.
 		tCalc->doReadModifyWriteEnd();
-		tCalc->show(Prn::View13);
 	}
 	else
 	{
-		// Read the factory test record.
+		// Update the gain calculator json file.
 		gFactoryTestRecordCUSA.doReadFromJsonFile();
 		Prn::print(Prn::View11, "CU  Update factory test record sa");
 
-		// Read the current system gain calculation json file.
-		Prn::print(Prn::View11, "CU  Update gain calc ");
+		// Update the gain calculator json file.
+		Prn::print(Prn::View11, "CU  Update gain calc with factory test record sa");
 		Calc::GainCalc* tCalc = &SM::gShare->mGainCalc;
 		tCalc->doReadModifyWriteBegin();
-
-		// Set some variables.
 		tCalc->readFrom(&gFactoryTestRecordCUSA);
-
-		// Calculate the system gain and write to json file.
-		tCalc->show(Prn::View13);
+		tCalc->doReadModifyWriteEnd();
 	}
 }
 

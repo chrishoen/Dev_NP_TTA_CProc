@@ -36,7 +36,6 @@ TTACommThread::TTACommThread()
    mPF7 = Prn::TTA7;
    mPF8 = Prn::TTA8;
    mRxMsgDecoder.mPF1 = mPF6;
-   mRFPathFirstFlag = true;
 }
 
 //******************************************************************************

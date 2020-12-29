@@ -7,11 +7,7 @@
 //******************************************************************************
 //******************************************************************************
 
-#include <string>
-
 #include "cxBaseCommThread.h"
-#include "BirthCertificate.h"
-#include "FactoryTestRecordDA.h"
 
 namespace CX
 {
@@ -25,15 +21,6 @@ class DACommThread : public BaseCommThread
 {
 public:
    typedef BaseCommThread BaseClass;
-
-   //***************************************************************************
-   //***************************************************************************
-   //***************************************************************************
-   // Members.
-
-   BirthCertificateDA mBirthCertificate;
-   std::string mSoftwareVersion;
-   FactoryTestRecordDA mFactoryTestRecordDA;
 
    //***************************************************************************
    //***************************************************************************
@@ -68,20 +55,6 @@ public:
    bool doProcess_gft() override;
    bool doProcess_gsx() override;
    bool doProcess_gcs() override;
-
-   //***************************************************************************
-   //***************************************************************************
-   //***************************************************************************
-   // Methods.
-
-   // Update the system information.
-   void doUpdateSysInfoDA();
-
-   // Update the gain calculator.
-   void doUpdateGainCalcDA();
-
-   // Update the gain calculator with the user attenuation.
-   void doUpdateUserAttenDA();
 };
 
 //******************************************************************************

@@ -7,11 +7,6 @@
 //******************************************************************************
 //******************************************************************************
 
-#include <string>
-
-#include "BirthCertificate.h"
-#include "FactoryTestRecordTTA.h"
-
 #include "cxBaseCommThread.h"
 
 namespace CX
@@ -26,16 +21,6 @@ class TTACommThread : public BaseCommThread
 {
 public:
    typedef BaseCommThread BaseClass;
-
-   //***************************************************************************
-   //***************************************************************************
-   //***************************************************************************
-   // Members.
-
-   BirthCertificateTTA mBirthCertificate;
-   std::string mSoftwareVersion;
-   FactoryTestRecordTTA mFactoryTestRecordTTA;
-   bool mRFPathFirstFlag;
 
    //***************************************************************************
    //***************************************************************************
@@ -70,20 +55,6 @@ public:
    bool doProcess_gft() override;
    bool doProcess_gsx() override;
    bool doProcess_gcs() override;
-
-   //***************************************************************************
-   //***************************************************************************
-   //***************************************************************************
-   // Methods.
-
-   // Update the system information.
-   void doUpdateSysInfoTTA();
-
-   // Update the gain calculator.
-   void doUpdateGainCalcTTA();
-
-   // Update the gain calculator with the rf path.
-   void doUpdateRFPathTTA();
 };
 
 //******************************************************************************

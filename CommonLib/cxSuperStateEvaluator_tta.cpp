@@ -161,6 +161,9 @@ void SuperStateEvaluator::doEvaluateTTA()
    //***************************************************************************
    // Evaluate mode variables.
 
+   // Update the mode info.
+   SM::gShare->doUpdateModeInfoTTA();
+
    // Evaluate the superstate. Send an event accordingly.
    if (mSuperStateTTA.mOpMode != mLastSuperStateTTA.mOpMode)
    {
@@ -186,15 +189,23 @@ void SuperStateEvaluator::doEvaluateTTA()
    }
 
    // Evaluate the superstate. Send an event accordingly.
+   // Update the gain calculator.
    if (mSuperStateTTA.mRFPath != mLastSuperStateTTA.mRFPath)
    {
       Prn::print(Prn::TTA1, "TTA RF Path ***************************** %s", get_TTA_RFPath_asString(mSuperStateTTA.mRFPath));
+
       // Create new event record, set args, and send it to the event thread.
       Evt::EventRecord* tRecord = new Evt::EventRecord(Evt::cEvt_Ident_TTA_RFPath);
       tRecord->setArg1("%s", get_TTA_RFPath_asString(mSuperStateTTA.mRFPath));
       tRecord->sendToEventLogThread();
-   }
 
+      // Update the gain calculation json file.
+      Prn::print(Prn::TTA1, "TTA Update gain calc");
+      Calc::GainCalc* tCalc = &SM::gShare->mGainCalc;
+      tCalc->doReadModifyWriteBegin();
+      tCalc->mRFPath = mSuperStateTTA.mRFPath;
+      tCalc->doReadModifyWriteEnd();
+   }
 }
 
 //******************************************************************************
