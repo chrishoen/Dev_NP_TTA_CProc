@@ -53,7 +53,7 @@ bool TTACommThread::doProcess_gft()
    tFactoryTestRecord.doWriteToJsonFile();
 
    // Update the gain calculator json file.
-   Prn::print(Prn::View11, "TTA Update   gain calc with factory test record");
+   Prn::print(mPF1, "TTA Update     gain calc with factory test record");
    Calc::GainCalc* tCalc = &SM::gShare->mGainCalc;
    tCalc->doReadModifyWriteBegin();
    tCalc->readFrom(&tFactoryTestRecord);

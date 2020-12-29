@@ -39,10 +39,10 @@ bool DACommThread::doProcess_tst()
    // Test the received response message.
    if (!mRxMsgDecoder.mRxValid)
    {
-      Prn::print(mPF1, "DA  Proc tst test message ERROR");
+      Prn::print(mPF1, "DA  Proc   tst test message ERROR");
       throw cProcExitError;
    }
-   Prn::print(mPF1, "DA  Proc tst test message");
+   Prn::print(mPF1, "DA  Proc   tst test message");
 
    // Done.
    return true;

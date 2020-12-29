@@ -41,13 +41,13 @@ bool DACommThread::doProcess_gft()
    // Test the received response message.
    if (!mRxMsgDecoder.mRxValid)
    {
-      Prn::print(mPF1, "DA  Proc gft factory test record ERROR");
+      Prn::print(mPF1, "DA  Proc   gft factory test record ERROR");
       throw cProcExitError;
    }
-   Prn::print(mPF1, "DA  Proc gft factory test record");
+   Prn::print(mPF1, "DA  Proc   gft factory test record");
 
    // Update the factory test record.
-   Prn::print(mPF1, "DA  Update   factory test record");
+   Prn::print(mPF1, "DA  Update     factory test record");
    FactoryTestRecordDA tFactoryTestRecord;
    tFactoryTestRecord.fillWithCommandData(mRxMsgDecoder.mRxPayload);
    tFactoryTestRecord.doWriteToJsonFile();
