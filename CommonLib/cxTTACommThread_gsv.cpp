@@ -46,7 +46,7 @@ bool TTACommThread::doProcess_gsv()
    Prn::print(mPF1, "TTA Proc    gsv  software version");
 
    // Update the software version.
-   Prn::print(mPF1, "TTA Update       sys info with software version");
+   Prn::print(mPF1, "TTA Update       sysinfo with software version");
    std::string tSoftwareVersion = mRxMsgDecoder.mRxPayload;
    gSysInfo.doReadModifyWriteBegin();
    gSysInfo.mTTA_SoftwareVersion = tSoftwareVersion;

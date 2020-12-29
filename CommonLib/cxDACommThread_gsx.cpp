@@ -54,9 +54,6 @@ bool DACommThread::doProcess_gsx()
    // Evaluate the super state.
    gSuperStateEvaluatorDA.doEvaluate();
 
-   // Update the mode info.
-   // SM::gShare->doUpdateModeInfoDA();
-
    // Done.
    return true;
 }

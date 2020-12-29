@@ -24,10 +24,10 @@ void main_info_initialize()
 	BirthCertificateCU tBirthCertificateCU;
 	tBirthCertificateCU.doReadFromJsonFile();
 
-	// Read from the sys info json file, update it with variables, 
+	// Read from the sysinfo json file, update it with variables, 
 	// and write to it.
-	Prn::print(Prn::CProc1, "CU  Update       sys info with birth certificate");
-	Prn::print(Prn::CProc1, "CU  Update       sys info with software version");
+	Prn::print(Prn::CProc1, "CU  Update       sysinfo with birth certificate");
+	Prn::print(Prn::CProc1, "CU  Update       sysinfo with software version");
 	gSysInfo.doReadModifyWriteBegin();
 	gSysInfo.readFrom(&tBirthCertificateCU);
 	gSysInfo.mCU_SoftwareVersion = cSoftwareVersion;

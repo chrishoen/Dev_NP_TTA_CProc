@@ -11,6 +11,10 @@ Description:
 #include "SuperStateDefs.h"
 #include "evtService.h"
 
+#include "FactoryTestRecordCUESS.h"
+#include "FactoryTestRecordCUSA.h"
+#include "SysInfo.h"
+
 #define  _CXSUPERSTATEEVALUATORDA_CPP_
 #include "cxSuperStateEvaluatorDA.h"
 
@@ -172,13 +176,61 @@ void SuperStateEvaluatorDA::doEvaluate()
       Evt::EventRecord* tRecord = new Evt::EventRecord(Evt::cEvt_Ident_DA_UserAtten);
       tRecord->setArg1("%.1f", mDAX.mUserAtten);
       tRecord->sendToEventLogThread();
+   }
 
-      // Update the gain calculation json file.
-      Prn::print(Prn::DA1, "DA  Update gain calc");
+   
+   // Update the gain calculator.
+   if (mDAX.mUserAtten != mLastDAX.mUserAtten || mFirstFlag)
+   {
+      // Update the gain calculator.
+      Prn::print(Prn::TTA1, "DA  Update       gain calc user atten");
       Calc::GainCalc* tCalc = &SM::gShare->mGainCalc;
       tCalc->doReadModifyWriteBegin();
       tCalc->mAttenSetting = mDAX.mUserAtten;
       tCalc->doReadModifyWriteEnd();
+   }
+
+   //***************************************************************************
+   //***************************************************************************
+   //***************************************************************************
+   // Evaluate system type.
+
+   // Update the sysinfo and gain calc.
+   if (mFirstFlag)
+   {
+      // Update the sysinfo.
+      Prn::print(Prn::DA1, "DA  Update       sysinfo with system type %s",
+         get_DA_SystemType_asString(mDAX.mSystemType));
+      gSysInfo.doReadModifyWriteBegin();
+      gSysInfo.mESSFlag = mDAX.mSystemType == 1;
+      gSysInfo.doReadModifyWriteEnd();
+
+      if (gSysInfo.mESSFlag)
+      {
+         // Update the cu factory test record.
+         gFactoryTestRecordCUESS.doReadFromJsonFile();
+         Prn::print(Prn::CProc1, "CU  Update       factory test record ess");
+
+         // Update the gain calculator.
+         Prn::print(Prn::CProc1, "CU  Update       gain calc with factory test record ess");
+         Calc::GainCalc* tCalc = &SM::gShare->mGainCalc;
+         tCalc->doReadModifyWriteBegin();
+         tCalc->readFrom(&gFactoryTestRecordCUESS);
+         tCalc->doReadModifyWriteEnd();
+      }
+      else
+      {
+         // Update the gain calculator json file.
+         gFactoryTestRecordCUSA.doReadFromJsonFile();
+         Prn::print(Prn::CProc1, "CU  Update       factory test record sa");
+
+         // Update the gain calculator json file.
+         Prn::print(Prn::CProc1, "CU  Update       gain calc with factory test record sa");
+         Calc::GainCalc* tCalc = &SM::gShare->mGainCalc;
+         tCalc->doReadModifyWriteBegin();
+         tCalc->readFrom(&gFactoryTestRecordCUSA);
+         tCalc->doReadModifyWriteEnd();
+      }
    }
 
    //***************************************************************************

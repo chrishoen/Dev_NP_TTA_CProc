@@ -54,9 +54,6 @@ bool TTACommThread::doProcess_gsx()
    // Evaluate the super state.
    gSuperStateEvaluatorTTA.doEvaluate();
 
-   // Update the mode info.
-// SM::gShare->doUpdateModeInfoTTA();
-
    // Done.
    return true;
 }

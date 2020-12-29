@@ -53,7 +53,7 @@ bool DACommThread::doProcess_gbc()
    tBirthCertificate.fillWithCommandData(mRxMsgDecoder.mRxPayload);
    tBirthCertificate.doWriteToJsonFile();
 
-   // Update the sys info json file.
+   // Update the sysinfo json file.
    Prn::print(Prn::DA1, "DA  Update       sysinfo with birth certificate");
    gSysInfo.doReadModifyWriteBegin();
    gSysInfo.readFrom(&tBirthCertificate);

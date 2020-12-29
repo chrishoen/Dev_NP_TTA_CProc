@@ -53,8 +53,8 @@ bool TTACommThread::doProcess_gbc()
    tBirthCertificate.fillWithCommandData(mRxMsgDecoder.mRxPayload);
    tBirthCertificate.doWriteToJsonFile();
 
-   // Update the sys info json file.
-   Prn::print(Prn::TTA1, "TTA Update       sys info with birth certificate");
+   // Update the sysinfo json file.
+   Prn::print(Prn::TTA1, "TTA Update       sysinfo with birth certificate");
    gSysInfo.doReadModifyWriteBegin();
    gSysInfo.readFrom(&tBirthCertificate);
    gSysInfo.doReadModifyWriteEnd();
