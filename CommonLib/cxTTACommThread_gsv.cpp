@@ -40,13 +40,13 @@ bool TTACommThread::doProcess_gsv()
    // Test the received response message.
    if (!mRxMsgDecoder.mRxValid)
    {
-      Prn::print(mPF1, "TTA Proc gsv software version ERROR");
+      Prn::print(mPF1, "TTA Proc   gsv software version ERROR");
       throw cProcExitError;
    }
-   Prn::print(mPF1, "TTA Proc gsv software version");
+   Prn::print(mPF1, "TTA Proc   gsv software version");
 
    // Update the software version.
-   Prn::print(mPF1, "TTA Update   sys info with software version");
+   Prn::print(mPF1, "TTA Update     sys info with software version");
    std::string tSoftwareVersion = mRxMsgDecoder.mRxPayload;
    gSysInfo.doReadModifyWriteBegin();
    gSysInfo.mTTA_SoftwareVersion = tSoftwareVersion;

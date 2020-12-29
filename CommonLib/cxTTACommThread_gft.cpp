@@ -41,19 +41,19 @@ bool TTACommThread::doProcess_gft()
    // Test the received response message.
    if (!mRxMsgDecoder.mRxValid)
    {
-      Prn::print(mPF1, "TTA Proc gft factory test record ERROR");
+      Prn::print(mPF1, "TTA Proc   gft factory test record ERROR");
       throw cProcExitError;
    }
-   Prn::print(mPF1, "TTA Proc gft factory test record");
+   Prn::print(mPF1, "TTA Proc   gft factory test record");
 
    // Update the factory test record.
-   Prn::print(mPF1, "TTA Update   factory test record");
+   Prn::print(mPF1, "TTA Update     factory test record");
    FactoryTestRecordTTA tFactoryTestRecord;
    tFactoryTestRecord.fillWithCommandData(mRxMsgDecoder.mRxPayload);
    tFactoryTestRecord.doWriteToJsonFile();
 
    // Update the gain calculator json file.
-   Prn::print(Prn::View11, "TTA Update gain calc with factory test record");
+   Prn::print(Prn::View11, "TTA Update   gain calc with factory test record");
    Calc::GainCalc* tCalc = &SM::gShare->mGainCalc;
    tCalc->doReadModifyWriteBegin();
    tCalc->readFrom(&tFactoryTestRecord);

@@ -47,7 +47,7 @@ void SuperStateEvaluatorDA::doEvaluate()
    // Store copies of the last and current superstate.
    if (mFirstFlag)
    {
-      Prn::print(Prn::TTA1, "DA  Eval     first **********************");
+      Prn::print(Prn::DA1, "DA  Eval       first **********************");
       // If this is the first update then set the last and the current to
       // the current from shared memory.
       mDAX = SM::gShare->mSuperStateDA;
