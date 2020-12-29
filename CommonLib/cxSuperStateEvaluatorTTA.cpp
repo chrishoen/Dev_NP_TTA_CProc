@@ -42,13 +42,14 @@ void SuperStateEvaluatorTTA::doEvaluate()
    //***************************************************************************
    //***************************************************************************
    //***************************************************************************
-   // Store copies of the last and current superstate.
+   // Do this first.
 
+   // Store copies of the last and current superstate.
    if (mFirstFlag)
    {
+      Prn::print(Prn::TTA1, "TTA Eval     first **********************");
       // If this is the first update then set the last and the current to
       // the current from shared memory.
-      mFirstFlag = false;
       mTTAX = SM::gShare->mSuperStateTTA;
       mLastTTAX = mTTAX;
    }
@@ -60,7 +61,6 @@ void SuperStateEvaluatorTTA::doEvaluate()
       mLastTTAX = mTTAX;
       mTTAX = SM::gShare->mSuperStateTTA;
    }
-
 
    //***************************************************************************
    //***************************************************************************
@@ -124,11 +124,11 @@ void SuperStateEvaluatorTTA::doEvaluate()
       }
    }
 
-   // Store line resistance.
+   // Evaluate the superstate. Send an event accordingly.
    mTTAX.mLineResistance = tLineResistance;
    SM::gShare->mSuperStateTTA.mLineResistance = tLineResistance;
 
-   // Evaluate the superstate. Send an event accordingly.
+   // Send an event accordingly.
    if (Evt::EventRecord* tRecord = Evt::trySendEvent(
       Evt::cEvt_Ident_TTA_LineResistance,
       mTTAX.mLineResistance > cTTA_LineResistance_ThreshHi))
@@ -209,7 +209,6 @@ void SuperStateEvaluatorTTA::doEvaluate()
    }
 
    // Evaluate the superstate. Send an event accordingly.
-   // Update the gain calculator.
    if (mTTAX.mRFPath != mLastTTAX.mRFPath)
    {
       Prn::print(Prn::TTA1, "TTA RF Path ***************************** %s", get_TTA_RFPath_asString(mTTAX.mRFPath));
@@ -218,14 +217,25 @@ void SuperStateEvaluatorTTA::doEvaluate()
       Evt::EventRecord* tRecord = new Evt::EventRecord(Evt::cEvt_Ident_TTA_RFPath);
       tRecord->setArg1("%s", get_TTA_RFPath_asString(mTTAX.mRFPath));
       tRecord->sendToEventLogThread();
+   }
 
-      // Update the gain calculation json file.
-      Prn::print(Prn::TTA1, "TTA Update gain calc");
+   // Update the gain calculator.
+   if (mTTAX.mRFPath != mLastTTAX.mRFPath || mFirstFlag)
+   {
+      // Update the gain calculator.
+      Prn::print(Prn::TTA1, "TTA Update   gain calc with rf path");
       Calc::GainCalc* tCalc = &SM::gShare->mGainCalc;
       tCalc->doReadModifyWriteBegin();
       tCalc->mRFPath = mTTAX.mRFPath;
       tCalc->doReadModifyWriteEnd();
    }
+
+   //***************************************************************************
+   //***************************************************************************
+   //***************************************************************************
+   // Do this last.
+
+   mFirstFlag = false;
 }
 
 //******************************************************************************
