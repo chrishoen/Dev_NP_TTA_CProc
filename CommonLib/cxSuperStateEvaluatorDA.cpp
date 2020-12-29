@@ -29,8 +29,7 @@ SuperStateEvaluatorDA::SuperStateEvaluatorDA()
 
 void SuperStateEvaluatorDA::reset()
 {
-   mValidFlagDA = false;
-   mValidFlagTTA = false;
+   mFirstFlag = true;
 }
 
 //******************************************************************************
@@ -45,18 +44,18 @@ void SuperStateEvaluatorDA::doEvaluate()
    //***************************************************************************
    // Store copies of the last and current superstate.
 
-   if (!mValidFlagDA)
+   if (mFirstFlag)
    {
-      // If not valid then this is the first update.
-      // Set the last and the current to the current from shared memory.
-      mValidFlagDA = true;
+      // If this is the first update then set the last and the current to
+      // the current from shared memory.
+      mFirstFlag = false;
       mDAX = SM::gShare->mSuperStateDA;
       mLastDAX = mDAX;
    }
    else
    {
-      // If valid then this is not the first update.
-      // Set the last to the previous current and set the current from shared
+      // If this is not the first update then set the last to the previous
+      // current and set the current from shared
       // memory.
       mLastDAX = mDAX;
       mDAX = SM::gShare->mSuperStateDA;

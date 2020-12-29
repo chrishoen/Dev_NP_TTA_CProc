@@ -29,8 +29,7 @@ SuperStateEvaluatorTTA::SuperStateEvaluatorTTA()
 
 void SuperStateEvaluatorTTA::reset()
 {
-   mValidFlagDA = false;
-   mValidFlagTTA = false;
+   mFirstFlag = true;
 }
 
 //******************************************************************************
@@ -45,22 +44,23 @@ void SuperStateEvaluatorTTA::doEvaluate()
    //***************************************************************************
    // Store copies of the last and current superstate.
 
-   if (!mValidFlagTTA)
+   if (mFirstFlag)
    {
-      // If not valid then this is the first update.
-      // Set the last and the current to the current from shared memory.
-      mValidFlagTTA = true;
+      // If this is the first update then set the last and the current to
+      // the current from shared memory.
+      mFirstFlag = false;
       mTTAX = SM::gShare->mSuperStateTTA;
       mLastTTAX = mTTAX;
    }
    else
    {
-      // If valid then this is not the first update.
-      // Set the last to the previous current and set the current from shared
+      // If this is not the first update then set the last to the previous
+      // current and set the current from shared
       // memory.
       mLastTTAX = mTTAX;
       mTTAX = SM::gShare->mSuperStateTTA;
    }
+
 
    //***************************************************************************
    //***************************************************************************
@@ -101,14 +101,17 @@ void SuperStateEvaluatorTTA::doEvaluate()
 
    // Line resistiance.
    float tLineResistance = 0.0;
-#if 0
+
+   // Nickname.
+   SuperStateDA& tDAX = SM::gShare->mSuperStateDA;
+
    // If tta and da superstates are valid.
-   if (mValidFlagDA)
+   if (tDAX.mValidFlag)
    {
       // Guard.
       bool tGoing = true;
-      if (fabs(mSuperStateDA.mTowerVoltage) < cAD_Guard_ThreshLo) tGoing = false;
-      if (fabs(mSuperStateDA.mTowerCurrent) < cAD_Guard_ThreshLo) tGoing = false;
+      if (fabs(tDAX.mTowerVoltage) < cAD_Guard_ThreshLo) tGoing = false;
+      if (fabs(tDAX.mTowerCurrent) < cAD_Guard_ThreshLo) tGoing = false;
       if (fabs(mTTAX.mMainVoltage) < cAD_Guard_ThreshLo) tGoing = false;
       if (fabs(mTTAX.mMainCurrent) < cAD_Guard_ThreshLo) tGoing = false;
 
@@ -116,11 +119,11 @@ void SuperStateEvaluatorTTA::doEvaluate()
       {
          // Calculate line resistance.
          tLineResistance =
-            (mSuperStateDA.mTowerVoltage - mTTAX.mMainVoltage) / mSuperStateDA.mTowerCurrent;
+            (tDAX.mTowerVoltage - mTTAX.mMainVoltage) / tDAX.mTowerCurrent;
          if (tLineResistance < 0) tLineResistance = 0;
       }
    }
-#endif
+
    // Store line resistance.
    mTTAX.mLineResistance = tLineResistance;
    SM::gShare->mSuperStateTTA.mLineResistance = tLineResistance;
