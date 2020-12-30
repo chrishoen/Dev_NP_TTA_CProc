@@ -124,18 +124,24 @@ void SuperStateEvaluatorDA::doEvaluate()
    // Evaluate the superstate. Send an event accordingly.
    if (mDAX.mAmpClass != mLastDAX.mAmpClass)
    {
-      // Create new event record, set args, and send it to the event thread.
-      Evt::EventRecord* tRecord = new Evt::EventRecord(Evt::cEvt_Ident_DA_AmpCurrent);
-      tRecord->mCState = abs(mDAX.mAmpClass) > 0;
+      bool tCState = abs(mDAX.mAmpClass) > 0;
+      int tSeverity = 0;
       switch (abs(mDAX.mAmpClass))
       {
-      case 0: tRecord->mSeverity = Evt::cEvt_SeverityInfo;
-      case 1: tRecord->mSeverity = Evt::cEvt_SeveritySevere;
-      case 2: tRecord->mSeverity = Evt::cEvt_SeverityCritical;
+      case 0: tSeverity = Evt::cEvt_SeverityInfo;
+      case 1: tSeverity = Evt::cEvt_SeveritySevere;
+      case 2: tSeverity = Evt::cEvt_SeverityCritical;
       }
-      tRecord->setArg1("%.1f", mDAX.mAmpRegCurrent);
-      tRecord->setArg2("%s", get_AmpClass_asString(mDAX.mAmpClass));
-      tRecord->sendToEventLogThread();
+      // Create new event record, set args, and send it to the event thread.
+      if (Evt::EventRecord* tRecord = Evt::trySendEvent(
+         Evt::cEvt_Ident_DA_AmpCurrent,
+         tCState,
+         tSeverity))
+      {
+         tRecord->setArg1("%.1f", mDAX.mAmpRegCurrent);
+         tRecord->setArg2("%s", get_AmpClass_asString(mDAX.mAmpClass));
+         tRecord->sendToEventLogThread();
+      }
    }
 
    //***************************************************************************
@@ -150,9 +156,11 @@ void SuperStateEvaluatorDA::doEvaluate()
    if (mDAX.mOpMode != mLastDAX.mOpMode)
    {
       // Create new event record, set args, and send it to the event thread.
-      Evt::EventRecord* tRecord = new Evt::EventRecord(Evt::cEvt_Ident_DA_OpMode);
-      tRecord->setArg1("%s", get_OpMode_asString(mDAX.mOpMode));
-      tRecord->sendToEventLogThread();
+      if (Evt::EventRecord* tRecord = Evt::trySendEvent(Evt::cEvt_Ident_DA_OpMode))
+      {
+         tRecord->setArg1("%s", get_OpMode_asString(mDAX.mOpMode));
+         tRecord->sendToEventLogThread();
+      }
    }
 
    //***************************************************************************
@@ -161,23 +169,32 @@ void SuperStateEvaluatorDA::doEvaluate()
    // Evaluate path variables.
 
    // Evaluate the superstate. Send an event accordingly.
-   if (mDAX.mRFPath != mLastDAX.mRFPath)
+   if (mDAX.mOpMode != mLastDAX.mOpMode)
    {
       // Create new event record, set args, and send it to the event thread.
-      Evt::EventRecord* tRecord = new Evt::EventRecord(Evt::cEvt_Ident_DA_RFPath);
-      tRecord->setArg1("%s", get_DA_RFPath_asString(mDAX.mRFPath));
-      tRecord->sendToEventLogThread();
+      if (Evt::EventRecord* tRecord = Evt::trySendEvent(Evt::cEvt_Ident_DA_RFPath))
+      {
+         tRecord->setArg1("%s", get_DA_RFPath_asString(mDAX.mRFPath));
+         tRecord->sendToEventLogThread();
+      }
    }
+
+   //***************************************************************************
+   //***************************************************************************
+   //***************************************************************************
+   // Evaluate user attenuator.
 
    // Evaluate the superstate. Send an event accordingly.
    if (mDAX.mUserAtten != mLastDAX.mUserAtten)
    {
+      Prn::print(Prn::TTA1, "DA  User Atten ************************** %.1f", mDAX.mUserAtten);
       // Create new event record, set args, and send it to the event thread.
-      Evt::EventRecord* tRecord = new Evt::EventRecord(Evt::cEvt_Ident_DA_UserAtten);
-      tRecord->setArg1("%.1f", mDAX.mUserAtten);
-      tRecord->sendToEventLogThread();
+      if (Evt::EventRecord* tRecord = Evt::trySendEvent(Evt::cEvt_Ident_DA_UserAtten))
+      {
+         tRecord->setArg1("%.1f", mDAX.mUserAtten);
+         tRecord->sendToEventLogThread();
+      }
    }
-
    
    // Update the gain calculator.
    if (mDAX.mUserAtten != mLastDAX.mUserAtten || mFirstFlag)

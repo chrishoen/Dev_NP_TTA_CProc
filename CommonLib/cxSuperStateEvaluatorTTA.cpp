@@ -145,35 +145,47 @@ void SuperStateEvaluatorTTA::doEvaluate()
    // Evaluate the superstate. Send an event accordingly.
    if (mTTAX.mAmpAClass != mLastTTAX.mAmpAClass)
    {
-      // Create new event record, set args, and send it to the event thread.
-      Evt::EventRecord* tRecord = new Evt::EventRecord(Evt::cEvt_Ident_TTA_AmpACurrent);
-      tRecord->mCState = abs(mTTAX.mAmpAClass) > 0;
+      bool tCState = abs(mTTAX.mAmpAClass) > 0;
+      int tSeverity = 0;
       switch (abs(mTTAX.mAmpAClass))
       {
-      case 0: tRecord->mSeverity = Evt::cEvt_SeverityInfo;
-      case 1: tRecord->mSeverity = Evt::cEvt_SeveritySevere;
-      case 2: tRecord->mSeverity = Evt::cEvt_SeverityCritical;
+      case 0: tSeverity = Evt::cEvt_SeverityInfo;
+      case 1: tSeverity = Evt::cEvt_SeveritySevere;
+      case 2: tSeverity = Evt::cEvt_SeverityCritical;
       }
-      tRecord->setArg1("%.1f", mTTAX.mAmpCurrentA);
-      tRecord->setArg2("%s", get_AmpClass_asString(mTTAX.mAmpAClass));
-      tRecord->sendToEventLogThread();
+      // Create new event record, set args, and send it to the event thread.
+      if (Evt::EventRecord* tRecord = Evt::trySendEvent(
+         Evt::cEvt_Ident_TTA_AmpACurrent,
+         tCState,
+         tSeverity))
+      {
+         tRecord->setArg1("%.1f", mTTAX.mAmpCurrentA);
+         tRecord->setArg2("%s", get_AmpClass_asString(mTTAX.mAmpAClass));
+         tRecord->sendToEventLogThread();
+      }
    }
 
    // Evaluate the superstate. Send an event accordingly.
    if (mTTAX.mAmpBClass != mLastTTAX.mAmpBClass)
    {
-      // Create new event record, set args, and send it to the event thread.
-      Evt::EventRecord* tRecord = new Evt::EventRecord(Evt::cEvt_Ident_TTA_AmpBCurrent);
-      tRecord->mCState = abs(mTTAX.mAmpBClass) > 0;
+      bool tCState = abs(mTTAX.mAmpBClass) > 0;
+      int tSeverity = 0;
       switch (abs(mTTAX.mAmpBClass))
       {
-      case 0: tRecord->mSeverity = Evt::cEvt_SeverityInfo;
-      case 1: tRecord->mSeverity = Evt::cEvt_SeveritySevere;
-      case 2: tRecord->mSeverity = Evt::cEvt_SeverityCritical;
+      case 0: tSeverity = Evt::cEvt_SeverityInfo;
+      case 1: tSeverity = Evt::cEvt_SeveritySevere;
+      case 2: tSeverity = Evt::cEvt_SeverityCritical;
       }
-      tRecord->setArg1("%.1f", mTTAX.mAmpCurrentB);
-      tRecord->setArg2("%s", get_AmpClass_asString(mTTAX.mAmpBClass));
-      tRecord->sendToEventLogThread();
+      // Create new event record, set args, and send it to the event thread.
+      if (Evt::EventRecord* tRecord = Evt::trySendEvent(
+         Evt::cEvt_Ident_TTA_AmpBCurrent,
+         tCState,
+         tSeverity))
+      {
+         tRecord->setArg1("%.1f", mTTAX.mAmpCurrentA);
+         tRecord->setArg2("%s", get_AmpClass_asString(mTTAX.mAmpBClass));
+         tRecord->sendToEventLogThread();
+      }
    }
 
    //***************************************************************************
@@ -188,9 +200,11 @@ void SuperStateEvaluatorTTA::doEvaluate()
    if (mTTAX.mOpMode != mLastTTAX.mOpMode)
    {
       // Create new event record, set args, and send it to the event thread.
-      Evt::EventRecord* tRecord = new Evt::EventRecord(Evt::cEvt_Ident_TTA_OpMode);
-      tRecord->setArg1("%s", get_OpMode_asString(mTTAX.mOpMode));
-      tRecord->sendToEventLogThread();
+      if (Evt::EventRecord* tRecord = Evt::trySendEvent(Evt::cEvt_Ident_TTA_OpMode))
+      {
+         tRecord->setArg1("%s", get_OpMode_asString(mTTAX.mOpMode));
+         tRecord->sendToEventLogThread();
+      }
    }
 
    //***************************************************************************
@@ -203,9 +217,12 @@ void SuperStateEvaluatorTTA::doEvaluate()
    {
       Prn::print(Prn::TTA1, "TTA Prefer RF Path ********************** %s", get_TTA_RFPath_asString(mTTAX.mPreferRFPath));
       // Create new event record, set args, and send it to the event thread.
-      Evt::EventRecord* tRecord = new Evt::EventRecord(Evt::cEvt_Ident_TTA_PreferRFPath);
-      tRecord->setArg1("%s", get_TTA_RFPath_asString(mTTAX.mPreferRFPath));
-      tRecord->sendToEventLogThread();
+      Evt::EventRecord* tRecord = Evt::trySendEvent(Evt::cEvt_Ident_TTA_PreferRFPath);
+      if (tRecord)
+      {
+         tRecord->setArg1("%s", get_TTA_RFPath_asString(mTTAX.mPreferRFPath));
+         tRecord->sendToEventLogThread();
+      }
    }
 
    // Evaluate the superstate. Send an event accordingly.
@@ -214,9 +231,12 @@ void SuperStateEvaluatorTTA::doEvaluate()
       Prn::print(Prn::TTA1, "TTA RF Path ***************************** %s", get_TTA_RFPath_asString(mTTAX.mRFPath));
 
       // Create new event record, set args, and send it to the event thread.
-      Evt::EventRecord* tRecord = new Evt::EventRecord(Evt::cEvt_Ident_TTA_RFPath);
-      tRecord->setArg1("%s", get_TTA_RFPath_asString(mTTAX.mRFPath));
-      tRecord->sendToEventLogThread();
+      Evt::EventRecord* tRecord = Evt::trySendEvent(Evt::cEvt_Ident_TTA_RFPath);
+      if (tRecord)
+      {
+         tRecord->setArg1("%s", get_TTA_RFPath_asString(mTTAX.mRFPath));
+         tRecord->sendToEventLogThread();
+      }
    }
 
    // Update the gain calculator.
