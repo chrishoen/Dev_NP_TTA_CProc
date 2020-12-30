@@ -18,4 +18,4 @@ add_custom_command(
    TARGET  commtest
    POST_BUILD
    COMMAND rsync -azv --chmod=ugo=rwx commtest rsync://debian@devtgt/prime/bin
-   WORKING_DIRECTORY C:/Users/$ENV{username}/CMakeBuilds/Dev_NP_TTA_NewCProc/commtest)
+   WORKING_DIRECTORY C:/Users/$ENV{username}/CMakeBuilds/Dev_NP_TTA_CProc/commtest)
