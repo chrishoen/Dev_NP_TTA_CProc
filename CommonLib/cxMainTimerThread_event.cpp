@@ -40,6 +40,29 @@ void MainTimerThread::executeOnTimer_Events(int aTimeCount)
    //******************************************************************************
    //******************************************************************************
    //******************************************************************************
+   // Poll the modeinfo.
+
+   // Nickname.
+   ModeInfo& tModeInfo = SM::gShare->mModeInfo;
+
+   // Test if the sys test mode has changed.
+   if (tModeInfo.mSysTestModeChangeFlag_cproc)
+   {
+      tModeInfo.mSysTestModeChangeFlag_cproc = false;
+      Prn::print(Prn::CProc1, "CU  Sys Test Mode *********************** %s",
+         get_Sys_TestMode_asString2(tModeInfo.mSysTestMode));
+      // Create new event record, set args, and send it to the event thread.
+      Evt::EventRecord* tRecord = Evt::trySendEvent(Evt::cEvt_Ident_CU_SysTestMode);
+      if (tRecord)
+      {
+         tRecord->setArg1("%s", get_Sys_TestMode_asString2(tModeInfo.mSysTestMode));
+         tRecord->sendToEventLogThread();
+      }
+   }
+
+   //******************************************************************************
+   //******************************************************************************
+   //******************************************************************************
    // Set the front panel leds.
 
    int tActiveAlarmCount = SM::gShare->mSuperStateCU.mActiveAlarmCount;

@@ -199,6 +199,9 @@ void SuperStateEvaluatorTTA::doEvaluate()
    // Evaluate the superstate. Send an event accordingly.
    if (mTTAX.mOpMode != mLastTTAX.mOpMode)
    {
+      Prn::print(Prn::TTA1, "TTA OpMode******************************* %s",
+         get_OpMode_asString(mTTAX.mOpMode));
+
       // Create new event record, set args, and send it to the event thread.
       if (Evt::EventRecord* tRecord = Evt::trySendEvent(Evt::cEvt_Ident_TTA_OpMode))
       {
@@ -215,7 +218,9 @@ void SuperStateEvaluatorTTA::doEvaluate()
    // Evaluate the superstate. Send an event accordingly.
    if (mTTAX.mPreferRFPath != mLastTTAX.mPreferRFPath)
    {
-      Prn::print(Prn::TTA1, "TTA Prefer RF Path ********************** %s", get_TTA_RFPath_asString(mTTAX.mPreferRFPath));
+      Prn::print(Prn::TTA1, "TTA Prefer RF Path ********************** %s",
+         get_TTA_RFPath_asString(mTTAX.mPreferRFPath));
+
       // Create new event record, set args, and send it to the event thread.
       Evt::EventRecord* tRecord = Evt::trySendEvent(Evt::cEvt_Ident_TTA_PreferRFPath);
       if (tRecord)
@@ -228,7 +233,8 @@ void SuperStateEvaluatorTTA::doEvaluate()
    // Evaluate the superstate. Send an event accordingly.
    if (mTTAX.mRFPath != mLastTTAX.mRFPath)
    {
-      Prn::print(Prn::TTA1, "TTA RF Path ***************************** %s", get_TTA_RFPath_asString(mTTAX.mRFPath));
+      Prn::print(Prn::TTA1, "TTA RF Path ***************************** %s",
+         get_TTA_RFPath_asString(mTTAX.mRFPath));
 
       // Create new event record, set args, and send it to the event thread.
       Evt::EventRecord* tRecord = Evt::trySendEvent(Evt::cEvt_Ident_TTA_RFPath);
@@ -239,8 +245,9 @@ void SuperStateEvaluatorTTA::doEvaluate()
       }
    }
 
-   // Update the gain calculator.
-   if (mTTAX.mRFPath != mLastTTAX.mRFPath || mFirstFlag)
+   // Update the gain calculator, but not if there's a test mode.
+   if ((mTTAX.mRFPath != mLastTTAX.mRFPath || mFirstFlag) &&
+        (mTTAX.mRFPath < 2 && mLastTTAX.mRFPath < 2))
    {
       // Update the gain calculator.
       Prn::print(Prn::TTA1, "TTA Update       gain calc with rf path");

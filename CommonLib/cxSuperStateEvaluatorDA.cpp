@@ -155,6 +155,9 @@ void SuperStateEvaluatorDA::doEvaluate()
    // Evaluate the superstate. Send an event accordingly.
    if (mDAX.mOpMode != mLastDAX.mOpMode)
    {
+      Prn::print(Prn::DA1, "DA  OpMode******************************* %s",
+         get_OpMode_asString(mDAX.mOpMode));
+
       // Create new event record, set args, and send it to the event thread.
       if (Evt::EventRecord* tRecord = Evt::trySendEvent(Evt::cEvt_Ident_DA_OpMode))
       {
@@ -169,8 +172,11 @@ void SuperStateEvaluatorDA::doEvaluate()
    // Evaluate path variables.
 
    // Evaluate the superstate. Send an event accordingly.
-   if (mDAX.mOpMode != mLastDAX.mOpMode)
+   if (mDAX.mRFPath != mLastDAX.mRFPath)
    {
+      Prn::print(Prn::DA1, "DA  RF Path ***************************** %s",
+         get_DA_RFPath_asString(mDAX.mRFPath));
+
       // Create new event record, set args, and send it to the event thread.
       if (Evt::EventRecord* tRecord = Evt::trySendEvent(Evt::cEvt_Ident_DA_RFPath))
       {
@@ -187,7 +193,7 @@ void SuperStateEvaluatorDA::doEvaluate()
    // Evaluate the superstate. Send an event accordingly.
    if (mDAX.mUserAtten != mLastDAX.mUserAtten)
    {
-      Prn::print(Prn::TTA1, "DA  User Atten ************************** %.1f", mDAX.mUserAtten);
+      Prn::print(Prn::DA1, "DA  User Atten ************************** %.1f", mDAX.mUserAtten);
       // Create new event record, set args, and send it to the event thread.
       if (Evt::EventRecord* tRecord = Evt::trySendEvent(Evt::cEvt_Ident_DA_UserAtten))
       {
@@ -200,7 +206,7 @@ void SuperStateEvaluatorDA::doEvaluate()
    if (mDAX.mUserAtten != mLastDAX.mUserAtten || mFirstFlag)
    {
       // Update the gain calculator.
-      Prn::print(Prn::TTA1, "DA  Update       gain calc user atten");
+      Prn::print(Prn::DA1, "DA  Update       gain calc user atten");
       Calc::GainCalc* tCalc = &SM::gShare->mGainCalc;
       tCalc->doReadModifyWriteBegin();
       tCalc->mAttenSetting = mDAX.mUserAtten;
