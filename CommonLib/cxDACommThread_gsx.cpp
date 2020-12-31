@@ -9,6 +9,8 @@ Detestion:
 #include "stdafx.h"
 
 #include "smShare.h"
+#include "SuperStateExtraDA.h"
+
 #include "sxMsgDefs.h"
 #include "cxCProcParms.h"
 #include "cxSuperStateEvaluatorDA.h"
@@ -50,6 +52,9 @@ bool DACommThread::doProcess_gsx()
 
    // Copy the response message payload into the super state.
    SuperStateDA_copyFrom(&SM::gShare->mSuperStateDA, mRxMsgDecoder.mRxPayload);
+
+   // Show.
+   SuperStateDA_show2(&SM::gShare->mSuperStateDA, mPF2);
 
    // Evaluate the super state.
    gSuperStateEvaluatorDA.doEvaluate();

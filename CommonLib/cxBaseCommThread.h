@@ -33,7 +33,7 @@ public:
    // Constants:
 
    // Timer periods.
-   static const int cSlowLoopPeriod = 4000;
+   static const int cSlowLoopPeriod = 2000;
    static const int cFastLoopPeriod = 2000;
 
    // Wait timeouts.

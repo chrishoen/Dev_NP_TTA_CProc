@@ -9,6 +9,8 @@ Detestion:
 #include "stdafx.h"
 
 #include "smShare.h"
+#include "SuperStateExtraTTA.h"
+
 #include "sxMsgDefs.h"
 #include "cxCProcParms.h"
 #include "cxSuperStateEvaluatorTTA.h"
@@ -50,6 +52,10 @@ bool TTACommThread::doProcess_gsx()
 
    // Copy the response message payload into the super state.
    SuperStateTTA_copyFrom(&SM::gShare->mSuperStateTTA, mRxMsgDecoder.mRxPayload);
+
+   // Show.
+   SuperWantsTTA_show2(&SM::gShare->mSuperWantsTTA, mPF2);
+   SuperStateTTA_show2(&SM::gShare->mSuperStateTTA, mPF2);
 
    // Evaluate the super state.
    gSuperStateEvaluatorTTA.doEvaluate();

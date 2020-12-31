@@ -145,13 +145,16 @@ void SuperStateEvaluatorTTA::doEvaluate()
    // Evaluate the superstate. Send an event accordingly.
    if (mTTAX.mAmpAClass != mLastTTAX.mAmpAClass)
    {
+      Prn::print(Prn::TTA1, "TTA AmpAClass**************************** %s",
+         get_AmpClass_asString(mTTAX.mAmpAClass));
+
       bool tCState = abs(mTTAX.mAmpAClass) > 0;
       int tSeverity = 0;
       switch (abs(mTTAX.mAmpAClass))
       {
-      case 0: tSeverity = Evt::cEvt_SeverityInfo;
-      case 1: tSeverity = Evt::cEvt_SeveritySevere;
-      case 2: tSeverity = Evt::cEvt_SeverityCritical;
+      case  0: tSeverity = Evt::cEvt_SeverityInfo;
+      case  1: tSeverity = Evt::cEvt_SeveritySevere;
+      case  2: tSeverity = Evt::cEvt_SeverityCritical;
       }
       // Create new event record, set args, and send it to the event thread.
       if (Evt::EventRecord* tRecord = Evt::trySendEvent(
@@ -159,7 +162,7 @@ void SuperStateEvaluatorTTA::doEvaluate()
          tCState,
          tSeverity))
       {
-         tRecord->setArg1("%.1f", mTTAX.mAmpCurrentA);
+         tRecord->setArg1("%.0f ma", mTTAX.mAmpCurrentA * 1000);
          tRecord->setArg2("%s", get_AmpClass_asString(mTTAX.mAmpAClass));
          tRecord->sendToEventLogThread();
       }
@@ -168,6 +171,9 @@ void SuperStateEvaluatorTTA::doEvaluate()
    // Evaluate the superstate. Send an event accordingly.
    if (mTTAX.mAmpBClass != mLastTTAX.mAmpBClass)
    {
+      Prn::print(Prn::TTA1, "TTA AmpBClass**************************** %s",
+         get_AmpClass_asString(mTTAX.mAmpBClass));
+
       bool tCState = abs(mTTAX.mAmpBClass) > 0;
       int tSeverity = 0;
       switch (abs(mTTAX.mAmpBClass))
@@ -182,7 +188,7 @@ void SuperStateEvaluatorTTA::doEvaluate()
          tCState,
          tSeverity))
       {
-         tRecord->setArg1("%.1f", mTTAX.mAmpCurrentA);
+         tRecord->setArg1("%.0f ma", mTTAX.mAmpCurrentB*1000);
          tRecord->setArg2("%s", get_AmpClass_asString(mTTAX.mAmpBClass));
          tRecord->sendToEventLogThread();
       }

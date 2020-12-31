@@ -124,6 +124,9 @@ void SuperStateEvaluatorDA::doEvaluate()
    // Evaluate the superstate. Send an event accordingly.
    if (mDAX.mAmpClass != mLastDAX.mAmpClass)
    {
+      Prn::print(Prn::TTA1, "DA  AmpBClass**************************** %s",
+         get_AmpClass_asString(mDAX.mAmpClass));
+
       bool tCState = abs(mDAX.mAmpClass) > 0;
       int tSeverity = 0;
       switch (abs(mDAX.mAmpClass))
