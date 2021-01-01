@@ -66,6 +66,10 @@ void SuperStateEvaluatorDA::doEvaluate()
       mDAX = SM::gShare->mSuperStateDA;
    }
 
+   // Local variables.
+   bool tCState = false;
+   int tSeverity = 0;
+
    //***************************************************************************
    //***************************************************************************
    //***************************************************************************
@@ -127,8 +131,8 @@ void SuperStateEvaluatorDA::doEvaluate()
       Prn::print(Prn::TTA1, "DA  AmpBClass**************************** %s",
          get_AmpClass_asString(mDAX.mAmpClass));
 
-      bool tCState = abs(mDAX.mAmpClass) > 0;
-      int tSeverity = 0;
+      tCState = abs(mDAX.mAmpClass) > 0;
+      tSeverity = 0;
       switch (abs(mDAX.mAmpClass))
       {
       case 0: tSeverity = Evt::cEvt_SeverityInfo;

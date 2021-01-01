@@ -43,7 +43,10 @@ void CmdLineExec::execute(Ris::CmdLineCmd* aCmd)
    if (aCmd->isCmd("GO3"))      executeGo3(aCmd);
    if (aCmd->isCmd("GO4"))      executeGo4(aCmd);
    if (aCmd->isCmd("GO5"))      executeGo5(aCmd);
-   if (aCmd->isCmd("SHOW"))     executeParms(aCmd);
+
+   if (aCmd->isCmd("SHOW"))     executeShow(aCmd);
+   if (aCmd->isCmd("PARMS"))    executeParms(aCmd);
+   if (aCmd->isCmd("HELP"))     executeHelp(aCmd);
 }
 
 //******************************************************************************
@@ -64,6 +67,7 @@ void CmdLineExec::executeOverrides(Ris::CmdLineCmd* aCmd)
 {
    if (aCmd->numArg() == 0)
    {
+      Prn::print(0, "");
       Prn::print(0, " over int float");
       Prn::print(0, "");
       Prn::print(0, " 1 mTTATemperature        float");
@@ -76,7 +80,7 @@ void CmdLineExec::executeOverrides(Ris::CmdLineCmd* aCmd)
       Prn::print(0, " 8 mDATowerCurrent        float");
       Prn::print(0, "");
       Prn::print(0, " over reset");
-      Prn::print(0, " oover showver show");
+      Prn::print(0, " over show");
       Prn::print(0, "");
       return;
    }
@@ -157,10 +161,30 @@ void CmdLineExec::executeGo5(Ris::CmdLineCmd* aCmd)
 //******************************************************************************
 //******************************************************************************
 
+void CmdLineExec::executeShow(Ris::CmdLineCmd* aCmd)
+{
+   CX::gCProcParms.show();
+}
+//******************************************************************************
+//******************************************************************************
+//******************************************************************************
+
 void CmdLineExec::executeParms(Ris::CmdLineCmd* aCmd)
 {
    CX::gCProcParms.reset();
    CX::gCProcParms.readSection("default");
    CX::gCProcParms.show();
+}
+//******************************************************************************
+//******************************************************************************
+//******************************************************************************
+
+void CmdLineExec::executeHelp(Ris::CmdLineCmd* aCmd)
+{
+   Prn::print(0, "help ***********************************");
+   Prn::print(0, "");
+   Prn::print(0, "show                     -- show some stuff");
+   Prn::print(0, "parms                    -- show cproc parms");
+   Prn::print(0, "over                     -- show overrides help");
 }
 

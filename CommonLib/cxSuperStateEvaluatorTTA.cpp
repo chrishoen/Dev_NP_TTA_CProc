@@ -62,15 +62,36 @@ void SuperStateEvaluatorTTA::doEvaluate()
       mTTAX = SM::gShare->mSuperStateTTA;
    }
 
+   // Local variables.
+   bool tCState = false;
+   int tSeverity = 0;
+
    //***************************************************************************
    //***************************************************************************
    //***************************************************************************
    // Evaluate measurement variables.
 
    // Evaluate the superstate. Send an event accordingly.
+   if (mTTAX.mTemperature > cTTA_Temperature2_ThreshHi)
+   {
+      tCState = true;
+      tSeverity = Evt::cEvt_SeveritySevere;
+   }
+   else if (mTTAX.mTemperature > cTTA_Temperature1_ThreshHi)
+   {
+      tCState = true;
+      tSeverity = Evt::cEvt_SeverityWarning;
+   }
+   else
+   {
+      tCState = false;
+      tSeverity = Evt::cEvt_SeverityWarning;
+   }
+
    if (Evt::EventRecord* tRecord = Evt::trySendEvent(
       Evt::cEvt_Ident_TTA_Temperature,
-      mTTAX.mTemperature > cTTA_Temperature_ThreshHi))
+      tCState,
+      tSeverity))
    {
       tRecord->setArg1("%.1f", mTTAX.mTemperature);
       tRecord->sendToEventLogThread();
@@ -148,8 +169,8 @@ void SuperStateEvaluatorTTA::doEvaluate()
       Prn::print(Prn::TTA1, "TTA AmpAClass**************************** %s",
          get_AmpClass_asString(mTTAX.mAmpAClass));
 
-      bool tCState = abs(mTTAX.mAmpAClass) > 0;
-      int tSeverity = 0;
+      tCState = abs(mTTAX.mAmpAClass) > 0;
+      tSeverity = 0;
       switch (abs(mTTAX.mAmpAClass))
       {
       case  0: tSeverity = Evt::cEvt_SeverityInfo;
@@ -174,8 +195,8 @@ void SuperStateEvaluatorTTA::doEvaluate()
       Prn::print(Prn::TTA1, "TTA AmpBClass**************************** %s",
          get_AmpClass_asString(mTTAX.mAmpBClass));
 
-      bool tCState = abs(mTTAX.mAmpBClass) > 0;
-      int tSeverity = 0;
+      tCState = abs(mTTAX.mAmpBClass) > 0;
+      tSeverity = 0;
       switch (abs(mTTAX.mAmpBClass))
       {
       case 0: tSeverity = Evt::cEvt_SeverityInfo;

@@ -66,15 +66,15 @@ void CProcParms::show()
    printf("BuzzerEnable               %-12s\n", my_string_from_bool(mBuzzerEnable));
 
    printf("\n");
-   printf("AuxOverrideEnable          %-12s\n", my_string_from_bool(mAuxOverrideEnable));
-   printf("HLCOverrideEnable          %-12s\n", my_string_from_bool(mHLCOverrideEnable));
-   printf("HLCSimSinEnable            %-12s\n", my_string_from_bool(mHLCSimSinEnable));
-   printf("HLCSimSinPeriod            %10.2f\n", mHLCSimSinPeriod);
-   printf("HLCSimSinAmpHi             %10.2f\n", mHLCSimSinAmpHi);
-   printf("HLCSimSinAmpLo             %10.2f\n", mHLCSimSinAmpLo);
+   printf("AuxOverrideEnable          %-10s\n", my_string_from_bool(mAuxOverrideEnable));
+   printf("HLCOverrideEnable          %-10s\n", my_string_from_bool(mHLCOverrideEnable));
+   printf("HLCSimSinEnable            %-10s\n", my_string_from_bool(mHLCSimSinEnable));
+   printf("HLCSimSinPeriod            %-10.2f\n", mHLCSimSinPeriod);
+   printf("HLCSimSinAmpHi             %-10.2f\n", mHLCSimSinAmpHi);
+   printf("HLCSimSinAmpLo             %-10.2f\n", mHLCSimSinAmpLo);
    printf("\n");
-   printf("HLCOffsetESS               %10.2f\n", mHLCOffsetESS);
-   printf("HLCOffsetSA                %10.2f\n", mHLCOffsetSA);
+   printf("HLCOffsetESS               %-10.2f\n", mHLCOffsetESS);
+   printf("HLCOffsetSA                %-10.2f\n", mHLCOffsetSA);
    printf("\n");
    printf("CProcPrintLevel            %-10d\n", mPrintLevel);
    printf("ShowCode                   %-10d\n", mShowCode);
