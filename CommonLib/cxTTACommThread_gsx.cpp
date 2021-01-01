@@ -15,6 +15,7 @@ Detestion:
 #include "cxCProcParms.h"
 #include "cxOverrides.h"
 #include "cxSuperStateEvaluatorTTA.h"
+#include "cxSuperWantsEvaluatorTTA.h"
 
 #include "cxTTACommThread.h"
 
@@ -30,6 +31,9 @@ namespace CX
 
 bool TTACommThread::doProcess_gsx()
 {
+   // Evaluate the super wants.
+   gSuperWantsEvaluatorTTA.doEvaluate();
+
    // Encode a request message.
    SM::gShare->mSuperWantsTTA.mCount++;
    char tPayload[200];
