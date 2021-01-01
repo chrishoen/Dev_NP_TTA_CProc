@@ -85,7 +85,7 @@ void SuperStateEvaluatorDA::doEvaluate()
       Evt::cEvt_Ident_DA_MainVoltage,
       mDAX.mMainInputVoltage < cDA_MainVoltage_ThreshLo))
    {
-      tRecord->setArg1("%.1f", mDAX.mMainInputVoltage);
+      tRecord->setArg1("%.2f", mDAX.mMainInputVoltage);
       tRecord->sendToEventLogThread();
    }
 
@@ -94,7 +94,7 @@ void SuperStateEvaluatorDA::doEvaluate()
       Evt::cEvt_Ident_DA_MainCurrent,
       mDAX.mMainInputCurrent < cDA_MainCurrent_ThreshLo))
    {
-      tRecord->setArg1("%.1f", mDAX.mMainInputCurrent);
+      tRecord->setArg1("%.0f", mDAX.mMainInputCurrent * 1000);
       tRecord->sendToEventLogThread();
    }
 
@@ -103,7 +103,7 @@ void SuperStateEvaluatorDA::doEvaluate()
       Evt::cEvt_Ident_DA_TowerVoltage,
       mDAX.mTowerVoltage < cDA_TowerVoltage_ThreshLo))
    {
-      tRecord->setArg1("%.1f", mDAX.mTowerVoltage);
+      tRecord->setArg1("%.2f", mDAX.mTowerVoltage);
       tRecord->sendToEventLogThread();
    }
 
@@ -112,7 +112,7 @@ void SuperStateEvaluatorDA::doEvaluate()
       Evt::cEvt_Ident_DA_TowerCurrent,
       mDAX.mTowerCurrent < cDA_TowerCurrent_ThreshLo))
    {
-      tRecord->setArg1("%.1f", mDAX.mTowerCurrent);
+      tRecord->setArg1("%.0f", mDAX.mTowerCurrent * 1000);
       tRecord->sendToEventLogThread();
    }
 

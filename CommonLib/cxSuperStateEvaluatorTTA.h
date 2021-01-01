@@ -31,7 +31,7 @@ public:
    static constexpr float cAD_Guard_ThreshLo = 0.02;
 
    // TTA thresholds.
-   static constexpr float cTTA_Temperature_ThreshHi = 40.0;
+   static constexpr float cTTA_Temperature_ThreshHi    = 40.0;
    static constexpr float cTTA_MainVoltage_ThreshLo    = 7.0;
    static constexpr float cTTA_MainCurrent_ThreshLo    = 0.30;
    static constexpr float cTTA_LineResistance_ThreshHi = 4.0;

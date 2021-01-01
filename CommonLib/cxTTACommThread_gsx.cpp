@@ -13,6 +13,7 @@ Detestion:
 
 #include "sxMsgDefs.h"
 #include "cxCProcParms.h"
+#include "cxOverrides.h"
 #include "cxSuperStateEvaluatorTTA.h"
 
 #include "cxTTACommThread.h"
@@ -52,6 +53,9 @@ bool TTACommThread::doProcess_gsx()
 
    // Copy the response message payload into the super state.
    SuperStateTTA_copyFrom(&SM::gShare->mSuperStateTTA, mRxMsgDecoder.mRxPayload);
+
+   // Apply test overrides.
+   gOverrides.doOverride(SM::gShare->mSuperStateTTA);
 
    // Show.
    SuperWantsTTA_show2(&SM::gShare->mSuperWantsTTA, mPF2);

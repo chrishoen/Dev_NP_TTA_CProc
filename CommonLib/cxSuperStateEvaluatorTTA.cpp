@@ -81,7 +81,7 @@ void SuperStateEvaluatorTTA::doEvaluate()
       Evt::cEvt_Ident_TTA_MainVoltage,
       mTTAX.mMainVoltage < cTTA_MainVoltage_ThreshLo))
    {
-      tRecord->setArg1("%.1f", mTTAX.mMainVoltage);
+      tRecord->setArg1("%.2f", mTTAX.mMainVoltage);
       tRecord->sendToEventLogThread();
    }
 
@@ -90,7 +90,7 @@ void SuperStateEvaluatorTTA::doEvaluate()
       Evt::cEvt_Ident_TTA_MainCurrent,
       mTTAX.mMainCurrent < cTTA_MainCurrent_ThreshLo))
    {
-      tRecord->setArg1("%.1f", mTTAX.mMainCurrent);
+      tRecord->setArg1("%.0f", mTTAX.mMainCurrent * 1000);
       tRecord->sendToEventLogThread();
    }
 
@@ -133,7 +133,7 @@ void SuperStateEvaluatorTTA::doEvaluate()
       Evt::cEvt_Ident_TTA_LineResistance,
       mTTAX.mLineResistance > cTTA_LineResistance_ThreshHi))
    {
-      tRecord->setArg1("%.1f", mTTAX.mMainCurrent);
+      tRecord->setArg1("%.2f", mTTAX.mLineResistance);
       tRecord->sendToEventLogThread();
    }
 
@@ -162,7 +162,7 @@ void SuperStateEvaluatorTTA::doEvaluate()
          tCState,
          tSeverity))
       {
-         tRecord->setArg1("%.0f ma", mTTAX.mAmpCurrentA * 1000);
+         tRecord->setArg1("%.0f", mTTAX.mAmpCurrentA * 1000);
          tRecord->setArg2("%s", get_AmpClass_asString(mTTAX.mAmpAClass));
          tRecord->sendToEventLogThread();
       }
@@ -188,7 +188,7 @@ void SuperStateEvaluatorTTA::doEvaluate()
          tCState,
          tSeverity))
       {
-         tRecord->setArg1("%.0f ma", mTTAX.mAmpCurrentB*1000);
+         tRecord->setArg1("%.0f", mTTAX.mAmpCurrentB*1000);
          tRecord->setArg2("%s", get_AmpClass_asString(mTTAX.mAmpBClass));
          tRecord->sendToEventLogThread();
       }

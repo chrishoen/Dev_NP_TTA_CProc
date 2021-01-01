@@ -13,6 +13,7 @@ Detestion:
 
 #include "sxMsgDefs.h"
 #include "cxCProcParms.h"
+#include "cxOverrides.h"
 #include "cxSuperStateEvaluatorDA.h"
 
 #include "cxDACommThread.h"
@@ -52,6 +53,9 @@ bool DACommThread::doProcess_gsx()
 
    // Copy the response message payload into the super state.
    SuperStateDA_copyFrom(&SM::gShare->mSuperStateDA, mRxMsgDecoder.mRxPayload);
+
+   // Apply test overrides.
+   gOverrides.doOverride(SM::gShare->mSuperStateDA);
 
    // Show.
    SuperStateDA_show2(&SM::gShare->mSuperStateDA, mPF2);
