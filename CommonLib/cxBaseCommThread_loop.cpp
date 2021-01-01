@@ -8,6 +8,8 @@ Detestion:
 
 #include "stdafx.h"
 
+#include "risProgramTime.h"
+
 #include "smShare.h"
 #include "sxMsgDefs.h"
 #include "cxCProcParms.h"
@@ -213,12 +215,17 @@ void BaseCommThread::executeProcessLoop()
 
 bool BaseCommThread::doProcess()
 {
+   // Get begin time.
+   doProcess_begin();
+
+   // Process messages based on the state.
    if (mLoopState == SX::cMsgId_tst)
    {
       if (doProcess_tst())
       {
          mLoopState = SX::cMsgId_gbc;
          setLoopWaitableSlow();
+         doProcess_end();
          return true;
       }
       else
@@ -232,6 +239,7 @@ bool BaseCommThread::doProcess()
       {
          mLoopState = SX::cMsgId_gsv;
          setLoopWaitableSlow();
+         doProcess_end();
          return true;
       }
       else
@@ -245,6 +253,7 @@ bool BaseCommThread::doProcess()
       {
          mLoopState = SX::cMsgId_gft;
          setLoopWaitableSlow();
+         doProcess_end();
          return true;
       }
       else
@@ -258,6 +267,7 @@ bool BaseCommThread::doProcess()
       {
          mLoopState = SX::cMsgId_gsx;
          setLoopWaitableFast();
+         doProcess_end();
          return true;
       }
       else
@@ -267,13 +277,49 @@ bool BaseCommThread::doProcess()
    }
    else if (mLoopState == SX::cMsgId_gsx)
    {
-      return doProcess_gsx();
+      if (doProcess_gsx())
+      {
+         doProcess_end();
+         return true;
+      }
+      else
+      {
+         return false;
+      }
    }
    else if (mLoopState == SX::cMsgId_gcs)
    {
-      return doProcess_gcs();
+      if (doProcess_gsx())
+      {
+         doProcess_end();
+         return true;
+      }
+      else
+      {
+         return false;
+      }
    }
+
    return false;
+}
+
+//******************************************************************************
+//******************************************************************************
+//******************************************************************************
+// Helpers to show process time duration.
+
+void BaseCommThread::doProcess_begin()
+{
+   // Get start time.
+   mLoopTime1 = Ris::getCurrentProgramTime();
+}
+
+void BaseCommThread::doProcess_end()
+{
+   // Get finish time.
+   mLoopTime2 = Ris::getCurrentProgramTime();
+   mLoopDuration = mLoopTime2 - mLoopTime1;
+   Prn::print(mPF8, "                                                           %.3f", mLoopDuration);
 }
 
 //******************************************************************************

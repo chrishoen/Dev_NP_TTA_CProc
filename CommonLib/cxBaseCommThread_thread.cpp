@@ -65,6 +65,9 @@ BaseCommThread::BaseCommThread(int aTTAFlag)
    mTxCount = 0;
    mRxCount = 0;
    mLoopState = SX::cMsgId_tst;
+   mLoopTime1 = 0;
+   mLoopTime2 = 0;
+   mLoopDuration = 0;
 
    mBirthCertificateValid = false;
    mSoftwareVersionValid = false;

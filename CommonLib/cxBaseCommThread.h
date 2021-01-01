@@ -86,8 +86,13 @@ public:
    // Process loop exit code.
    int mProcExitCode;
 
-   // Tx message code.
+   // Loop state. Based on message bing processed.
    int mLoopState;
+
+   // Loop execution times.
+   double mLoopTime1;
+   double mLoopTime2;
+   double mLoopDuration;
 
    //***************************************************************************
    //***************************************************************************
@@ -209,6 +214,10 @@ public:
    virtual bool doProcess_gsv() = 0;
    virtual bool doProcess_gft() = 0;
    virtual bool doProcess_gsx() = 0;
+
+   // Helpers to show process time duration.
+   void doProcess_begin();
+   void doProcess_end();
 
    //***************************************************************************
    //***************************************************************************
