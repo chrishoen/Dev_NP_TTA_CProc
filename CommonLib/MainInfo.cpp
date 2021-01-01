@@ -6,6 +6,7 @@
 #include "FactoryTestRecordCUSA.h"
 #include "SysInfo.h"
 #include "smShare.h"
+#include "CProcInfo.h"
 
 //******************************************************************************
 //******************************************************************************
@@ -14,6 +15,13 @@
 
 void main_info_initialize()
 {
+	//***************************************************************************
+	//***************************************************************************
+	//***************************************************************************
+	// Update the cproc info.
+
+	gCProcInfo.doProtectedRead();
+
 	//***************************************************************************
 	//***************************************************************************
 	//***************************************************************************
@@ -36,38 +44,6 @@ void main_info_initialize()
 	// Set the hlc threshold.
    SM::gShare->setHLCThresh(gSysInfo.mESSFlag);
 
-	//***************************************************************************
-	//***************************************************************************
-	//***************************************************************************
-	// Update the gain calc..
-
-	return;
-	if (gSysInfo.mESSFlag)
-	{
-		// Read the factory test record.
-		gFactoryTestRecordCUESS.doReadFromJsonFile();
-		Prn::print(Prn::CProc1, "CU  Update  factory test record ess");
-
-		// Update the gain calculator json file.
-		Prn::print(Prn::CProc1, "CU  Update  gain calc with factory test record ess");
-		Calc::GainCalc* tCalc = &SM::gShare->mGainCalc;
-		tCalc->doReadModifyWriteBegin();
-		tCalc->readFrom(&gFactoryTestRecordCUESS);
-		tCalc->doReadModifyWriteEnd();
-	}
-	else
-	{
-		// Update the gain calculator json file.
-		gFactoryTestRecordCUSA.doReadFromJsonFile();
-		Prn::print(Prn::CProc1, "CU  Update  factory test record sa");
-
-		// Update the gain calculator json file.
-		Prn::print(Prn::CProc1, "CU  Update  gain calc with factory test record sa");
-		Calc::GainCalc* tCalc = &SM::gShare->mGainCalc;
-		tCalc->doReadModifyWriteBegin();
-		tCalc->readFrom(&gFactoryTestRecordCUSA);
-		tCalc->doReadModifyWriteEnd();
-	}
 }
 
 //******************************************************************************
