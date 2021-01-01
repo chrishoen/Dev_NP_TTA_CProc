@@ -1,70 +1,74 @@
 #pragma once
 
 /*==============================================================================
-Program command line executive.
+gpio disacrete i/o
 ==============================================================================*/
 
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
 
-#include "risCmdLineExec.h"
+#include "GPIO.h"
+
+namespace CX
+{
 
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
-// This class is the program command line executive. It processes user
-// command line inputs and executes them. It inherits from the command line
-// command executive base class, which provides an interface for executing
-// command line commands. It provides an override execute function that is
-// called by a console executive when it receives a console command line input.
-// The execute function then executes the command.
+// This class provides gpio discrete i/o.
 
-class CmdLineExec : public Ris::BaseCmdLineExec
+class Overrides
 {
 public:
+   //***************************************************************************
+   //***************************************************************************
+   //***************************************************************************
+   // Members:
+
+   // Measurement variables.
+   float  mTTATemperature;
+   float  mTTAMainVoltage;
+   float  mTTAMainCurrent;
+
+   // Measurement variables.
+   float  mDATemperature;
+   float  mDAMainInputVoltage;
+   float  mDAMainInputCurrent;
+   float  mDATowerVoltage;
+   float  mDATowerCurrent;
 
    //***************************************************************************
    //***************************************************************************
    //***************************************************************************
-   // Members.
+   // Methods:
 
-   //***************************************************************************
-   //***************************************************************************
-   //***************************************************************************
-   // Methods.
-
-   CmdLineExec();
+   // Constructor.
+   Overrides();
    void reset();
 
    //***************************************************************************
    //***************************************************************************
    //***************************************************************************
-   // Methods.
+   // Methods:
 
-   // Base class override. Execute a command line command. It calls one of
-   // the following specific command execution functions. This is called by
-   // the owner of this object to pass command line commands to it. 
-   void execute(Ris::CmdLineCmd* aCmd) override;
-
-   //***************************************************************************
-   //***************************************************************************
-   //***************************************************************************
-   // Methods.
-
-   // Execute specific commands.
-   void executeLoopState(Ris::CmdLineCmd* aCmd);
-   void executeOverrides(Ris::CmdLineCmd* aCmd);
-
-   void executeGo1     (Ris::CmdLineCmd* aCmd);
-   void executeGo2     (Ris::CmdLineCmd* aCmd);
-   void executeGo3     (Ris::CmdLineCmd* aCmd);
-   void executeGo4     (Ris::CmdLineCmd* aCmd);
-   void executeGo5     (Ris::CmdLineCmd* aCmd);
-   void executeParms   (Ris::CmdLineCmd* aCmd);
+   // Constructor.
+   void show(int aPrintFilter = 0);
 };
 
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
+// Global instance
+
+#ifdef _CXOVERRIDES_CPP_
+          Overrides gOverrides;
+#else
+   extern Overrides gOverrides;
+#endif
+
+//******************************************************************************
+//******************************************************************************
+//******************************************************************************
+}//namespace
 
