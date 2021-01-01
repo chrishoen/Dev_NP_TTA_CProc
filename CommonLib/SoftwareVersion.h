@@ -1,3 +1,3 @@
 #pragma once
 
-static const char* cSoftwareVersion = "20201231";
+static const char* cSoftwareVersion = "20210101";
