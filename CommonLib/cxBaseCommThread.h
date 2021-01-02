@@ -104,7 +104,7 @@ namespace CX
 // The short thread executes ris qcalls sent by the ris serial receive 
 // child thread. It validates received messages and notifies the long
 // thread when messages are received. The long thread sends request
-// messages and then waits for the notification from the shot thread.
+// messages and then waits for the notification from the short thread.
 //
 //******************************************************************************
 //******************************************************************************
