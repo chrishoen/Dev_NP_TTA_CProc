@@ -87,9 +87,9 @@ namespace CX
 //
 // The base comm thread has a member that is a ris serial string thread.
 // This is used to send strings to the slave and receive strings from
-// the slave. The serial thread sends received message strings via
-// a ris qcall. The serial thread manages all of the message string
-// crlf terminators.
+// the slave. The serial thread sends received message strings to this
+// thread via a ris qcall. The serial thread manages all of the message
+// string crlf terminators.
 //
 // The base comm thread inherits from the ris base two thread class.
 // This means that it has two threads: a long term thread and a short
@@ -101,9 +101,10 @@ namespace CX
 // messages. The loop only exits if it is aborted or the thread is
 // terminated.
 //
-// The short thread executes ris qcalls sent by the serial receive thread.
-// It validates received messages and notifies the long thread when messages
-// are received.
+// The short thread executes ris qcalls sent by the ris serial receive 
+// child thread. It validates received messages and notifies the long
+// thread when messages are received. The long thread sends request
+// messages and then waits for the notification from the shot thread.
 //
 //******************************************************************************
 //******************************************************************************
