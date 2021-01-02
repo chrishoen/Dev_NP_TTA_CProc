@@ -23,12 +23,12 @@ namespace SX
 // alarm status. Alarm and Critical are used to classify active alarms.
 
 static const int cMsgId_none = 0;
-static const int cMsgId_tst = 1;
-static const int cMsgId_gbc = 2;
-static const int cMsgId_gsv = 3;
-static const int cMsgId_gft = 4;
-static const int cMsgId_gsx = 5;
-static const int cMsgId_gcs = 6;
+static const int cMsgId_tst = 1;    // test message
+static const int cMsgId_gbc = 2;    // birth certificate message
+static const int cMsgId_gsv = 3;    // software version message
+static const int cMsgId_gft = 4;    // factory test record message
+static const int cMsgId_gsx = 5;    // superstate message
+static const int cMsgId_gcs = 6;    // common share debug message
 
 //******************************************************************************
 //******************************************************************************

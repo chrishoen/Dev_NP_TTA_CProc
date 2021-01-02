@@ -1,6 +1,7 @@
 #pragma once
 
 /*==============================================================================
+da serial communications thread class.
 ==============================================================================*/
 
 //******************************************************************************
@@ -14,8 +15,9 @@ namespace CX
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
-// This is a master thread that sends commands to a slave thread
-// and waits for responses.
+// da serial comm thread. It inherits from the base comm thread and
+// provides some da specific overrides. See the comments for the 
+// base comm thread.
 
 class DACommThread : public BaseCommThread
 {

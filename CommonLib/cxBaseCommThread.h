@@ -1,6 +1,7 @@
 #pragma once
 
 /*==============================================================================
+base serial comm thread class for tta and da serial comm threads.
 ==============================================================================*/
 
 //******************************************************************************
@@ -19,8 +20,94 @@ namespace CX
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
-// This is a master thread that sends commands to a slave thread
-// and waits for responses.
+//
+// This is a base class for the tta and da serial communications threads.
+// It has only those two threads as inheritors.
+//
+// The serial communications between cproc and the tta and the da utilize
+// two rs485 serial channels. The rs485 scheme is based on a master/slave
+// concept.
+//
+// The following will describe behaviour that is relevant to the tta.
+// The behavoiur for the da is exactly the same. The messages are the
+// but the message contents are different
+// 
+// The cproc tta comm thread is the master and the tta is the slave. 
+// The tta comm thread enters a loop that executes a sequence that sends
+// a request message to the tta, waits for the response message and then
+// processes the response. The tta only sends a message to cproc in
+// response to a request message that it receives from cproc.
+//    
+// The loop timing of a single send, wait for response, process response
+// is controllled by an abort able wait mechanism. This makes the timing
+// periodic.
+// 
+//******************************************************************************
+//******************************************************************************
+//******************************************************************************
+//
+// The loop sequences through a set of five messages via a simple state
+// machine. There is a sixth message that's used for debug.
+//
+//    MsgId_tst = 1;    // test message
+//    MsgId_gbc = 2;    // birth certificate message
+//    MsgId_gsv = 3;    // software version message
+//    MsgId_gft = 4;    // factory test record message
+//    MsgId_gsx = 5;    // superstate message
+//    MsgId_gcs = 6;    // common share debug message
+// 
+// The loop sequence is as follows, starting at loop initialization.
+// 
+// 1) send a test message request,
+//    wait for the response.
+// 
+// 2) send a birth certificate message request,
+//    wait for the response.
+//    process the response.
+// 
+// 3) send a software version message request,
+//    wait for the response.
+//    process the response.
+// 
+// 4) send a factory test record message request,
+//    wait for the response.
+//    process the response.
+// 
+// 5) send a superstate message request, this contains the superwants
+//    wait for the response.
+//    process the response.
+// 
+// 6) repeat step 5)
+//
+// If there are any timeouts or errors then start again at step 1).
+//
+//******************************************************************************
+//******************************************************************************
+//******************************************************************************
+//
+// The base comm thread has a member that is a ris serial string thread.
+// This is used to send strings to the slave and receive strings from
+// the slave. The serial thread sends received message strings via
+// a ris qcall. The serial thread manages all of the message string
+// crlf terminators.
+//
+// The base comm thread inherits from the ris base two thread class.
+// This means that it has two threads: a long term thread and a short
+// term thread. Both are ris qcall threads.
+// 
+// The long thread executes the loop qcall and it provides the execution
+// context for the message processing loop. The loop qcall is executed
+// at initialization and contains an infinite loop that processes the
+// messages. The loop only exits if it is aborted or the thread is
+// terminated.
+//
+// The short thread executes ris qcalls sent by the serial receive thread.
+// It validates received messages and notifies the long thread when messages
+// are received.
+//
+//******************************************************************************
+//******************************************************************************
+//******************************************************************************
 
 class BaseCommThread : public Ris::Threads::BaseTwoThread
 {
@@ -209,11 +296,11 @@ public:
    // loop qcall function, based on the state.
    bool doProcess();
    virtual bool doProcess_tst() = 0;
-   virtual bool doProcess_gcs() = 0;
    virtual bool doProcess_gbc() = 0;
    virtual bool doProcess_gsv() = 0;
    virtual bool doProcess_gft() = 0;
    virtual bool doProcess_gsx() = 0;
+   virtual bool doProcess_gcs() = 0;
 
    // Helpers to show process time duration.
    void doProcess_begin();

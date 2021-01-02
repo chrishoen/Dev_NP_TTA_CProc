@@ -1,6 +1,7 @@
 #pragma once
 
 /*==============================================================================
+tta serial communications thread class.
 ==============================================================================*/
 
 //******************************************************************************
@@ -14,8 +15,9 @@ namespace CX
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
-// This is a master thread that sends commands to a slave thread
-// and waits for responses.
+// tta serial comm thread. It inherits from the base comm thread and
+// provides some tta specific overrides. See the comments for the 
+// base comm thread.
 
 class TTACommThread : public BaseCommThread
 {
