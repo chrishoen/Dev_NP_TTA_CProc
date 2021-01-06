@@ -71,7 +71,7 @@ void HLCTimerThread::doRead(int aTimeCount)
 	}
 
 	// Bound the input.
-	if (mInput < -60) mInput = -60;
+//	if (mInput < -60) mInput = -60;
 
 	// Store the input.
 	tH.mInput = mInput;
