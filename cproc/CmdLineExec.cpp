@@ -7,6 +7,7 @@
 #include "cxDACommThread.h"
 #include "cxOverrides.h"
 #include "cmnPriorities.h"
+#include "evtAlarmFileReader.h"
 
 #include "CmdLineExec.h"
 
@@ -44,9 +45,45 @@ void CmdLineExec::execute(Ris::CmdLineCmd* aCmd)
    if (aCmd->isCmd("GO4"))      executeGo4(aCmd);
    if (aCmd->isCmd("GO5"))      executeGo5(aCmd);
 
+   if (aCmd->isCmd("READ1"))    executeRead1(aCmd);
+   if (aCmd->isCmd("READ2"))    executeRead2(aCmd);
    if (aCmd->isCmd("SHOW"))     executeShow(aCmd);
    if (aCmd->isCmd("PARMS"))    executeParms(aCmd);
    if (aCmd->isCmd("HELP"))     executeHelp(aCmd);
+}
+
+//******************************************************************************
+//******************************************************************************
+//******************************************************************************
+
+void CmdLineExec::executeRead1(Ris::CmdLineCmd* aCmd)
+{
+   Evt::AlarmFileReader tReader;
+   std::vector<Evt::AlarmRecord> tVector;
+   tReader.doReadFromAlarmFile(tVector);
+
+   for (auto& tElement : tVector)
+   {
+      tElement.show(0);
+   }
+}
+
+//******************************************************************************
+//******************************************************************************
+//******************************************************************************
+
+void CmdLineExec::executeRead2(Ris::CmdLineCmd* aCmd)
+{
+   Evt::AlarmFileReader tReader;
+   std::vector<Evt::AlarmRecord> tVector;
+   tReader.doReadFromAlarmFile(tVector);
+
+   int tLoopSize = my_imin(4, tVector.size());
+   for (int i = 0; i < tLoopSize; i++)
+   {
+      Evt::AlarmRecord& tRecord = tVector[i];
+      tRecord.show(0);
+   }
 }
 
 //******************************************************************************
@@ -119,10 +156,6 @@ void CmdLineExec::executeOverrides(Ris::CmdLineCmd* aCmd)
 
 void CmdLineExec::executeGo1(Ris::CmdLineCmd* aCmd)
 {
-   Prn::print(0, "mMainTimer.mPriority   %d", Cmn::gPriorities.mMainTimer.mPriority);
-   Prn::print(0, "mMainTimer.mProcessor  %d", Cmn::gPriorities.mMainTimer.mProcessor);
-   Prn::print(0, "mHLCTimer.mPriority    %d", Cmn::gPriorities.mHLCTimer.mPriority);
-   Prn::print(0, "mHLCTimer.mProcessor   %d", Cmn::gPriorities.mHLCTimer.mProcessor);
 }
 
 //******************************************************************************
