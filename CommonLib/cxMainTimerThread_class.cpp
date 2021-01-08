@@ -28,7 +28,7 @@ MainTimerThread::MainTimerThread()
    BaseClass::setThreadName("MainTimer");
    BaseClass::setThreadPriority(Cmn::gPriorities.mMainTimer);
    BaseClass::setThreadPrintLevel(0);
-   BaseClass::mTimerPeriod = 500;
+   BaseClass::mTimerPeriod = 200;
 
    // Set member variables.
    mFirstFlag = true;
