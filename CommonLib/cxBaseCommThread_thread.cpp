@@ -75,12 +75,6 @@ void BaseCommThread::resetVars()
    mSeqTime1 = 0;
    mSeqTime2 = 0;
    mSeqDuration = 0;
-
-   mBirthCertificateValid = false;
-   mSoftwareVersionValid = false;
-   mFactoryTestRecordValid = false;
-   mSysInfoValid = false;
-   mGainCalcValid = false;
 }
 
 //******************************************************************************
