@@ -32,11 +32,7 @@ namespace CX
 bool TTACommThread::doProcess_gsx()
 {
    // Evaluate the super wants.
-   if (mFirstFlag_gsx)
-   {
-      gSuperWantsEvaluatorTTA.reset();
-   }
-   gSuperWantsEvaluatorTTA.doEvaluate();
+   gSuperWantsEvaluatorTTA.doEvaluate(mFirstFlag_gsx);
 
    // Encode a request message.
    SM::gShare->mSuperWantsTTA.mCount++;
@@ -70,11 +66,7 @@ bool TTACommThread::doProcess_gsx()
    SuperStateTTA_show2(&SM::gShare->mSuperStateTTA, mPF2);
 
    // Evaluate the super state.
-   if (mFirstFlag_gsx)
-   {
-      gSuperStateEvaluatorTTA.reset();
-   }
-   gSuperStateEvaluatorTTA.doEvaluate();
+   gSuperStateEvaluatorTTA.doEvaluate(mFirstFlag_gsx);
 
    // Done.
    return true;

@@ -8,12 +8,12 @@ Description:
 #include "stdafx.h"
 
 #include "smShare.h"
-#include "SuperStateTTA.h"
+#include "SuperStateDA.h"
 #include "SuperStateDefs.h"
 #include "CProcInfo.h"
 
-#define  _CXSUPERWANTSEVALUATORTTA_CPP_
-#include "cxSuperWantsEvaluatorTTA.h"
+#define  _CXSUPERWANTSEVALUATORDA_CPP_
+#include "cxSuperWantsEvaluatorDA.h"
 
 namespace CX
 {
@@ -23,12 +23,12 @@ namespace CX
 //******************************************************************************
 // Constructor
 
-SuperWantsEvaluatorTTA::SuperWantsEvaluatorTTA()
+SuperWantsEvaluatorDA::SuperWantsEvaluatorDA()
 {
    reset();
 }
 
-void SuperWantsEvaluatorTTA::reset()
+void SuperWantsEvaluatorDA::reset()
 {
 }
 
@@ -37,7 +37,7 @@ void SuperWantsEvaluatorTTA::reset()
 //******************************************************************************
 // Evaluate superwants. The superwants are obtained from shared memory.
 
-void SuperWantsEvaluatorTTA::doEvaluate(bool aFirstFlag)
+void SuperWantsEvaluatorDA::doEvaluate(bool aFirstFlag)
 {
    //***************************************************************************
    //***************************************************************************
@@ -45,33 +45,14 @@ void SuperWantsEvaluatorTTA::doEvaluate(bool aFirstFlag)
    // Do this first.
 
    // Nickname.
-   SuperWantsTTA& tTTAW = SM::gShare->mSuperWantsTTA;
+   SuperWantsDA& tDAW = SM::gShare->mSuperWantsDA;
 
    // If this is the first update.
    if (aFirstFlag)
    {
-      Prn::print(Prn::TTA1, "TTA Wants        first **********************");
+      Prn::print(Prn::DA1, "DA  Wants        first **********************");
 
-      // Set the preferred rf path from the stored value.
-      tTTAW.mPreferRFPath = gCProcInfo.mTTAPreferRFPath;
-      tTTAW.mPreferRFPathFlag = 1;
       return;
-   }
-
-   //***************************************************************************
-   //***************************************************************************
-   //***************************************************************************
-   // Evaluate the preferred path.
-
-   // If the preferred rf path is to be set then store it.
-   if (tTTAW.mPreferRFPathFlag == 1)
-   {
-      Prn::print(Prn::TTA1, "TTA Prefer RF Path store **************** %s",
-         get_TTA_RFPath_asString(tTTAW.mPreferRFPath));
-
-      gCProcInfo.doReadModifyWriteBegin();
-      gCProcInfo.mTTAPreferRFPath = tTTAW.mPreferRFPath;
-      gCProcInfo.doReadModifyWriteEnd();
    }
 }
 

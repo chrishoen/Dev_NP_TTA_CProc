@@ -29,7 +29,6 @@ SuperStateEvaluatorTTA::SuperStateEvaluatorTTA()
 
 void SuperStateEvaluatorTTA::reset()
 {
-   mFirstFlag = true;
 }
 
 //******************************************************************************
@@ -37,7 +36,7 @@ void SuperStateEvaluatorTTA::reset()
 //******************************************************************************
 // Evaluate superstates. The superstates are obtained from shared memory.
 
-void SuperStateEvaluatorTTA::doEvaluate()
+void SuperStateEvaluatorTTA::doEvaluate(bool aFirstFlag)
 {
    //***************************************************************************
    //***************************************************************************
@@ -45,7 +44,7 @@ void SuperStateEvaluatorTTA::doEvaluate()
    // Do this first.
 
    // Store copies of the last and current superstate.
-   if (mFirstFlag)
+   if (aFirstFlag)
    {
       Prn::print(Prn::TTA1, "TTA Eval         first **********************");
       // If this is the first update then set the last and the current to
@@ -273,7 +272,7 @@ void SuperStateEvaluatorTTA::doEvaluate()
    }
 
    // Update the gain calculator, but not if there's a test mode.
-   if ((mTTAX.mRFPath != mLastTTAX.mRFPath || mFirstFlag) &&
+   if ((mTTAX.mRFPath != mLastTTAX.mRFPath || aFirstFlag) &&
         (mTTAX.mRFPath < 2 && mLastTTAX.mRFPath < 2))
    {
       // Update the gain calculator.
@@ -283,13 +282,6 @@ void SuperStateEvaluatorTTA::doEvaluate()
       tCalc->mRFPath = mTTAX.mRFPath;
       tCalc->doReadModifyWriteEnd();
    }
-
-   //***************************************************************************
-   //***************************************************************************
-   //***************************************************************************
-   // Do this last.
-
-   mFirstFlag = false;
 }
 
 //******************************************************************************

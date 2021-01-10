@@ -15,6 +15,7 @@ Detestion:
 #include "cxCProcParms.h"
 #include "cxOverrides.h"
 #include "cxSuperStateEvaluatorDA.h"
+#include "cxSuperWantsEvaluatorDA.h"
 
 #include "cxDACommThread.h"
 
@@ -30,6 +31,9 @@ namespace CX
 
 bool DACommThread::doProcess_gsx()
 {
+   // Evaluate the super wants.
+   gSuperWantsEvaluatorDA.doEvaluate(mFirstFlag_gsx);
+
    // Encode a request message.
    SM::gShare->mSuperWantsDA.mCount++;
    char tPayload[200];
@@ -61,11 +65,7 @@ bool DACommThread::doProcess_gsx()
    SuperStateDA_show2(&SM::gShare->mSuperStateDA, mPF2);
 
    // Evaluate the super state.
-   if (mFirstFlag_gsx)
-   {
-      gSuperStateEvaluatorDA.reset();
-   }
-   gSuperStateEvaluatorDA.doEvaluate();
+   gSuperStateEvaluatorDA.doEvaluate(mFirstFlag_gsx);
 
    // Done.
    return true;

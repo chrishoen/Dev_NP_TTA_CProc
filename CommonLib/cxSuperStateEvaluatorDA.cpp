@@ -33,7 +33,6 @@ SuperStateEvaluatorDA::SuperStateEvaluatorDA()
 
 void SuperStateEvaluatorDA::reset()
 {
-   mFirstFlag = true;
 }
 
 //******************************************************************************
@@ -41,7 +40,7 @@ void SuperStateEvaluatorDA::reset()
 //******************************************************************************
 // Evaluate superstates. The superstates are obtained from shared memory.
 
-void SuperStateEvaluatorDA::doEvaluate()
+void SuperStateEvaluatorDA::doEvaluate(bool aFirstFlag)
 {
    //***************************************************************************
    //***************************************************************************
@@ -49,7 +48,7 @@ void SuperStateEvaluatorDA::doEvaluate()
    // Do this first.
 
    // Store copies of the last and current superstate.
-   if (mFirstFlag)
+   if (aFirstFlag)
    {
       Prn::print(Prn::DA1, "DA  Eval         first **********************");
       // If this is the first update then set the last and the current to
@@ -210,7 +209,7 @@ void SuperStateEvaluatorDA::doEvaluate()
    }
    
    // Update the gain calculator.
-   if (mDAX.mUserAtten != mLastDAX.mUserAtten || mFirstFlag)
+   if (mDAX.mUserAtten != mLastDAX.mUserAtten || aFirstFlag)
    {
       // Update the gain calculator.
       Prn::print(Prn::DA1, "DA  Update       gain calc user atten");
@@ -226,7 +225,7 @@ void SuperStateEvaluatorDA::doEvaluate()
    // Evaluate system type.
 
    // Update the sysinfo and gain calc.
-   if (mFirstFlag)
+   if (aFirstFlag)
    {
       // Update the sysinfo.
       Prn::print(Prn::DA1, "DA  Update       sysinfo with system type %s",
@@ -262,13 +261,6 @@ void SuperStateEvaluatorDA::doEvaluate()
          tCalc->doReadModifyWriteEnd();
       }
    }
-
-   //***************************************************************************
-   //***************************************************************************
-   //***************************************************************************
-   // Do this last.
-
-   mFirstFlag = false;
 }
 
 //******************************************************************************
