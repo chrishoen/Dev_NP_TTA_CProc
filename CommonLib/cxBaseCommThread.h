@@ -177,6 +177,8 @@ public:
    // Seq state. Based on message bing processed.
    int mSeqState;
 
+   bool mFirstFlag_gsx;
+
    // Seq execution times.
    double mSeqTime1;
    double mSeqTime2;
@@ -233,6 +235,7 @@ public:
 
    // Constructor. True is tta, false is da.
    BaseCommThread(int aTTAFlag);
+   void resetVars();
 
    // Set the sequence waitable timer slow or fast.
    void setSeqWaitableSlow();
@@ -305,6 +308,20 @@ public:
    // Helpers to show process time duration.
    void doProcess_begin();
    void doProcess_end();
+
+   //***************************************************************************
+   //***************************************************************************
+   //***************************************************************************
+   // Methods: QCalls: These are used to send commands to the thread.
+
+   // Abort a running sequence qcall.
+
+   // The qcall. This is a call that is queued to this thread.
+   Ris::Threads::QCall0 mAbortQCall;
+
+   // The qcall function. Post to the waitable to abort the long thread
+   // qcall. Execute in the context of the short thread.
+   void executeAbort();
 
    //***************************************************************************
    //***************************************************************************

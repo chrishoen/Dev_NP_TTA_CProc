@@ -59,12 +59,19 @@ BaseCommThread::BaseCommThread(int aTTAFlag)
    mRunSeq1QCall.bind(this->mLongThread, this, &BaseCommThread::executeRunSeq1);
    mSessionQCall.bind(this->mShortThread, this, &BaseCommThread::executeSession);
    mRxStringQCall.bind(this->mShortThread, this, &BaseCommThread::executeRxString);
+   mAbortQCall.bind(this->mShortThread, this, &BaseCommThread::executeAbort);
 
    // Set member variables.
+   resetVars();
+}
+
+void BaseCommThread::resetVars()
+{
    mSeqExitCode = 0;
    mTxCount = 0;
    mRxCount = 0;
    mSeqState = SX::cMsgId_tst;
+   mFirstFlag_gsx = true;
    mSeqTime1 = 0;
    mSeqTime2 = 0;
    mSeqDuration = 0;
@@ -163,6 +170,20 @@ void BaseCommThread::shutdownThreads()
 }
 
 //******************************************************************************
+//******************************************************************************
+//******************************************************************************
+// The qcall function. Post to the waitable to abort the long thread
+// qcall. Execute in the context of the short thread.
+
+void BaseCommThread::executeAbort()
+{
+   Prn::print(0, "ABORT>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+   // Abort the long thread.
+   mSeqWaitable.postSemaphore();
+}
+
+//******************************************************************************a
 //******************************************************************************
 //******************************************************************************
 // Serial session qcall function. This is invoked by the serial child

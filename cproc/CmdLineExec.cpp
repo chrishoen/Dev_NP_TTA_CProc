@@ -38,6 +38,9 @@ void CmdLineExec::execute(Ris::CmdLineCmd* aCmd)
    if (aCmd->isCmd("RESET"))    reset();
    if (aCmd->isCmd("OVER"))     executeOverrides(aCmd);
 
+   if (aCmd->isCmd("TTA"))      executeTTA(aCmd);
+   if (aCmd->isCmd("DA"))       executeDA(aCmd);
+
    if (aCmd->isCmd("GO1"))      executeGo1(aCmd);
    if (aCmd->isCmd("GO2"))      executeGo2(aCmd);
    if (aCmd->isCmd("GO3"))      executeGo3(aCmd);
@@ -49,6 +52,42 @@ void CmdLineExec::execute(Ris::CmdLineCmd* aCmd)
    if (aCmd->isCmd("SHOW"))     executeShow(aCmd);
    if (aCmd->isCmd("PARMS"))    executeParms(aCmd);
    if (aCmd->isCmd("HELP"))     executeHelp(aCmd);
+}
+
+//******************************************************************************
+//******************************************************************************
+//******************************************************************************
+
+void CmdLineExec::executeTTA(Ris::CmdLineCmd* aCmd)
+{
+   if (aCmd->isArgString(1, "abort"))
+   {
+      Prn::print(0, "tta abort");
+      CX::gTTACommThread->mAbortQCall();
+   }
+   else if (aCmd->isArgString(1, "seq1"))
+   {
+      Prn::print(0, "tta seq1");
+      CX::gTTACommThread->mRunSeq1QCall();
+   }
+}
+
+//******************************************************************************
+//******************************************************************************
+//******************************************************************************
+
+void CmdLineExec::executeDA(Ris::CmdLineCmd* aCmd)
+{
+   if (aCmd->isArgString(1, "abort"))
+   {
+      Prn::print(0, "da abort");
+      CX::gDACommThread->mAbortQCall();
+   }
+   else if (aCmd->isArgString(1, "seq1"))
+   {
+      Prn::print(0, "da seq1");
+      CX::gDACommThread->mRunSeq1QCall();
+   }
 }
 
 //******************************************************************************
@@ -185,7 +224,10 @@ void CmdLineExec::executeGo5(Ris::CmdLineCmd* aCmd)
 
 void CmdLineExec::executeShow(Ris::CmdLineCmd* aCmd)
 {
-   CX::gCProcParms.show();
+   Prn::print(0, "show ***********************************");
+   Prn::print(0, "");
+   Prn::print(0, "tta seq state %s", SX::get_MsgId_asString(CX::gTTACommThread->mSeqState));
+   Prn::print(0, "da  seq state %s", SX::get_MsgId_asString(CX::gDACommThread->mSeqState));
 }
 //******************************************************************************
 //******************************************************************************
@@ -208,5 +250,10 @@ void CmdLineExec::executeHelp(Ris::CmdLineCmd* aCmd)
    Prn::print(0, "show                     -- show some stuff");
    Prn::print(0, "parms                    -- show cproc parms");
    Prn::print(0, "over                     -- show overrides help");
+   Prn::print(0, "");
+   Prn::print(0, "tta abort                -- abort the tta comm thread");
+   Prn::print(0, "tta seq1                 -- run   the tta comm thread seq1");
+   Prn::print(0, "da  abort                -- abort the da  comm thread");
+   Prn::print(0, "da  seq1                 -- run   the da  comm thread seq1");
 }
 

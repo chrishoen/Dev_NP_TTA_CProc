@@ -61,6 +61,10 @@ bool DACommThread::doProcess_gsx()
    SuperStateDA_show2(&SM::gShare->mSuperStateDA, mPF2);
 
    // Evaluate the super state.
+   if (mFirstFlag_gsx)
+   {
+      gSuperStateEvaluatorDA.reset();
+   }
    gSuperStateEvaluatorDA.doEvaluate();
 
    // Done.

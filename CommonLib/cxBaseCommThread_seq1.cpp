@@ -41,7 +41,11 @@ void BaseCommThread::executeRunSeq1()
    // Initialize the synchronization objects.
    mSeqWaitable.initialize(cSlowSeqPeriod);
    mSeqWaitableSlow = true;
-   mNotify.clearFlags();
+   mNotify.reset();
+   mRxMsgDecoder.resetVars();
+
+   // Reset variables. 
+   resetVars();
 
    try
    {
@@ -182,7 +186,7 @@ void BaseCommThread::executeRunSeq1()
    {
       if (aException == 668)
       {
-         Prn::print(0, "EXCEPTION %sCommThread::executeRunSeq1 %d %s", 
+         Prn::print(0, "EXCEPTION %sCommThread::executeRunSeq1 ABORT %d %s", 
             mLabel, 
             aException, mNotify.mException);
       }
@@ -278,6 +282,7 @@ bool BaseCommThread::doProcess()
    {
       if (doProcess_gsx())
       {
+         mFirstFlag_gsx = false;
          doProcess_end();
          return true;
       }
