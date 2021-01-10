@@ -25,7 +25,7 @@ namespace CX
 //******************************************************************************
 // Send a request message to the slave, wait for the response message and
 // process it. Return true if successful. This is called by the process
-// loop qcall function, based on the state.
+// sequence qcall function, based on the state.
 
 bool TTACommThread::doProcess_gbc()
 {
@@ -43,7 +43,7 @@ bool TTACommThread::doProcess_gbc()
    if (!mRxMsgDecoder.mRxValid)
    {
       Prn::print(mPF1, "TTA Proc    gbc  birth certificate ERROR");
-      throw cProcExitError;
+      throw cSeqExitError;
    }
    Prn::print(mPF1, "TTA Proc    gbc  birth certificate");
 

@@ -50,7 +50,7 @@ public:
 
    // Send a request message to the slave, wait for the response message and
    // process it. Return true if successful. This is called by the process
-   // loop qcall function, based on the state.
+   // sequence qcall function, based on the state.
    bool doProcess_tst() override;
    bool doProcess_gbc() override;
    bool doProcess_gsv() override;

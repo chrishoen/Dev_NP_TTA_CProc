@@ -56,18 +56,18 @@ BaseCommThread::BaseCommThread(int aTTAFlag)
    BaseClass::mShortThread->mThreadExecuteOnTimerCallPointer = std::bind(&BaseCommThread::executeOnTimer, this, _1);
 
    // Set qcalls.
-   mProcessLoopQCall.bind(this->mLongThread, this, &BaseCommThread::executeProcessLoop);
+   mRunSeq1QCall.bind(this->mLongThread, this, &BaseCommThread::executeRunSeq1);
    mSessionQCall.bind(this->mShortThread, this, &BaseCommThread::executeSession);
    mRxStringQCall.bind(this->mShortThread, this, &BaseCommThread::executeRxString);
 
    // Set member variables.
-   mProcExitCode = 0;
+   mSeqExitCode = 0;
    mTxCount = 0;
    mRxCount = 0;
-   mLoopState = SX::cMsgId_tst;
-   mLoopTime1 = 0;
-   mLoopTime2 = 0;
-   mLoopDuration = 0;
+   mSeqState = SX::cMsgId_tst;
+   mSeqTime1 = 0;
+   mSeqTime2 = 0;
+   mSeqDuration = 0;
 
    mBirthCertificateValid = false;
    mSoftwareVersionValid = false;
@@ -79,19 +79,19 @@ BaseCommThread::BaseCommThread(int aTTAFlag)
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
-// Set the loop waitable timer slow or fast.
+// Set the sequence waitable timer slow or fast.
 
-void BaseCommThread::setLoopWaitableSlow()
+void BaseCommThread::setSeqWaitableSlow()
 {
-   if (mLoopWaitableSlow) return;
-   mLoopWaitable.initialize(cSlowLoopPeriod);
-   mLoopWaitableSlow = true;
+   if (mSeqWaitableSlow) return;
+   mSeqWaitable.initialize(cSlowSeqPeriod);
+   mSeqWaitableSlow = true;
 }
-void BaseCommThread::setLoopWaitableFast()
+void BaseCommThread::setSeqWaitableFast()
 {
-   if (!mLoopWaitableSlow) return;
-   mLoopWaitable.initialize(cFastLoopPeriod);
-   mLoopWaitableSlow = false;
+   if (!mSeqWaitableSlow) return;
+   mSeqWaitable.initialize(cFastSeqPeriod);
+   mSeqWaitableSlow = false;
 }
 
 //******************************************************************************
@@ -131,8 +131,8 @@ void BaseCommThread::threadInitFunction()
    // Launch the child thread.
    mSerialStringThread->launchThread();
 
-   // Launch the loop qcall.
-   mProcessLoopQCall();
+   // Launch the sequence qcall.
+   mRunSeq1QCall();
 }
 
 //******************************************************************************
@@ -156,7 +156,7 @@ void BaseCommThread::shutdownThreads()
 {
    // Abort the long thread.
    BaseClass::mNotify.abort();
-   mLoopWaitable.postSemaphore();
+   mSeqWaitable.postSemaphore();
 
    // Shutdown the two threads.
    BaseClass::shutdownThreads();

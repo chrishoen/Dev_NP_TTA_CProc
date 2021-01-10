@@ -53,7 +53,6 @@ public:
    // Methods.
 
    // Execute specific commands.
-   void executeLoopState(Ris::CmdLineCmd* aCmd);
    void executeOverrides(Ris::CmdLineCmd* aCmd);
 
    void executeGo1     (Ris::CmdLineCmd* aCmd);

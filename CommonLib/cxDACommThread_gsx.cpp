@@ -26,7 +26,7 @@ namespace CX
 //******************************************************************************
 // Send a request message to the slave, wait for the response message and
 // process it. Return true if successful. This is called by the process
-// loop qcall function, based on the state.
+// sequence qcall function, based on the state.
 
 bool DACommThread::doProcess_gsx()
 {
@@ -47,7 +47,7 @@ bool DACommThread::doProcess_gsx()
    if (!mRxMsgDecoder.mRxValid)
    {
       Prn::print(mPF1, "DA  Proc    gsx  superstate ERROR");
-      throw cProcExitError;
+      throw cSeqExitError;
    }
    Prn::print(mPF1, "DA  Proc    gsx  superstate %d", mTxCount);
 

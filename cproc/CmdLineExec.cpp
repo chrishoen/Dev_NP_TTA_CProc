@@ -36,7 +36,6 @@ void CmdLineExec::reset()
 void CmdLineExec::execute(Ris::CmdLineCmd* aCmd)
 {
    if (aCmd->isCmd("RESET"))    reset();
-   if (aCmd->isCmd("LOOP"))     executeLoopState(aCmd);
    if (aCmd->isCmd("OVER"))     executeOverrides(aCmd);
 
    if (aCmd->isCmd("GO1"))      executeGo1(aCmd);
@@ -84,16 +83,6 @@ void CmdLineExec::executeRead2(Ris::CmdLineCmd* aCmd)
       Evt::AlarmRecord& tRecord = tVector[i];
       tRecord.show(0);
    }
-}
-
-//******************************************************************************
-//******************************************************************************
-//******************************************************************************
-
-void CmdLineExec::executeLoopState(Ris::CmdLineCmd* aCmd)
-{
-   CX::gDACommThread->mLoopState = SX::get_MsgId_asInt(aCmd->argString(1));
-   Prn::print(0, "%s", SX::get_MsgId_asString(CX::gDACommThread->mLoopState));
 }
 
 //******************************************************************************

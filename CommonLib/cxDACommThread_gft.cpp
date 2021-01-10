@@ -24,7 +24,7 @@ namespace CX
 //******************************************************************************
 // Send a request message to the slave, wait for the response message and
 // process it. Return true if successful. This is called by the process
-// loop qcall function, based on the state.
+// sequence qcall function, based on the state.
 
 bool DACommThread::doProcess_gft()
 {
@@ -42,7 +42,7 @@ bool DACommThread::doProcess_gft()
    if (!mRxMsgDecoder.mRxValid)
    {
       Prn::print(mPF1, "DA  Proc    gft  factory test record ERROR");
-      throw cProcExitError;
+      throw cSeqExitError;
    }
    Prn::print(mPF1, "DA  Proc    gft  factory test record");
 

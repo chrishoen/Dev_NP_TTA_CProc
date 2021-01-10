@@ -23,16 +23,15 @@ namespace CX
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
-// Process loop qcall function. Execute an infinite loop that sends a request
-// to the slave, waits for the response, and processes it. It calls one
-// of the process subroutines, based on the state. It executes in the
-// context of the long thread. The purpose of this is to provide long
-// thread execution context for message processing. It is only executed
-// once, at thhread initialization.
+// Run sequence qcall function. Execute an infinite loop sequence that
+// sends a request to the slave, waits for the response, and processes it.
+// It calls one of the process subroutines, based on the state. It executes
+// in the context of the long thread. The purpose of this is to provide
+// long thread execution context for message processing.
 
-void BaseCommThread::executeProcessLoop()
+void BaseCommThread::executeRunSeq1()
 {
-   Prn::print(0, "%sCommThread::executeProcessLoop BEGIN", mLabel);
+   Prn::print(0, "%sCommThread::executeRunSeq1 BEGIN", mLabel);
 
    //***************************************************************************
    //***************************************************************************
@@ -40,13 +39,13 @@ void BaseCommThread::executeProcessLoop()
    // Do this first.
 
    // Initialize the synchronization objects.
-   mLoopWaitable.initialize(cSlowLoopPeriod);
-   mLoopWaitableSlow = true;
+   mSeqWaitable.initialize(cSlowSeqPeriod);
+   mSeqWaitableSlow = true;
    mNotify.clearFlags();
 
    try
    {
-      // Loop to transmit and receive messages.
+      // Seq to transmit and receive messages.
       while (true)
       {
          //*********************************************************************
@@ -61,10 +60,10 @@ void BaseCommThread::executeProcessLoop()
          bool tProcErrorFlag = false;
 
          // Wait for timer or abort.
-         mLoopWaitable.waitForTimerOrSemaphore();
+         mSeqWaitable.waitForTimerOrSemaphore();
 
          // Test for an abort
-         if (mLoopWaitable.wasSemaphore()) throw 668;
+         if (mSeqWaitable.wasSemaphore()) throw 668;
 
          // Guard.
          if (!mConnectionFlag) continue;
@@ -77,7 +76,7 @@ void BaseCommThread::executeProcessLoop()
          try
          {
             // Default. This will be set by the specific subfunction.
-            mProcExitCode = cProcExitNormal;
+            mSeqExitCode = cSeqExitNormal;
 
             // Test for a notification exception.
             // This can throw an execption if there's an abort.
@@ -100,12 +99,12 @@ void BaseCommThread::executeProcessLoop()
             {
                Prn::print(0, "EXCEPTION %sCommThread::doProcess TIMEOUT %s %d",
                   mLabel,
-                  SX::get_MsgId_asString(mLoopState),
+                  SX::get_MsgId_asString(mSeqState),
                   aException);
 
                Prn::print(mPF1, "EXCEPTION %s TIMEOUT %s",
                   mLabel,
-                  SX::get_MsgId_asString(mLoopState));
+                  SX::get_MsgId_asString(mSeqState));
 
                // Serial rx timeout.
                tTimeoutFlag = true;
@@ -113,16 +112,16 @@ void BaseCommThread::executeProcessLoop()
                // There was a processing error.
                tProcErrorFlag = true;
             }
-            else if (aException == cProcExitError)
+            else if (aException == cSeqExitError)
             {
                Prn::print(0, "EXCEPTION %sCommThread::doProcess ERROR %s %d",
                   mLabel,
-                  SX::get_MsgId_asString(mLoopState),
+                  SX::get_MsgId_asString(mSeqState),
                   aException);
 
                Prn::print(mPF1, "EXCEPTION %s ERROR %s",
                   mLabel,
-                  SX::get_MsgId_asString(mLoopState));
+                  SX::get_MsgId_asString(mSeqState));
 
                // There was a processing error.
                tProcErrorFlag = true;
@@ -131,7 +130,7 @@ void BaseCommThread::executeProcessLoop()
             {
                Prn::print(0, "EXCEPTION %sCommThread::doProcess %s %d %s",
                   mLabel,
-                  SX::get_MsgId_asString(mLoopState),
+                  SX::get_MsgId_asString(mSeqState),
                   aException,
                   mNotify.mException);
 
@@ -147,9 +146,9 @@ void BaseCommThread::executeProcessLoop()
          
          if (tProcErrorFlag)
          {
-            // There was a processing error, set the loop state back to
+            // There was a processing error, set the sequence state back to
             // the top of the ladder.
-            mLoopState = SX::cMsgId_tst;
+            mSeqState = SX::cMsgId_tst;
          }
 
          //*********************************************************************
@@ -183,27 +182,27 @@ void BaseCommThread::executeProcessLoop()
    {
       if (aException == 668)
       {
-         Prn::print(0, "EXCEPTION %sCommThread::executeProcessLoop %d %s", 
+         Prn::print(0, "EXCEPTION %sCommThread::executeRunSeq1 %d %s", 
             mLabel, 
             aException, mNotify.mException);
       }
       else
       {
-         Prn::print(0, "EXCEPTION %sCommThread::executeProcessLoop %d",
+         Prn::print(0, "EXCEPTION %sCommThread::executeRunSeq1 %d",
             mLabel,
             aException);
       }
    }
    catch (...)
    {
-      Prn::print(0, "EXCEPTION %sCommThread::executeProcessLoop UNKNOWN", mLabel);
+      Prn::print(0, "EXCEPTION %sCommThread::executeRunSeq1 UNKNOWN", mLabel);
    }
 
    // Finalize the synchronization objects.
-   mLoopWaitable.finalize();
+   mSeqWaitable.finalize();
    mNotify.clearFlags();
 
-   Prn::print(0, "%sCommThread::executeProcessLoop END", mLabel);
+   Prn::print(0, "%sCommThread::executeRunSeq1 END", mLabel);
 }
 
 //******************************************************************************
@@ -211,7 +210,7 @@ void BaseCommThread::executeProcessLoop()
 //******************************************************************************
 // Send a request message to the slave, wait for the response message and
 // process it. Return true if successful. This is called by the process
-// loop qcall function, based on the state.
+// sequence qcall function, based on the state.
 
 bool BaseCommThread::doProcess()
 {
@@ -219,12 +218,12 @@ bool BaseCommThread::doProcess()
    doProcess_begin();
 
    // Process messages based on the state.
-   if (mLoopState == SX::cMsgId_tst)
+   if (mSeqState == SX::cMsgId_tst)
    {
       if (doProcess_tst())
       {
-         mLoopState = SX::cMsgId_gbc;
-         setLoopWaitableSlow();
+         mSeqState = SX::cMsgId_gbc;
+         setSeqWaitableSlow();
          doProcess_end();
          return true;
       }
@@ -233,12 +232,12 @@ bool BaseCommThread::doProcess()
          return false;
       }
    }
-   else if (mLoopState == SX::cMsgId_gbc)
+   else if (mSeqState == SX::cMsgId_gbc)
    {
       if (doProcess_gbc())
       {
-         mLoopState = SX::cMsgId_gsv;
-         setLoopWaitableSlow();
+         mSeqState = SX::cMsgId_gsv;
+         setSeqWaitableSlow();
          doProcess_end();
          return true;
       }
@@ -247,12 +246,12 @@ bool BaseCommThread::doProcess()
          return false;
       }
    }
-   else if (mLoopState == SX::cMsgId_gsv)
+   else if (mSeqState == SX::cMsgId_gsv)
    {
       if (doProcess_gsv())
       {
-         mLoopState = SX::cMsgId_gft;
-         setLoopWaitableSlow();
+         mSeqState = SX::cMsgId_gft;
+         setSeqWaitableSlow();
          doProcess_end();
          return true;
       }
@@ -261,12 +260,12 @@ bool BaseCommThread::doProcess()
          return false;
       }
    }
-   else if (mLoopState == SX::cMsgId_gft)
+   else if (mSeqState == SX::cMsgId_gft)
    {
       if (doProcess_gft())
       {
-         mLoopState = SX::cMsgId_gsx;
-         setLoopWaitableFast();
+         mSeqState = SX::cMsgId_gsx;
+         setSeqWaitableFast();
          doProcess_end();
          return true;
       }
@@ -275,7 +274,7 @@ bool BaseCommThread::doProcess()
          return false;
       }
    }
-   else if (mLoopState == SX::cMsgId_gsx)
+   else if (mSeqState == SX::cMsgId_gsx)
    {
       if (doProcess_gsx())
       {
@@ -287,7 +286,7 @@ bool BaseCommThread::doProcess()
          return false;
       }
    }
-   else if (mLoopState == SX::cMsgId_gcs)
+   else if (mSeqState == SX::cMsgId_gcs)
    {
       if (doProcess_gsx())
       {
@@ -311,15 +310,15 @@ bool BaseCommThread::doProcess()
 void BaseCommThread::doProcess_begin()
 {
    // Get start time.
-   mLoopTime1 = Ris::getCurrentProgramTime();
+   mSeqTime1 = Ris::getCurrentProgramTime();
 }
 
 void BaseCommThread::doProcess_end()
 {
    // Get finish time.
-   mLoopTime2 = Ris::getCurrentProgramTime();
-   mLoopDuration = mLoopTime2 - mLoopTime1;
-   Prn::print(mPF8, "                                                           %.3f", mLoopDuration);
+   mSeqTime2 = Ris::getCurrentProgramTime();
+   mSeqDuration = mSeqTime2 - mSeqTime1;
+   Prn::print(mPF8, "                                                           %.3f", mSeqDuration);
 }
 
 //******************************************************************************

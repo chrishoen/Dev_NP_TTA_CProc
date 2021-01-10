@@ -22,7 +22,7 @@ namespace CX
 //******************************************************************************
 // Send a request message to the slave, wait for the response message and
 // process it. Return true if successful. This is called by the process
-// loop qcall function, based on the state.
+// sequence qcall function, based on the state.
 
 bool DACommThread::doProcess_tst()
 {
@@ -40,7 +40,7 @@ bool DACommThread::doProcess_tst()
    if (!mRxMsgDecoder.mRxValid)
    {
       Prn::print(mPF1, "DA  Proc    tst  test message ERROR");
-      throw cProcExitError;
+      throw cSeqExitError;
    }
    Prn::print(mPF1, "DA  Proc    tst  test message");
 

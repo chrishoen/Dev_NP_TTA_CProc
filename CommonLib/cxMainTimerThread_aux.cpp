@@ -28,7 +28,7 @@ void MainTimerThread::initialize_AuxAlarms()
 	// Nick name.
 	AuxAlarmInfo& tA = SM::gShare->mAuxAlarmInfo;
 
-	// Loop through the aux alarms.
+	// Seq through the aux alarms.
 	for (int i = 0; i < 5; i++)
 	{
 		// Set the alarm severity.
@@ -68,7 +68,7 @@ void MainTimerThread::executeOnTimer_AuxAlarms(int aTimeCount)
 	//***************************************************************************
 	//***************************************************************************
 	//***************************************************************************
-	// Loop through the aux alarms.
+	// Seq through the aux alarms.
 
 	for (int i = 0; i < 5; i++)
 	{

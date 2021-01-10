@@ -33,12 +33,12 @@ namespace CX
 // but the message contents are different
 // 
 // The cproc tta comm thread is the master and the tta is the slave. 
-// The tta comm thread enters a loop that executes a sequence that sends
+// The tta comm thread enters a sequence that executes a sequence that sends
 // a request message to the tta, waits for the response message and then
 // processes the response. The tta only sends a message to cproc in
 // response to a request message that it receives from cproc.
 //    
-// The loop timing of a single send, wait for response, process response
+// The sequence timing of a single send, wait for response, process response
 // is controllled by an abort able wait mechanism. This makes the timing
 // periodic.
 // 
@@ -46,7 +46,7 @@ namespace CX
 //******************************************************************************
 //******************************************************************************
 //
-// The loop sequences through a set of five messages via a simple state
+// The sequence goes through a set of five messages via a simple state
 // machine. There is a sixth message that's used for debug.
 //
 //    MsgId_tst = 1;    // test message
@@ -56,7 +56,7 @@ namespace CX
 //    MsgId_gsx = 5;    // superstate message
 //    MsgId_gcs = 6;    // common share debug message
 // 
-// The loop sequence is as follows, starting at loop initialization.
+// The sequence is as follows, starting at sequence initialization.
 // 
 // 1) send a test message request,
 //    wait for the response.
@@ -95,10 +95,10 @@ namespace CX
 // This means that it has two threads: a long term thread and a short
 // term thread. Both are ris qcall threads.
 // 
-// The long thread executes the loop qcall and it provides the execution
-// context for the message processing loop. The loop qcall is executed
-// at initialization and contains an infinite loop that processes the
-// messages. The loop only exits if it is aborted or the thread is
+// The long thread executes the sequence qcall and it provides the execution
+// context for the message processing sequence. The sequence qcall is executed
+// at initialization and contains an infinite sequence that processes the
+// messages. The sequence only exits if it is aborted or the thread is
 // terminated.
 //
 // The short thread executes ris qcalls sent by the ris serial receive 
@@ -121,8 +121,8 @@ public:
    // Constants:
 
    // Timer periods.
-   static const int cSlowLoopPeriod = 2000;
-   static const int cFastLoopPeriod = 2000;
+   static const int cSlowSeqPeriod = 2000;
+   static const int cFastSeqPeriod = 2000;
 
    // Wait timeouts.
    static const int cRxMsgTimeout = 2000;
@@ -130,10 +130,10 @@ public:
    // Notification codes.
    static const int cRxMsgNotifyCode = 11;
 
-   // Loop exit status codes.
-   static const int cProcExitNormal = 0;
-   static const int cProcExitAborted = 1;
-   static const int cProcExitError = 2;
+   // Seq exit status codes.
+   static const int cSeqExitNormal = 0;
+   static const int cSeqExitAborted = 1;
+   static const int cSeqExitError = 2;
 
    //***************************************************************************
    //***************************************************************************
@@ -161,26 +161,26 @@ public:
    Ris::Threads::NotifyWrapper mRxMsgNotify;
 
    // Waitable timer.
-   Ris::Threads::Waitable mLoopWaitable;
+   Ris::Threads::Waitable mSeqWaitable;
 
    // True if the waitable timer is slow, false if it is fast.
-   bool mLoopWaitableSlow;
+   bool mSeqWaitableSlow;
 
    //***************************************************************************
    //***************************************************************************
    //***************************************************************************
    // Members.
 
-   // Process loop exit code.
-   int mProcExitCode;
+   // Process sequence exit code.
+   int mSeqExitCode;
 
-   // Loop state. Based on message bing processed.
-   int mLoopState;
+   // Seq state. Based on message bing processed.
+   int mSeqState;
 
-   // Loop execution times.
-   double mLoopTime1;
-   double mLoopTime2;
-   double mLoopDuration;
+   // Seq execution times.
+   double mSeqTime1;
+   double mSeqTime2;
+   double mSeqDuration;
 
    //***************************************************************************
    //***************************************************************************
@@ -234,9 +234,9 @@ public:
    // Constructor. True is tta, false is da.
    BaseCommThread(int aTTAFlag);
 
-   // Set the loop waitable timer slow or fast.
-   void setLoopWaitableSlow();
-   void setLoopWaitableFast();
+   // Set the sequence waitable timer slow or fast.
+   void setSeqWaitableSlow();
+   void setSeqWaitableFast();
 
    //***************************************************************************
    //***************************************************************************
@@ -281,20 +281,19 @@ public:
    //***************************************************************************
    // Methods. qcalls.
 
-   // Process loop qcall. 
-   Ris::Threads::QCall0 mProcessLoopQCall;
+   // Run sequence qcall. 
+   Ris::Threads::QCall0 mRunSeq1QCall;
 
-   // Process loop qcall function. Execute an infinite loop that sends a request
-   // to the slave, waits for the response, and processes it. It calls one
-   // of the process subroutines, based on the state. It executes in the
-   // context of the long thread. The purpose of this is to provide long
-   // thread execution context for message processing. It is only executed
-   // once, at thhread initialization.
-   void executeProcessLoop();
+   // Run sequence qcall function. Execute an infinite loop sequence that
+   // sends a request to the slave, waits for the response, and processes it.
+   // It calls one of the process subroutines, based on the state. It executes
+   // in the context of the long thread. The purpose of this is to provide
+   // long thread execution context for message processing.
+   void executeRunSeq1();
 
    // Send a request message to the slave, wait for the response message and
    // process it. Return true if successful. This is called by the process
-   // loop qcall function, based on the state.
+   // sequence qcall function, based on the state.
    bool doProcess();
    virtual bool doProcess_tst() = 0;
    virtual bool doProcess_gbc() = 0;
