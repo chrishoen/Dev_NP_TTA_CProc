@@ -64,8 +64,11 @@ bool DACommThread::doProcess_gsx()
    // Show.
    SuperStateDA_show2(&SM::gShare->mSuperStateDA, mPF2);
 
-   // Evaluate the super state.
-   gSuperStateEvaluatorDA.doEvaluate(mFirstFlag_gsx);
+   // if a tta reboot is not in progress, then evaluate the super state.
+   if (gSuperWantsEvaluatorDA.mRebootTTACountZero == 0)
+   {
+      gSuperStateEvaluatorDA.doEvaluate(mFirstFlag_gsx);
+   }
 
    // Done.
    return true;
