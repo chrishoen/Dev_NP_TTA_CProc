@@ -40,7 +40,10 @@ void HLCTimerThread::doRead(int aTimeCount)
 		// Update the input from the sensor.
 
 		// Read from the sensor.
-		mInput = mHLC.getRFReading();
+		mRawInput = mHLC.getRFReading();
+
+		// Filter the sensor reading.
+		mInput = mAlphaFilter.put(mRawInput);
 	}
 	else
 	{
@@ -50,6 +53,7 @@ void HLCTimerThread::doRead(int aTimeCount)
 		// Update the input from the overrides.
 
 		// Override the inputs.
+		mRawInput = 0;
 		mInput = tH.mOverrideInput;
 
 		//************************************************************************
@@ -76,7 +80,7 @@ void HLCTimerThread::doRead(int aTimeCount)
 	// Store the input.
 	tH.mInput = mInput;
 
-	Prn::print(Prn::HLC1, "HLC input %d  %.2f", aTimeCount,mInput);
+	Prn::print(Prn::HLC1, "HLC input %d  %.2f   %.2f", aTimeCount, mRawInput, mInput);
 }
 
 //******************************************************************************

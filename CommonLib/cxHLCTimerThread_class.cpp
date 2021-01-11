@@ -33,7 +33,7 @@ HLCTimerThread::HLCTimerThread()
    BaseClass::setThreadName("HLCTimer");
    BaseClass::setThreadPriority(Cmn::gPriorities.mHLCTimer);
    BaseClass::setThreadPrintLevel(0);
-   BaseClass::mTimerPeriod = 1000;
+   BaseClass::mTimerPeriod = 100;
 
    // Set member variables.
    mFirstFlag = true;
@@ -41,6 +41,7 @@ HLCTimerThread::HLCTimerThread()
    mTime2 = 0;
    mDuration = 0;
 
+   mAlphaFilter.initializeFromStep(0.100, 2.0, 0.90);
 }
 
 //******************************************************************************
