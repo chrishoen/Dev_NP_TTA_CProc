@@ -11,6 +11,7 @@ Description:
 #include "SuperStateDA.h"
 #include "SuperStateDefs.h"
 #include "CProcInfo.h"
+#include "cxTTACommThread.h"
 
 #define  _CXSUPERWANTSEVALUATORDA_CPP_
 #include "cxSuperWantsEvaluatorDA.h"
@@ -30,6 +31,7 @@ SuperWantsEvaluatorDA::SuperWantsEvaluatorDA()
 
 void SuperWantsEvaluatorDA::reset()
 {
+   mRebootTTACountZero = 0;
 }
 
 //******************************************************************************
@@ -51,9 +53,39 @@ void SuperWantsEvaluatorDA::doEvaluate(bool aFirstFlag)
    if (aFirstFlag)
    {
       Prn::print(Prn::DA1, "DA  Wants        first **********************");
-
-      return;
    }
+
+   //***************************************************************************
+   //***************************************************************************
+   //***************************************************************************
+   // Evaluate the preferred path.
+
+   // If the preferred rf path is to be set then store it.
+   if (tDAW.mRebootCodeFlag == 1)
+   {
+      Prn::print(Prn::TTA1, "DA reboot the tta ************************** 101");
+
+      // Set the reboot count zero.
+      mRebootTTACountZero = 2;
+
+      // Abort the tta comm thread.
+      gTTACommThread->mAbortQCall();
+   }
+
+   // Test the reboot count zero.
+   else if (mRebootTTACountZero > 0 && --mRebootTTACountZero == 0)
+   {
+      Prn::print(Prn::TTA1, "DA reboot the tta ************************** 201");
+
+      // Restart the tta comm thread.
+      gTTACommThread->mRunSeq1QCall();
+   }
+
+   //***************************************************************************
+   //***************************************************************************
+   //***************************************************************************
+   // Do this first.
+
 }
 
 //******************************************************************************
