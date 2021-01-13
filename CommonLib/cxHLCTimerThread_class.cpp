@@ -33,7 +33,7 @@ HLCTimerThread::HLCTimerThread()
    BaseClass::setThreadName("HLCTimer");
    BaseClass::setThreadPriority(Cmn::gPriorities.mHLCTimer);
    BaseClass::setThreadPrintLevel(0);
-   BaseClass::mTimerPeriod = 100;
+   BaseClass::mTimerPeriod = gCProcParms.mHLCTimerPeriod;
 
    // Set member variables.
    mFirstFlag = true;
@@ -41,7 +41,23 @@ HLCTimerThread::HLCTimerThread()
    mTime2 = 0;
    mDuration = 0;
 
-   mAlphaFilter.initializeFromStep(0.100, 2.0, 0.90);
+   mAlphaFilter.initializeFromStep(
+      gCProcParms.mHLCTimerPeriod/1000.0,
+      gCProcParms.mHLCStepTime,
+      0.90);
+
+   // Set the hlc info variables.
+   HLCInfo& tH = SM::gShare->mHLCInfo;
+
+   if (gSysInfo.mESSFlag)
+   {
+      tH.mThreshHi = -35;
+   }
+   else
+   {
+      tH.mThreshHi = -40;
+   }
+   tH.mThreshLo = gCProcParms.mHLCThreshLo;
 }
 
 //******************************************************************************
@@ -56,17 +72,16 @@ void HLCTimerThread::threadInitFunction()
 
    if (!gCProcParms.mHLCOverrideEnable)
    {
-      // Set the hlc offset.
+      // Set the hlc info variables.
       if (gSysInfo.mESSFlag)
       {
-         Prn::print(Prn::HLC1, "offset %.2f", gCProcParms.mHLCOffsetESS);
          mHLC.setOffset(gCProcParms.mHLCOffsetESS);
       }
       else
       {
-         Prn::print(Prn::HLC1, "offset %.2f", gCProcParms.mHLCOffsetSA);
          mHLC.setOffset(gCProcParms.mHLCOffsetSA);
       }
+
       // Initialize.
       mHLC.enable();
       mHLC.connect();

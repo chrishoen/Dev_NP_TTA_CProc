@@ -41,10 +41,6 @@ void main_info_initialize()
 	gSysInfo.readFrom(&tBirthCertificateCU);
 	gSysInfo.mCU_SoftwareVersion = cSoftwareVersion;
 	gSysInfo.doReadModifyWriteEnd();
-
-	// Set the hlc threshold.
-   SM::gShare->setHLCThresh(gSysInfo.mESSFlag);
-
 }
 
 //******************************************************************************

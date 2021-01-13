@@ -66,6 +66,16 @@ void AlphaOne::initializeFromLambda(double aLambda)
 
 void AlphaOne::initializeFromStep(double aTs, double aStepTime, double aStepThresh)
 {
+   mY = 0.0;
+   mXX = 0.0;
+   mFirstFlag = true;
+
+   if (aStepTime == 0 || aStepThresh == 0)
+   {
+      mAlpha = 1;
+      return;
+   }
+
    if (aStepTime < aTs) aStepTime = aTs;
    if (aStepThresh > 1) aStepThresh = 1;
    if (aStepThresh < 0) aStepThresh = 0;
@@ -76,9 +86,6 @@ void AlphaOne::initializeFromStep(double aTs, double aStepTime, double aStepThre
    double a = 1 - b;
 
    mAlpha = a;
-   mY = 0.0;
-   mXX = 0.0;
-   mFirstFlag = true;
 }
 
 //******************************************************************************

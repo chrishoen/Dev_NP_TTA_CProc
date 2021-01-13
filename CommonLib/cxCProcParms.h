@@ -85,9 +85,13 @@ public:
    double mHLCSimSinAmpHi;
    double mHLCSimSinAmpLo;
 
-   // Simulated sinusoid period and amplitude limits.
+   // HLC measurements.
    double mHLCOffsetESS;
    double mHLCOffsetSA;
+   double mHLCThreshLo;
+
+   int    mHLCTimerPeriod;
+   double mHLCStepTime;
 
    //***************************************************************************
    //***************************************************************************

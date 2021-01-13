@@ -53,7 +53,8 @@ void HLCTimerThread::doProcess(int aTimeCount)
 	// Evaluate the input.
 
 	// Set the pulse detection.
-	tH.mDetect = tH.mInput > tH.mThresh;
+	tH.mDetect  = tH.mInput > tH.mThreshHi;
+	tH.mInRange = tH.mInput > tH.mThreshLo;
 
    // Set the condition state.
 	tH.mCState = tH.mDetect && tH.mAlarmEnable;
@@ -88,7 +89,7 @@ void HLCTimerThread::doProcess(int aTimeCount)
 		tH.mCState))
 	{
 		tRecord->setArg1("%.1f", tH.mInput);
-		tRecord->setArg2("%.1f", tH.mThresh);
+		tRecord->setArg2("%.1f", tH.mThreshHi);
 		tRecord->setArg3("%.3f", mDuration);
 		tRecord->sendToEventLogThread();
 	}

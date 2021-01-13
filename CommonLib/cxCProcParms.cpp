@@ -44,6 +44,10 @@ void CProcParms::reset()
 
    mHLCOffsetESS = 0;
    mHLCOffsetSA = 0;
+   mHLCThreshLo = 0;
+
+   mHLCTimerPeriod = 0;
+   mHLCStepTime = 0;
 
    mTestCode = 0;
    mPrintViewEnable = false;
@@ -73,6 +77,10 @@ void CProcParms::show()
    printf("\n");
    printf("HLCOffsetESS               %-10.2f\n", mHLCOffsetESS);
    printf("HLCOffsetSA                %-10.2f\n", mHLCOffsetSA);
+   printf("HLCThreshLo                %-10.2f\n", mHLCThreshLo);
+   printf("\n");
+   printf("HLCTimerPeriod             %-10d\n",   mHLCTimerPeriod);
+   printf("HLCStepTime                %-10.2f\n", mHLCStepTime);
    printf("\n");
    printf("TestCode                   %-10d\n", mTestCode);
    printf("\n");
@@ -102,6 +110,10 @@ void CProcParms::execute(Ris::CmdLineCmd* aCmd)
 
    if (aCmd->isCmd("HLCOffsetESS"))            mHLCOffsetESS = aCmd->argDouble(1);
    if (aCmd->isCmd("HLCOffsetSA"))             mHLCOffsetSA = aCmd->argDouble(1);
+   if (aCmd->isCmd("HLCThreshLo"))             mHLCThreshLo = aCmd->argDouble(1);
+
+   if (aCmd->isCmd("HLCTimerPeriod"))          mHLCTimerPeriod = aCmd->argInt(1);
+   if (aCmd->isCmd("HLCStepTime"))             mHLCStepTime = aCmd->argDouble(1);
 
    if (aCmd->isCmd("TestCode"))                mTestCode = aCmd->argInt(1);
    if (aCmd->isCmd("PrintViewEnable"))         mPrintViewEnable = aCmd->argBool(1);
