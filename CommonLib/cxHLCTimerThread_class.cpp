@@ -51,11 +51,11 @@ HLCTimerThread::HLCTimerThread()
 
    if (gSysInfo.mESSFlag)
    {
-      tH.mThreshHi = -35;
+      tH.mThreshHi = -40;
    }
    else
    {
-      tH.mThreshHi = -40;
+      tH.mThreshHi = -35;
    }
    tH.mThreshLo = gCProcParms.mHLCThreshLo;
 }
