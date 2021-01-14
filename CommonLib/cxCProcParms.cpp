@@ -34,7 +34,6 @@ void CProcParms::reset()
    BaseClass::reset();
    BaseClass::setFilePath("/opt/files/CProc_Parms.txt");
 
-   mBuzzerEnable = false;
    mAuxOverrideEnable = false;
    mHLCOverrideEnable = false;
    mHLCSimSinEnable = false;
@@ -63,9 +62,6 @@ void CProcParms::show()
 {
    printf("\n");
    printf("CProcParms************************************************ %s\n", mTargetSection);
-
-   printf("\n");
-   printf("BuzzerEnable               %-12s\n", my_string_from_bool(mBuzzerEnable));
 
    printf("\n");
    printf("AuxOverrideEnable          %-10s\n", my_string_from_bool(mAuxOverrideEnable));
@@ -99,7 +95,6 @@ void CProcParms::execute(Ris::CmdLineCmd* aCmd)
 {
    if (!isTargetSection(aCmd)) return;
 
-   if (aCmd->isCmd("BuzzerEnable"))            mBuzzerEnable = aCmd->argBool(1);
    if (aCmd->isCmd("AuxOverrideEnable"))       mAuxOverrideEnable = aCmd->argBool(1);
 
    if (aCmd->isCmd("HLCOverrideEnable"))       mHLCOverrideEnable = aCmd->argBool(1);

@@ -101,17 +101,14 @@ void MainTimerThread::executeOnTimer_Events(int aTimeCount)
    //******************************************************************************
    // Set the buzzer according to the hlc detections.
 
-   if (gCProcParms.mBuzzerEnable)
+   // Set the buzzer on hlc detect.
+   if (SM::gShare->mHLCInfo.mBuzzerEnable && SM::gShare->mHLCInfo.mDetect)
    {
-      // Set the buzzer on hlc detect.
-      if (SM::gShare->mHLCInfo.mDetect)
-      {
-         gDiscretes.mBuzzer.streamWrite(HIGH);
-      }
-      else
-      {
-         gDiscretes.mBuzzer.streamWrite(LOW);
-      }
+      gDiscretes.mBuzzer.streamWrite(HIGH);
+   }
+   else
+   {
+      gDiscretes.mBuzzer.streamWrite(LOW);
    }
 }
 
