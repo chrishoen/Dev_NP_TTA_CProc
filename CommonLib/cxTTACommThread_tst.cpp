@@ -11,6 +11,7 @@ Detestion:
 #include "smShare.h"
 #include "sxMsgDefs.h"
 #include "cxCProcParms.h"
+#include "cxStatus.h"
 
 #include "cxTTACommThread.h"
 
@@ -43,6 +44,14 @@ bool TTACommThread::doProcess_tst()
       throw cSeqExitError;
    }
    Prn::print(mPF1, "TTA Proc    tst  test message");
+
+   // Test the tta reboot state.
+   if (gStatus.mTTARebootState == 8)
+   {
+      // Advance the tta reboot state.
+      Prn::print(Prn::DA1, "TTA tta reboot state************************** 0");
+      gStatus.mTTARebootState = 0;
+   }
 
    // Done.
    return true;

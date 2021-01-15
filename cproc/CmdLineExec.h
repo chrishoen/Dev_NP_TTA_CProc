@@ -55,6 +55,7 @@ public:
    // Execute specific commands.
    void executeOverrides(Ris::CmdLineCmd* aCmd);
 
+   void executeReboot  (Ris::CmdLineCmd* aCmd);
    void executeTTA     (Ris::CmdLineCmd* aCmd);
    void executeDA      (Ris::CmdLineCmd* aCmd);
    void executeGo1(Ris::CmdLineCmd* aCmd);

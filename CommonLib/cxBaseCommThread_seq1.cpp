@@ -192,17 +192,22 @@ void BaseCommThread::executeRunSeq1()
          Prn::print(0, "EXCEPTION %sCommThread::executeRunSeq1 ABORT %d %s", 
             mLabel, 
             aException, mNotify.mException);
+
+         mSeqExitCode = cSeqExitAborted;
       }
       else
       {
          Prn::print(0, "EXCEPTION %sCommThread::executeRunSeq1 %d",
             mLabel,
             aException);
+
+         mSeqExitCode = cSeqExitError;
       }
    }
    catch (...)
    {
       Prn::print(0, "EXCEPTION %sCommThread::executeRunSeq1 UNKNOWN", mLabel);
+      mSeqExitCode = cSeqExitError;
    }
 
    // Finalize the synchronization objects.

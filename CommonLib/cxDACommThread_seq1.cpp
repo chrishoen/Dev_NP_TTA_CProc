@@ -25,6 +25,9 @@ namespace CX
 
 void DACommThread::doSeq1Init()
 {
+   // TTA reboot state.
+   // 0 : no reboot. this is set when the da comm thread seq1 starts.
+   gStatus.mTTARebootState = 0;
 }
 
 //******************************************************************************

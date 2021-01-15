@@ -1,7 +1,8 @@
 #include "stdafx.h"
 
-#include "sxMsgDefs.h"
+#include "smShare.h"
 
+#include "sxMsgDefs.h"
 #include "cxCProcParms.h"
 #include "cxTTACommThread.h"
 #include "cxDACommThread.h"
@@ -38,6 +39,7 @@ void CmdLineExec::execute(Ris::CmdLineCmd* aCmd)
    if (aCmd->isCmd("RESET"))    reset();
    if (aCmd->isCmd("OVER"))     executeOverrides(aCmd);
 
+   if (aCmd->isCmd("reboot"))   executeReboot(aCmd);
    if (aCmd->isCmd("TTA"))      executeTTA(aCmd);
    if (aCmd->isCmd("DA"))       executeDA(aCmd);
 
@@ -52,6 +54,16 @@ void CmdLineExec::execute(Ris::CmdLineCmd* aCmd)
    if (aCmd->isCmd("SHOW"))     executeShow(aCmd);
    if (aCmd->isCmd("PARMS"))    executeParms(aCmd);
    if (aCmd->isCmd("HELP"))     executeHelp(aCmd);
+}
+
+//******************************************************************************
+//******************************************************************************
+//******************************************************************************
+
+void CmdLineExec::executeReboot(Ris::CmdLineCmd* aCmd)
+{
+   SM::gShare->setReboot_TTA();
+   Prn::print(0, "reboot tta");
 }
 
 //******************************************************************************

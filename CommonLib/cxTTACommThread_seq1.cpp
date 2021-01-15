@@ -34,6 +34,16 @@ void TTACommThread::doSeq1Init()
 
 void TTACommThread::doSeq1Exit()
 {
+   // Test for an abort.
+   if (mSeqExitCode == cSeqExitAborted)
+   {
+      // Advance the tta reboot state.
+      if (gStatus.mTTARebootState == 1)
+      {
+         Prn::print(Prn::TTA1, "TTA tta reboot state************************** 2");
+         gStatus.mTTARebootState = 2;
+      }
+   }
 }
 
 
