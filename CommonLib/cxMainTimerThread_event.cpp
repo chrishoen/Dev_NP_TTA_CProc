@@ -6,6 +6,8 @@
 //******************************************************************************
 #include "stdafx.h"
 
+#include "risSystemCalls.h"
+
 #include "smShare.h"
 #include "evtService.h"
 #include "cxDiscretes.h"
@@ -111,6 +113,16 @@ void MainTimerThread::executeOnTimer_Events(int aTimeCount)
    else
    {
       gDiscretes.mBuzzer.streamWrite(LOW);
+   }
+
+   //******************************************************************************
+   //******************************************************************************
+   //******************************************************************************
+   // Poll the reboot flag.
+
+   if (SM::gShare->mSuperWantsCU.mCUReboot)
+   {
+      Ris::doSystemCommand("reboot");
    }
 }
 

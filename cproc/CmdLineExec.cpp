@@ -62,7 +62,7 @@ void CmdLineExec::execute(Ris::CmdLineCmd* aCmd)
 
 void CmdLineExec::executeReboot(Ris::CmdLineCmd* aCmd)
 {
-   SM::gShare->setReboot_TTA();
+   SM::gShare->doRebootTTA();
    Prn::print(0, "reboot tta");
 }
 
