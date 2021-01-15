@@ -48,6 +48,15 @@ public:
    //***************************************************************************
    // Methods.
 
+   // Execute thread specific code at the beginning and end of seq1.
+   void doSeq1Init() override;
+   void doSeq1Exit() override;
+
+   //***************************************************************************
+   //***************************************************************************
+   //***************************************************************************
+   // Methods.
+
    // Send a request message to the slave, wait for the response message and
    // process it. Return true if successful. This is called by the process
    // sequence qcall function, based on the state.

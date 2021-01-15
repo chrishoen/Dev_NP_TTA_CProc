@@ -48,6 +48,7 @@ bool DACommThread::doProcess_gsx()
    mNotify.wait(cRxMsgTimeout);
 
    // Test the received response message.
+   // Throw an exception if there's an error. 
    if (!mRxMsgDecoder.mRxValid)
    {
       Prn::print(mPF1, "DA  Proc    gsx  superstate ERROR");
@@ -64,11 +65,8 @@ bool DACommThread::doProcess_gsx()
    // Show.
    SuperStateDA_show2(&SM::gShare->mSuperStateDA, mPF2);
 
-   // if a tta reboot is not in progress, then evaluate the super state.
-   if (gSuperWantsEvaluatorDA.mRebootTTACountZero == 0)
-   {
-      gSuperStateEvaluatorDA.doEvaluate(mFirstFlag_gsx);
-   }
+   // Evaluate the super state.
+   gSuperStateEvaluatorDA.doEvaluate(mFirstFlag_gsx);
 
    // Done.
    return true;

@@ -47,6 +47,9 @@ void BaseCommThread::executeRunSeq1()
    // Reset variables. 
    resetVars();
 
+   // Execute thread specific code at the beginning of seq1.
+   doSeq1Init();
+
    try
    {
       // Seq to transmit and receive messages.
@@ -207,6 +210,9 @@ void BaseCommThread::executeRunSeq1()
    mNotify.clearFlags();
 
    Prn::print(0, "%sCommThread::executeRunSeq1 END", mLabel);
+
+   // Execute thread specific code at the end of seq1.
+   doSeq1Exit();
 }
 
 //******************************************************************************

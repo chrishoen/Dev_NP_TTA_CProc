@@ -13,7 +13,6 @@ Detestion:
 #include "cxStatus.h"
 #include "sxMsgDefs.h"
 
-#define  _DACOMMTHREAD_CPP_
 #include "cxDACommThread.h"
 
 namespace CX
@@ -22,22 +21,21 @@ namespace CX
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
-// Constructor.
+// Execute thread specific code at the beginning of seq1.
 
-DACommThread::DACommThread()
-   : BaseClass(false)
+void DACommThread::doSeq1Init()
 {
-   // Set member print filters.
-   mPF1 = Prn::DA1;
-   mPF2 = Prn::DA2;
-   mPF3 = Prn::DA3;
-   mPF4 = Prn::DA4;
-   mPF5 = Prn::DA5;
-   mPF6 = Prn::DA6;
-   mPF7 = Prn::DA7;
-   mPF8 = Prn::DA8;
-   mRxMsgDecoder.mPF1 = mPF6;
 }
+
+//******************************************************************************
+//******************************************************************************
+//******************************************************************************
+// Execute thread specific code at the beginning of seq1.
+
+void DACommThread::doSeq1Exit()
+{
+}
+
 
 //******************************************************************************
 //******************************************************************************

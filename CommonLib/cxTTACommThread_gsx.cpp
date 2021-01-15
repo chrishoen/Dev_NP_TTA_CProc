@@ -48,6 +48,7 @@ bool TTACommThread::doProcess_gsx()
    mNotify.wait(cRxMsgTimeout);
 
    // Test the received response message.
+   // Throw an exception if there's an error. 
    if (!mRxMsgDecoder.mRxValid)
    {
       Prn::print(mPF1, "TTA Proc    gsx  superstate ERROR");

@@ -283,6 +283,10 @@ public:
    // long thread execution context for message processing.
    void executeRunSeq1();
 
+   // Execute thread specific code at the beginning and end of seq1.
+   virtual void doSeq1Init() {};
+   virtual void doSeq1Exit() {};
+
    // Send a request message to the slave, wait for the response message and
    // process it. Return true if successful. This is called by the process
    // sequence qcall function, based on the state.
