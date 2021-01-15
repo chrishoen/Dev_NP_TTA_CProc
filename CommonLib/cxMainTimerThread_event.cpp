@@ -81,8 +81,9 @@ void MainTimerThread::executeOnTimer_Events(int aTimeCount)
    }
 
    // Set the status led according to the active alarm count.
-   if (tActiveAlarmCount == 0)
+   if (tActiveAlarmCount == 0 || !SM::gShare->mSuperWantsCU.mAlarmEnable)
    {
+      // If there are no active alarms or if global alarms are disabled.
       // No active alarms, green.
       gDiscretes.mStatusLed.streamWrite(HIGH);
       gDiscretes.mTTA0Out.streamWrite(HIGH);
@@ -90,6 +91,7 @@ void MainTimerThread::executeOnTimer_Events(int aTimeCount)
    }
    else
    {
+      // If there are active alarms and if global alarms are enabled.
       // Active alarms, red.
       gDiscretes.mStatusLed.streamWrite(LOW);
       gDiscretes.mTTA0Out.streamWrite(LOW);
