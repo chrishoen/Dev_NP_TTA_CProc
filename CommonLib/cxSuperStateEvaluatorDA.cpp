@@ -15,6 +15,8 @@ Description:
 #include "FactoryTestRecordCUSA.h"
 #include "SysInfo.h"
 
+#include "cxStatus.h"
+
 #define  _CXSUPERSTATEEVALUATORDA_CPP_
 #include "cxSuperStateEvaluatorDA.h"
 
@@ -92,31 +94,34 @@ void SuperStateEvaluatorDA::doEvaluate(bool aFirstFlag)
       tRecord->sendToEventLogThread();
    }
 
-   // Evaluate the superstate. Send an event accordingly.
-   if (Evt::EventRecord* tRecord = Evt::trySendEvent(
-      Evt::cEvt_Ident_DA_MainCurrent,
-      mDAX.mMainInputCurrent < cDA_MainCurrent_ThreshLo))
+   if (gStatus.mTTARebootState == 0)
    {
-      tRecord->setArg1("%.0f", mDAX.mMainInputCurrent * 1000);
-      tRecord->sendToEventLogThread();
-   }
+      // Evaluate the superstate. Send an event accordingly.
+      if (Evt::EventRecord* tRecord = Evt::trySendEvent(
+         Evt::cEvt_Ident_DA_MainCurrent,
+         mDAX.mMainInputCurrent < cDA_MainCurrent_ThreshLo))
+      {
+         tRecord->setArg1("%.0f", mDAX.mMainInputCurrent * 1000);
+         tRecord->sendToEventLogThread();
+      }
 
-   // Evaluate the superstate. Send an event accordingly.
-   if (Evt::EventRecord* tRecord = Evt::trySendEvent(
-      Evt::cEvt_Ident_DA_TowerVoltage,
-      mDAX.mTowerVoltage < cDA_TowerVoltage_ThreshLo))
-   {
-      tRecord->setArg1("%.2f", mDAX.mTowerVoltage);
-      tRecord->sendToEventLogThread();
-   }
+      // Evaluate the superstate. Send an event accordingly.
+      if (Evt::EventRecord* tRecord = Evt::trySendEvent(
+         Evt::cEvt_Ident_DA_TowerVoltage,
+         mDAX.mTowerVoltage < cDA_TowerVoltage_ThreshLo))
+      {
+         tRecord->setArg1("%.2f", mDAX.mTowerVoltage);
+         tRecord->sendToEventLogThread();
+      }
 
-   // Evaluate the superstate. Send an event accordingly.
-   if (Evt::EventRecord* tRecord = Evt::trySendEvent(
-      Evt::cEvt_Ident_DA_TowerCurrent,
-      mDAX.mTowerCurrent < cDA_TowerCurrent_ThreshLo))
-   {
-      tRecord->setArg1("%.0f", mDAX.mTowerCurrent * 1000);
-      tRecord->sendToEventLogThread();
+      // Evaluate the superstate. Send an event accordingly.
+      if (Evt::EventRecord* tRecord = Evt::trySendEvent(
+         Evt::cEvt_Ident_DA_TowerCurrent,
+         mDAX.mTowerCurrent < cDA_TowerCurrent_ThreshLo))
+      {
+         tRecord->setArg1("%.0f", mDAX.mTowerCurrent * 1000);
+         tRecord->sendToEventLogThread();
+      }
    }
 
    //***************************************************************************

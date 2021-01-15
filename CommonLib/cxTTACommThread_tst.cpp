@@ -9,6 +9,8 @@ Detestion:
 #include "stdafx.h"
 
 #include "smShare.h"
+#include "evtService.h"
+
 #include "sxMsgDefs.h"
 #include "cxCProcParms.h"
 #include "cxStatus.h"
@@ -51,6 +53,9 @@ bool TTACommThread::doProcess_tst()
       // Advance the tta reboot state.
       Prn::print(Prn::DA1, "TTA tta reboot state************************** 0");
       gStatus.mTTARebootState = 0;
+
+      // Send an event.
+      Evt::doSendEvent(Evt::cEvt_Ident_DA_TTAReboot, false);
    }
 
    // Done.

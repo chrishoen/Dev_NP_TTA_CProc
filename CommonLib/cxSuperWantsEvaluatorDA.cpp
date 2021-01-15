@@ -10,6 +10,7 @@ Description:
 #include "smShare.h"
 #include "SuperStateDA.h"
 #include "SuperStateDefs.h"
+#include "evtService.h"
 #include "CProcInfo.h"
 #include "cxStatus.h"
 
@@ -76,6 +77,9 @@ void SuperWantsEvaluatorDA::doEvaluate(bool aFirstFlag)
 
          // Abort the tta comm thread.
          gTTACommThread->mAbortQCall();
+
+         // Send an event.
+         Evt::doSendEvent(Evt::cEvt_Ident_DA_TTAReboot, true);
       }
    }
 
