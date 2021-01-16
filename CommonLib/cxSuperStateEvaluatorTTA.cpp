@@ -172,9 +172,9 @@ void SuperStateEvaluatorTTA::doEvaluate(bool aFirstFlag)
       tSeverity = 0;
       switch (abs(mTTAX.mAmpAClass))
       {
-      case  0: tSeverity = Evt::cEvt_SeverityInfo;
-      case  1: tSeverity = Evt::cEvt_SeveritySevere;
-      case  2: tSeverity = Evt::cEvt_SeverityCritical;
+      case  0: tSeverity = Evt::cEvt_SeverityInfo; break;
+      case  1: tSeverity = Evt::cEvt_SeveritySevere; break;
+      case  2: tSeverity = Evt::cEvt_SeverityCritical; break;
       }
       // Create new event record, set args, and send it to the event thread.
       if (Evt::EventRecord* tRecord = Evt::trySendEvent(
@@ -198,9 +198,9 @@ void SuperStateEvaluatorTTA::doEvaluate(bool aFirstFlag)
       tSeverity = 0;
       switch (abs(mTTAX.mAmpBClass))
       {
-      case 0: tSeverity = Evt::cEvt_SeverityInfo;
-      case 1: tSeverity = Evt::cEvt_SeveritySevere;
-      case 2: tSeverity = Evt::cEvt_SeverityCritical;
+      case 0: tSeverity = Evt::cEvt_SeverityInfo; break;
+      case 1: tSeverity = Evt::cEvt_SeveritySevere; break;
+      case 2: tSeverity = Evt::cEvt_SeverityCritical; break;
       }
       // Create new event record, set args, and send it to the event thread.
       if (Evt::EventRecord* tRecord = Evt::trySendEvent(
