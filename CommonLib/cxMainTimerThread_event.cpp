@@ -51,8 +51,17 @@ void MainTimerThread::executeOnTimer_Events(int aTimeCount)
    // Test for a change.
    if (tAlarmEnable != mLastAlarmEnable)
    {
-      Prn::print(Prn::CProc1, "CU  alarm enable **************************** %s", my_string_from_bool(tAlarmEnable));
-      Evt::doSendEvent(Evt::cEvt_Ident_EnableEventLog, tAlarmEnable);
+      // Send an event accordingly.
+      if (tAlarmEnable)
+      {
+         Prn::print(Prn::CProc1, "CU  alarm enable ****************************");
+         Evt::doSendEvent(Evt::cEvt_Ident_EnableEventLog);
+      }
+      else
+      {
+         Prn::print(Prn::CProc1, "CU  alarm disable ***************************");
+         Evt::doSendEvent(Evt::cEvt_Ident_DisableEventLog);
+      }
    }
 
    // Manage the flags.
