@@ -42,6 +42,25 @@ void MainTimerThread::executeOnTimer_Events(int aTimeCount)
    //***************************************************************************
    //***************************************************************************
    //***************************************************************************
+   // Poll the alarm flag.
+
+   // Manage the flags.
+   if (mFirstFlag) mLastAlarmEnable = true;
+   bool tAlarmEnable = SM::gShare->mSuperWantsCU.mAlarmEnable;
+
+   // Test for a change.
+   if (tAlarmEnable != mLastAlarmEnable)
+   {
+      Prn::print(Prn::CProc1, "CU  alarm enable **************************** %s", my_string_from_bool(tAlarmEnable));
+      Evt::doSendEvent(Evt::cEvt_Ident_EnableEventLog, tAlarmEnable);
+   }
+
+   // Manage the flags.
+   mLastAlarmEnable = tAlarmEnable;
+
+   //***************************************************************************
+   //***************************************************************************
+   //***************************************************************************
    // Poll the modeinfo.
 
    // Nickname.
@@ -123,6 +142,7 @@ void MainTimerThread::executeOnTimer_Events(int aTimeCount)
    if (SM::gShare->mSuperWantsCU.mCUReboot)
    {
       Prn::print(Prn::CProc1, "CU  REBOOT *********************************************");
+      SM::gShare->mSuperWantsCU.mCUReboot = false;
       Ris::doSystemCommand("reboot");
    }
 }

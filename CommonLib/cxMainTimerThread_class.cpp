@@ -32,6 +32,7 @@ MainTimerThread::MainTimerThread()
 
    // Set member variables.
    mFirstFlag = true;
+   mLastAlarmEnable = true;
 }
 
 //******************************************************************************

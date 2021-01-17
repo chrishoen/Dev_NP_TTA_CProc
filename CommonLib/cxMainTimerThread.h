@@ -37,6 +37,9 @@ public:
    // If true then this is the first periodic update.
    bool mFirstFlag;
 
+   // Last alarm enable from the superwants cu.
+   bool mLastAlarmEnable;
+
    //***************************************************************************
    //***************************************************************************
    //***************************************************************************
