@@ -44,6 +44,7 @@ bool TTACommThread::doProcess_gsx()
    // Transmit the request message.
    sendString(mTxMsgEncoder.mTxBuffer);
 
+   // Wait for the response message.
    // Throw an exception if there's a timeout. 
    mNotify.wait(cRxMsgTimeout);
 

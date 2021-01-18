@@ -165,6 +165,13 @@ void BaseCommThread::executeRunSeq1()
 
          if (mTTAFlag)
          {
+            // Test for a timeout.
+            if (tTimeoutFlag)
+            {
+               // Reset the superstate.
+               SuperStateTTA_initialize(&SM::gShare->mSuperStateTTA);
+            }
+
             // Send an event accordingly.
             if (Evt::EventRecord* tRecord = Evt::trySendEvent(
                Evt::cEvt_Ident_TTA_CommLost,
@@ -175,6 +182,13 @@ void BaseCommThread::executeRunSeq1()
          }
          else
          {
+            // Test for a timeout.
+            if (tTimeoutFlag)
+            {
+               // Reset the superstate.
+               SuperStateDA_initialize(&SM::gShare->mSuperStateDA);
+            }
+
             // Send an event accordingly.
             if (Evt::EventRecord* tRecord = Evt::trySendEvent(
                Evt::cEvt_Ident_DA_CommLost,
