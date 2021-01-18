@@ -35,7 +35,7 @@ public:
    static constexpr float cTTA_Temperature2_ThreshHi   = 70.0;
    static constexpr float cTTA_MainVoltage_ThreshLo    = 7.0;
    static constexpr float cTTA_MainCurrent_ThreshLo    = 0.30;
-   static constexpr float cTTA_LineResistance_ThreshHi = 5.1;
+   static constexpr float cTTA_LineResistance_ThreshHi = 5.5;
 
    //***************************************************************************
    //***************************************************************************
