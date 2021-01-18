@@ -182,7 +182,7 @@ void SuperStateEvaluatorTTA::doEvaluate(bool aFirstFlag)
          tCState,
          tSeverity))
       {
-         tRecord->setArg1("%.0f", mTTAX.mAmpCurrentA * 1000);
+         tRecord->setArg1("%.0f", mTTAX.mAmpATestVar * 1000);
          tRecord->setArg2("%s", get_AmpClass_asString(mTTAX.mAmpAClass));
          tRecord->sendToEventLogThread();
       }
@@ -208,7 +208,7 @@ void SuperStateEvaluatorTTA::doEvaluate(bool aFirstFlag)
          tCState,
          tSeverity))
       {
-         tRecord->setArg1("%.0f", mTTAX.mAmpCurrentB*1000);
+         tRecord->setArg1("%.0f", mTTAX.mAmpBTestVar * 1000);
          tRecord->setArg2("%s", get_AmpClass_asString(mTTAX.mAmpBClass));
          tRecord->sendToEventLogThread();
       }
