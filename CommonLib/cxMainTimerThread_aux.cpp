@@ -96,7 +96,7 @@ void MainTimerThread::executeOnTimer_AuxAlarms(int aTimeCount)
 		if (!gCProcParms.mAuxOverrideEnable)
 		{
 			// Read the inputs from the discretes.
-			tA.mInput[i] = gDiscretes.mAuxAlarmIn[i]->getValue();
+			tA.mInput[i] = !gDiscretes.mAuxAlarmIn[i]->getValue();
 		}
 		else
 		{
